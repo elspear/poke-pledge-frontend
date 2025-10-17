@@ -1,0 +1,35 @@
+.nav-container {
+    width: 100%;
+    padding: 20px 20px;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.nav-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.nav-bar ul {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar li {
+    list-style: none;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+.nav-bar a {
+    text-decoration: none;
+}
