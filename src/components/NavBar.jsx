@@ -20,18 +20,26 @@ function NavBar() {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            {auth.token ? (
+
+          {/*Authentication links - combined login and signup, both don't show when logged in*/}
+          {auth.token ? ( 
+            <li>
               <Link to="/" onClick={handleLogout}>
                 Log Out
               </Link>
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
-          </li>
-          <li>
-            <Link to="/signup">Sign Up</Link>
-          </li>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/signup">Sign Up</Link>
+              </li>
+            </>
+          )}
+
+          
           <li>
             <Link to="/create-fundraiser">Create a New Fundraiser</Link>
           </li>
