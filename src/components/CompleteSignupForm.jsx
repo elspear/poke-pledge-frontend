@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import postSignup from "../api/post-signup";
 import postLogin from "../api/post-login";
+import { useAuth } from "../hooks/use-auth";
 
 function CompleteSignupForm() {
     const navigate = useNavigate();
+    const { setAuth } = useAuth();
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -41,6 +43,7 @@ function CompleteSignupForm() {
         
         if (validateForm()) {
             setIsLoading(true);
+            
             try {
                 // get intial signup data
                 const signupData = JSON.parse(sessionStorage.getItem("signupData"));
@@ -61,8 +64,9 @@ function CompleteSignupForm() {
                 // Then login with the credentials
                 const loginResponse = await postLogin(fullUserData.username, fullUserData.password);
 
-                // set the token and redirect
+                // set the token and update auth context
                 window.localStorage.setItem("token", `Token ${loginResponse.token}`);
+                setAuth({ token: `Token ${loginResponse.token}` });
                 
                 setSuccessMessage("Account created successfully! Redirecting...");
                 
@@ -72,7 +76,65 @@ function CompleteSignupForm() {
                 }, 1500);
                 
             } catch (error) {
-                setErrors({submit: `Signup failed: ${error.message}`});
+                // Now we have access to the actual server response!
+                if (error.serverData) {
+                    const serverData = error.serverData;
+                    
+                    // Check for username-specific errors
+                    if (serverData.username) {
+                        const usernameError = Array.isArray(serverData.username) ? serverData.username[0] : serverData.username;
+                        setErrors({username: usernameError});
+                    } else if (serverData.email) {
+                        const emailError = Array.isArray(serverData.email) ? serverData.email[0] : serverData.email;
+                        setErrors({submit: `Signup failed: ${emailError}`});
+                    } else if (serverData.detail) {
+                        // Check if the detail mentions username
+                        if (serverData.detail.toLowerCase().includes('username')) {
+                            setErrors({username: serverData.detail});
+                        } else {
+                            setErrors({submit: `Signup failed: ${serverData.detail}`});
+                        }
+                    } else {
+                        // Handle multiple field errors
+                        const errorFields = Object.entries(serverData);
+                        if (errorFields.length === 1 && errorFields[0][0] === 'username') {
+                            setErrors({username: Array.isArray(errorFields[0][1]) ? errorFields[0][1][0] : errorFields[0][1]});
+                        } else {
+                            const errorText = errorFields
+                                .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+                                .join('. ');
+                            setErrors({submit: `Signup failed: ${errorText}`});
+                        }
+                    }
+                } else if (error.message.toLowerCase().includes('username') && 
+                    (error.message.toLowerCase().includes('already') || 
+                     error.message.toLowerCase().includes('exists') ||
+                     error.message.toLowerCase().includes('taken'))) {
+                    setErrors({username: "This username is already taken. Please choose another username."});
+                } else if (error.response && error.response.data) {
+                    // Fallback to response data if serverData isn't available
+                    const errorData = error.response.data;
+                    if (typeof errorData === 'string') {
+                        setErrors({submit: `Signup failed: ${errorData}`});
+                    } else if (errorData.username) {
+                        setErrors({username: Array.isArray(errorData.username) ? errorData.username[0] : errorData.username});
+                    } else if (errorData.detail) {
+                        setErrors({submit: `Signup failed: ${errorData.detail}`});
+                    } else if (errorData.message) {
+                        setErrors({submit: `Signup failed: ${errorData.message}`});
+                    } else {
+                        const errorText = Object.entries(errorData)
+                            .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+                            .join('. ');
+                        setErrors({submit: `Signup failed: ${errorText}`});
+                    }
+                } else if (error.response) {
+                    setErrors({submit: `Signup failed: Server responded with status ${error.response.status}`});
+                } else if (error.request) {
+                    setErrors({submit: `Signup failed: No response from server. Please check your connection.`});
+                } else {
+                    setErrors({submit: `Signup failed: ${error.message || 'Unknown error occurred'}`});
+                }
             } finally {
                 setIsLoading(false);
             }

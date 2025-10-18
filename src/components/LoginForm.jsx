@@ -1,65 +1,129 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
 
 function LoginForm() {
-  const navigate = useNavigate();
-  const { auth, setAuth } = useAuth();
+    const navigate = useNavigate();
+    const {auth, setAuth} = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
 
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
+    const [credentials, setCredentials] = useState({
+        username: "",
+        password: "",
+    });
 
-  const handleChange = (event) => {
-    const { id, value } = event.target;
-    setCredentials((prevCredentials) => ({
-      ...prevCredentials,
-      [id]: value,
-    }));
-  };
+    const [errors, setErrors] = useState({
+      username: "",
+      password: "",
+    });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (credentials.username && credentials.password) {
-      postLogin(credentials.username, credentials.password).then((response) => {
-        window.localStorage.setItem("token", response.token);
-        setAuth({
-          token: response.token,
-        });
-        navigate("/");
-      });
-    }
-  };
+    const validateForm = () => {
+      let isValid = true;
+      const newErrors = {
+        username: "",
+        password: "",
+      };
 
-  return (
-    <form>
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          placeholder="enter username"
-          onChange={handleChange}
-        />
-      </div>
+      //Username Validation
+      if (!credentials.username.trim()) {  // trim removes whitespace
+        newErrors.username = "Username required";
+        isValid = false;
+      }
 
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-      </div>
-      <button type="submit" onClick={handleSubmit}>
-        Login
-      </button>
-    </form>
-  );
+      // Password Validation
+      if (!credentials.password) {
+        newErrors.password = "Password is required";
+        isValid = false;
+      }
+
+      setErrors(newErrors);
+      return isValid;
+    };
+
+    const handleChange = (event) => {
+        const { id, value } = event.target;
+        setCredentials((prevCredentials) => ({
+            ...prevCredentials,
+            [id]: value,
+        }));
+
+        // clear error when user starts typing
+        setErrors(prev => ({
+          ...prev,
+          [id]: ""
+        }))
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        if (validateForm()) {
+          setIsLoading(true);
+          postLogin(
+            credentials.username,
+            credentials.password,
+          ).then((response) => {
+            const token = response.token;
+            // Store token with 'Token ' prefix (capital T)
+            window.localStorage.setItem("token", `Token ${token}`);
+            window.localStorage.setItem("username", credentials.username);
+            setAuth({
+              token: `Token ${token}`,
+              username: credentials.username
+            });
+            navigate("/");
+          }).catch(error => {
+            setErrors({
+              username: "Invalid username or password",
+              password: "Invalid username or password",
+            });
+          }).finally(() => {
+            setIsLoading(false);
+          });
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="form-group">
+                <label htmlFor="username">Username:</label>
+                <input 
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    onChange={handleChange}
+                    value={credentials.username}
+                    className={errors.username ? "error" : ""}
+                    disabled={isLoading}
+                />
+                {errors.username && (
+                    <span className="error-message">{errors.username}</span>
+                )}
+            </div>
+            <div className="form-group">
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    value={credentials.password}
+                    className={errors.password ? "error" : ""}
+                    disabled={isLoading}
+                />
+                {errors.password && (
+                    <span className="error-message">{errors.password}</span>
+                )}
+            </div>
+            <button 
+                type="submit" 
+                disabled={isLoading}
+            >
+                {isLoading ? "Logging in..." : "Login"}
+            </button>
+        </form>
+    );
 }
 
 export default LoginForm;

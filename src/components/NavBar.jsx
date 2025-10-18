@@ -38,16 +38,8 @@ function NavBar() {
               </li>
             </>
           )}
-
-          
           <li>
-            <Link to="/create-fundraiser">Create a New Fundraiser</Link>
-          </li>
-          <li>
-            <Link to="/about">About PokePledge</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact Us</Link>
+            <Link to="/create-fundraiser/">Create a Fundraiser</Link>
           </li>
         </ul>
       </nav>
