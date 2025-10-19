@@ -38,6 +38,13 @@ function NavBar() {
               </li>
             </>
           )}
+
+          {/* Authenication-gated navigation */}
+          {auth.token && (
+            <li>
+              <Link to="/create-fundraiser">Create a Fundraiser</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>
