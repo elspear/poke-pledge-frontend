@@ -122,28 +122,30 @@ function CreateFundraiserForm() {
 
                 // Redirect to the new fundraiser page
                 navigate(`/fundraiser/${response.id}`);
-
             } catch (error) {
                 console.error("Error creating fundraiser", error);
-
-                // Handle different types of errors
+                // Improved error handling for server validation
                 if (error.serverData) {
-                // Server provided specific field errors
-                const serverErrors = error.serverData;
-                const newErrors = {};
-                
-                // Map server errors to form fields
-                Object.keys(serverErrors).forEach(key => {
-                    const value = serverErrors[key];
-                    newErrors[key] = Array.isArray(value) ? value[0] : value;
-                });
-                
-                setErrors(newErrors);
-            } else {
-                //Generic error
-                setErrors({
-                    submit: error.message || "Failed to create fundraiser. Please try again."
-                })};
+                    // Show specific error for invalid Pokemon name
+                    if (error.serverData.error && error.serverData.error.includes("invalid Pokemon name")) {
+                        setErrors(prev => ({
+                            ...prev,
+                            pokemon: error.serverData.error
+                        }));
+                    } else {
+                        // Generic server error
+                        setErrors(prev => ({
+                            ...prev,
+                            submit: error.serverData.error || "Failed to create fundraiser. Please try again."
+                        }));
+                    }
+                } else {
+                    // Fallback for other errors
+                    setErrors(prev => ({
+                        ...prev,
+                        submit: error.message || "Failed to create fundraiser. Please try again."
+                    }));
+                }
             } finally {
                 setIsLoading(false);
             }
