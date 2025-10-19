@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import postFundraiser from "../api/post-fundraiser";
 
 function CreateFundraiserForm() {
     const navigate = useNavigate();
@@ -79,7 +80,11 @@ function CreateFundraiserForm() {
                 }
             }
 
-            // Items needed validation = none, as it is an optional field
+            // Items needed validation
+
+            if (!fundraiserData.itemsNeeded.trim()) {
+                newErrors.itemsNeeded = "Items required"
+            }
 
             // Image URL validation
             if (!fundraiserData.image.trim()) {
@@ -92,12 +97,56 @@ function CreateFundraiserForm() {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle form submission (placeholder for now)
-    const handleSubmit = (event) => {
+    // Handle form submission 
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (validateForm()) {
-            console.log("Form is valid", fundraiserData);
+            setIsLoading(true);
+            setErrors({}); // clear any previous errors
+
+            try {
+                // prepare data for API convert (conver goal to number)
+                const apiData = {
+                    ...fundraiserData,
+                    goal: parseFloat(fundraiserData.goal)
+                };
+
+                // Debug: Log what we're sending to the API
+                console.log("Sending this data to API:", apiData);
+
+                // Call API
+                const response = await postFundraiser(apiData);
+
+                console.log("Fundraiser created successfully", response);
+
+                // Redirect to the new fundraiser page
+                navigate(`/fundraiser/${response.id}`);
+
+            } catch (error) {
+                console.error("Error creating fundraiser", error);
+
+                // Handle different types of errors
+                if (error.serverData) {
+                // Server provided specific field errors
+                const serverErrors = error.serverData;
+                const newErrors = {};
+                
+                // Map server errors to form fields
+                Object.keys(serverErrors).forEach(key => {
+                    const value = serverErrors[key];
+                    newErrors[key] = Array.isArray(value) ? value[0] : value;
+                });
+                
+                setErrors(newErrors);
+            } else {
+                //Generic error
+                setErrors({
+                    submit: error.message || "Failed to create fundraiser. Please try again."
+                })};
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
