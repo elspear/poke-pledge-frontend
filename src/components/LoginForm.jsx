@@ -65,12 +65,11 @@ function LoginForm() {
             credentials.password,
           ).then((response) => {
             const token = response.token;
-            // Store token with 'Token ' prefix (capital T)
-            window.localStorage.setItem("token", `Token ${token}`);
-            window.localStorage.setItem("username", credentials.username);
+            window.localStorage.setItem("token", `Token ${token}`); //must be bearer token
+            window.localStorage.setItem("user", JSON.stringify({ username: credentials.username }));
             setAuth({
               token: `Token ${token}`,
-              username: credentials.username
+              user: { username: credentials.username }
             });
             navigate("/");
           }).catch(error => {
