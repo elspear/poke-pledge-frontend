@@ -154,7 +154,7 @@ function CompleteSignupForm() {
 
         return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <div className="form-group">
                 <label htmlFor="username">Username (for logging in):</label>
                 <input 
                     type="text"
@@ -165,7 +165,7 @@ function CompleteSignupForm() {
                 />
                 {errors.username && <span className="error">{errors.username}</span>}
             </div>
-            <div>
+            <div className="form-group">
                 <label htmlFor="firstName">First Name:</label>
                 <input
                     type="text"
@@ -176,7 +176,7 @@ function CompleteSignupForm() {
                 />
                 {errors.firstName && <span className="error">{errors.firstName}</span>}
             </div>
-            <div>
+            <div className="form-group">
                 <label htmlFor="lastName">Last Name:</label>
                 <input
                     type="text"
@@ -187,7 +187,7 @@ function CompleteSignupForm() {
                 />
                 {errors.lastName && <span className="error">{errors.lastName}</span>}
             </div>
-            <div>
+            <div className="form-group">
                 <label htmlFor="role">Role:</label>
                 <select
                     id="role"

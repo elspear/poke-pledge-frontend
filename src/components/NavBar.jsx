@@ -38,9 +38,6 @@ function NavBar() {
               </li>
             </>
           )}
-          <li>
-            <Link to="/create-fundraiser/">Create a Fundraiser</Link>
-          </li>
         </ul>
       </nav>
     </div>

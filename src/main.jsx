@@ -6,7 +6,6 @@ import HomePage from "./pages/HomePage.jsx";
 import FundraiserPage from "./pages/FundraiserPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
-import CreateFundraiserPage from "./pages/CreateFundraiserPage.jsx";
 import CompleteSignupForm from "./components/CompleteSignupForm.jsx";
 
 import NavBar from "./components/NavBar.jsx";
@@ -21,7 +20,6 @@ const router = createBrowserRouter([
           { path: "/login/", element: <LoginPage /> },
           { path: "/signup/", element: <SignupPage /> },
           { path: "/complete-signup/", element: <CompleteSignupForm /> },
-          { path: "/create-fundraiser/", element: <CreateFundraiserPage /> },
           { path: "/fundraiser/:id/", element: <FundraiserPage /> },
       ],
   },
