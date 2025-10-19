@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import useFundraiser from "../hooks/use-fundraiser";
 import { useAuth } from "../hooks/use-auth";
+import './FundraiserPage.css';
 
 function FundraiserPage() {
   // here we use a hook that comes for free in React called `useParams` to get the id from the url so we can pass it to our useFundraiser hook
@@ -30,13 +31,17 @@ function FundraiserPage() {
   console.log("isOwner:", isOwner);
 
   return (
-    <div>
-      <h2>{fundraiser.title}</h2>
-      <img
+    <div className="fundraiser-page-container">
+        <div className="fundraiser-title">
+            <h1>{fundraiser.title}</h1>
+        </div>
+        <div className="fundraiser-image">
+             <img
         src={fundraiser.image}
         alt={fundraiser.title}
-        style={{ maxWidth: "300px" }}
       />
+
+        </div>
       <p>Owner: {fundraiser.owner_username}</p>
       <p>{fundraiser.description}</p>
       <p>

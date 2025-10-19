@@ -1,0 +1,16 @@
+
+
+.fundraiser-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fundraiser-image {
+    padding: 10px 20px;
+}
+
+.fundraiser-image img {
+    width: 300px;
+    height: auto;
+}
