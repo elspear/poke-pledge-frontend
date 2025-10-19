@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postFundraiser from "../api/post-fundraiser";
+import './CreateFundraiser.css';
 
 function CreateFundraiserForm() {
     const navigate = useNavigate();
@@ -47,51 +48,69 @@ function CreateFundraiserForm() {
         }
     };
 
-    // Form validation
-    const validateForm = () => {
-            const newErrors = {};
+    // Async Pokémon validation helper (replace with your backend call)
+    const validatePokemonName = async (name) => {
+        if (!name) return { valid: false, error: "Pokemon is required" };
+        // Example: call your backend endpoint here
+        // const response = await fetch(`/api/validate-pokemon?name=${encodeURIComponent(name)}`);
+        // const data = await response.json();
+        // return data;
+        // For now, fake validation: only allow "pikachu" as valid
+        if (name.trim().toLowerCase() === "pikachu") {
+            return { valid: true };
+        }
+        return { valid: false, error: "Select a real Pokémon." };
+    };
 
-            // Title validation
-            if (!fundraiserData.title.trim()) {
-                newErrors.title = "Title is required";
-            } else if (fundraiserData.title.length > 100) {
-                newErrors.title = "Title must be less than 100 characters";
+    // Form validation (async for Pokémon)
+    const validateForm = async () => {
+        const newErrors = {};
+
+        // Title validation
+        if (!fundraiserData.title.trim()) {
+            newErrors.title = "Title is required";
+        } else if (fundraiserData.title.length > 100) {
+            newErrors.title = "Title must be less than 100 characters";
+        }
+
+        // Description validation
+        if (!fundraiserData.description.trim()) {
+            newErrors.description = "Description is required";
+        } else if (fundraiserData.description.length > 500) {
+            newErrors.description = "Description must be less than 500 characters";
+        }
+
+        // Pokemon validation (async)
+        if (!fundraiserData.pokemon.trim()) {
+            newErrors.pokemon = "Pokemon is required";
+        } else {
+            const result = await validatePokemonName(fundraiserData.pokemon.trim());
+            if (!result.valid) {
+                newErrors.pokemon = result.error || "Select a real Pokémon.";
             }
+        }
 
-            // Description validation
-            if (!fundraiserData.description.trim()) {
-                newErrors.description = "Description is required";
-            } else if (fundraiserData.description.length > 500) {
-                newErrors.description = "Description must be less than 500 characters";
+        // Goal validation
+        if (!fundraiserData.goal) {
+            newErrors.goal = "Goal is required";
+        } else {
+            const goalAmount = parseFloat(fundraiserData.goal);
+            if (isNaN(goalAmount) || goalAmount <= 0 ) {
+                newErrors.goal = "Please enter a valid positive number";
             }
+        }
 
-            // Pokemon validation
-            if (!fundraiserData.pokemon.trim()) {
-                newErrors.pokemon = "Pokemon is required";
-            }
+        // Items needed validation
+        if (!fundraiserData.itemsNeeded.trim()) {
+            newErrors.itemsNeeded = "Items required"
+        }
 
-            // Goal validation
-            if (!fundraiserData.goal) {
-                newErrors.goal = "Goal is required";
-            } else {
-                const goalAmount = parseFloat(fundraiserData.goal);
-                if (isNaN(goalAmount) || goalAmount <= 0 ) {
-                    newErrors.goal = "Please enter a valid positive number";
-                }
-            }
-
-            // Items needed validation
-
-            if (!fundraiserData.itemsNeeded.trim()) {
-                newErrors.itemsNeeded = "Items required"
-            }
-
-            // Image URL validation
-            if (!fundraiserData.image.trim()) {
-                newErrors.image = "Image URL is required";
-            } else if (!isValidUrl(fundraiserData.image)) {
-                newErrors.image = "Please enter a valid image URL";    
-            }
+        // Image URL validation
+        if (!fundraiserData.image.trim()) {
+            newErrors.image = "Image URL is required";
+        } else if (!isValidUrl(fundraiserData.image)) {
+            newErrors.image = "Please enter a valid image URL";    
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -100,26 +119,21 @@ function CreateFundraiserForm() {
     // Handle form submission 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        if (validateForm()) {
+        const isValid = await validateForm();
+        if (isValid) {
             setIsLoading(true);
             setErrors({}); // clear any previous errors
-
             try {
                 // prepare data for API convert (conver goal to number)
                 const apiData = {
                     ...fundraiserData,
                     goal: parseFloat(fundraiserData.goal)
                 };
-
                 // Debug: Log what we're sending to the API
                 console.log("Sending this data to API:", apiData);
-
                 // Call API
                 const response = await postFundraiser(apiData);
-
                 console.log("Fundraiser created successfully", response);
-
                 // Redirect to the new fundraiser page
                 navigate(`/fundraiser/${response.id}`);
             } catch (error) {
@@ -127,10 +141,10 @@ function CreateFundraiserForm() {
                 // Improved error handling for server validation
                 if (error.serverData) {
                     // Show specific error for invalid Pokemon name
-                    if (error.serverData.error && error.serverData.error.includes("invalid Pokemon name")) {
+                    if (error.serverData.error && error.serverData.error.toLowerCase().includes("invalid pokemon name")) {
                         setErrors(prev => ({
                             ...prev,
-                            pokemon: error.serverData.error
+                            pokemon: "Select a real Pokémon."
                         }));
                     } else {
                         // Generic server error
@@ -158,7 +172,7 @@ function CreateFundraiserForm() {
             <form onSubmit={handleSubmit}>
                 {/* Title */}
                 <div className="form-group">
-                    <label htmlFor="title">Fundraiser Title:</label>
+                    <label htmlFor="title">Fundraiser Title</label>
                     <input
                         type="text"
                         id="title"
@@ -175,7 +189,7 @@ function CreateFundraiserForm() {
 
                 {/* Description */}
                 <div className="form-group">
-                    <label htmlFor="description">Description:</label>
+                    <label htmlFor="description">Description</label>
                     <textarea
                         id="description"
                         value={fundraiserData.description}
@@ -192,7 +206,7 @@ function CreateFundraiserForm() {
 
                 {/* Pokemon */}
                 <div className="form-group">
-                    <label htmlFor="pokemon">Pokemon:</label>
+                    <label htmlFor="pokemon">Pokemon</label>
                     <input
                         type="text"
                         id="pokemon"
@@ -209,7 +223,7 @@ function CreateFundraiserForm() {
 
                 {/* Goal */}
                 <div className="form-group">
-                    <label htmlFor="goal">Goal Amount (₽):</label>
+                    <label htmlFor="goal">Goal Amount ₽</label>
                     <input
                         type="number"
                         id="goal"
@@ -228,13 +242,13 @@ function CreateFundraiserForm() {
 
                 {/* Items Needed */}
                 <div className="form-group">
-                    <label htmlFor="itemsNeeded">Items Needed (Optional):</label>
+                    <label htmlFor="itemsNeeded">Items Needed</label>
                     <input
                         type="text"
                         id="itemsNeeded"
                         value={fundraiserData.itemsNeeded}
                         onChange={handleChange}
-                        placeholder="What items do you need? (Optional)"
+                        placeholder="What items do you need?"
                         className={errors.itemsNeeded ? "input-error" : ""}
                         disabled={isLoading}
                     />
