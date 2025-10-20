@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage.jsx";
 import CompleteSignupForm from "./components/CompleteSignupForm.jsx";
 import CreateFundraiserPage from "./pages/CreateFundraiserPage.jsx";
 import EditFundraiserPage from "./pages/EditFundraiserPage.jsx";
+import PledgeForm from "./components/PledgeForm.jsx";
 
 import NavBar from "./components/NavBar.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
           { path: "/fundraiser/:id/", element: <FundraiserPage /> },
           { path: "/create-fundraiser/", element: <CreateFundraiserPage />},
           { path: "/fundraiser/:id/edit", element: <EditFundraiserPage />},
+          { path: "/fundraiser/:id/pledge", element: <PledgeForm />},
       ],
   },
 ]);

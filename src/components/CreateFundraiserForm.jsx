@@ -26,6 +26,7 @@ function FundraiserForm({
     goal: initialValues.goal || "",
     itemsNeeded: initialValues.itemsNeeded || "",
     image: initialValues.image || "",
+    end_date: initialValues.end_date || "",
   });
 
   // above code, now defaults fields to empty strings for when a user edits their fundraiser
@@ -263,6 +264,20 @@ function FundraiserForm({
             disabled={isLoading || externalLoading}
           />
           {errors.image && <span className="error-message">{errors.image}</span>}
+        </div>
+
+        {/* End Date (optional) */}
+        <div className="form-group">
+          <label htmlFor="end_date">End Date (optional):</label>
+          <input
+            type="datetime-local"
+            id="end_date"
+            value={fundraiserData.end_date}
+            onChange={handleChange}
+            className={errors.end_date ? "input-error" : ""}
+            disabled={isLoading || externalLoading}
+          />
+          {errors.end_date && <span className="error-message">{errors.end_date}</span>}
         </div>
 
         {/* Submit Error */}
