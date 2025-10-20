@@ -48,6 +48,14 @@ function FundraiserPage() {
         Created at: {new Date(fundraiser.date_created).toLocaleDateString()}
       </p>
       <h3>Status: {fundraiser.is_open ? "Open" : "Closed"}</h3>
+      <div className="progress-bar-container">
+      <p>
+  Progress: ${fundraiser.progress} raised of ${fundraiser.goal} goal
+  ({fundraiser.progress_percentage}%)
+</p>
+
+<progress className="fundraiser-progress-bar" value={fundraiser.progress} max={fundraiser.goal}></progress>
+</div>
       {isOwner && (
         <Link to={`/fundraiser/${fundraiser.id}/edit`}>
           <button>Edit Fundraiser</button>
@@ -57,7 +65,7 @@ function FundraiserPage() {
       <ul>
         {fundraiser.pledges.map((pledgeData, key) => (
           <li key={key}>
-            {pledgeData.amount} from {pledgeData.supporter}
+            {pledgeData.amount} from {pledgeData.supporter_username}
           </li>
         ))}
       </ul>

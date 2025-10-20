@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
+import PokePledge from "../assets/PokePledge.png";
 
 import "./NavBar.css";
 
@@ -18,7 +19,7 @@ function NavBar() {
       <nav className="nav-bar">
         <div className="nav-left">
           <Link to="/">
-            <img src="src/assets/PokePledge.png" alt="Logo" />
+            <img src={PokePledge} alt="Logo" />
           </Link>
           <ul className="nav-bar-links">
             <li className="pill"><Link to="/about" className="about-link">About</Link></li>

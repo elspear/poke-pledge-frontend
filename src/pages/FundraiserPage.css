@@ -1,16 +1,69 @@
-
-
 .fundraiser-page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: aqua;
 }
 
 .fundraiser-image {
     padding: 10px 20px;
+    background-color: aliceblue;
 }
 
 .fundraiser-image img {
     width: 300px;
     height: auto;
+}
+
+.progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    width: 600 px;
+    background-color: red;
+    align-items: center;
+    padding: 10px 20px;
+} 
+
+.fundraiser-progress {
+  margin: 1em 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+.fundraiser-progress-bar {
+  width: 200px;
+  height: 20px;
+  border-radius: 10px;
+  /* Remove background here, set in pseudo-elements below */
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #eee;
+}
+
+
+.fundraiser-progress-bar::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+.fundraiser-progress-bar::-webkit-progress-value {
+  background-color: cornflowerblue;
+  border-radius: 10px;
+}
+
+/* Firefox */
+.fundraiser-progress-bar::-moz-progress-bar {
+  background-color: #4caf50;
+  border-radius: 10px;
+}
+
+/* IE fallback */
+.fundraiser-progress-bar::-ms-fill {
+  background-color: #4caf50;
+  border-radius: 10px;
+}
+
+.fundraiser-progress-text {
+  font-weight: bold;
+  margin-bottom: 0.5em;
 }
