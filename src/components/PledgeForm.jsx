@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import postPledge from "../api/post-pledge";
 
-function PledgeForm({ fundraiserId }) {
+function PledgeForm({ fundraiserId, onSuccess }) {
 	const [amount, setAmount] = useState("");
 	const [comment, setComment] = useState("");
 	const [anonymous, setAnonymous] = useState(false);
@@ -32,6 +32,9 @@ function PledgeForm({ fundraiserId }) {
 				setAmount("");
 				setComment("");
 				setAnonymous(false);
+				if (onSuccess) {
+				  onSuccess();
+				}
 			} catch (err) {
 				setError(err.message || "Failed to submit pledge");
 			}

@@ -11,7 +11,7 @@ function FundraiserPage() {
   const { id } = useParams();
 
   // useFundraiser returns 3 pieces of info, so we need to grab them here
-  const { fundraiser, isLoading, error } = useFundraiser(id);
+  const { fundraiser, isLoading, error, refetch } = useFundraiser(id);
   const { auth } = useAuth();
 
   if (isLoading) {
@@ -61,7 +61,7 @@ function FundraiserPage() {
       {!showPledgeForm && (
         <button onClick={() => setShowPledgeForm(true)}>Pledge</button>
       )}
-  {showPledgeForm && <PledgeForm fundraiserId={fundraiser.id} />}
+  {showPledgeForm && <PledgeForm fundraiserId={fundraiser.id} onSuccess={refetch} />}
       <div className="progress-bar-container">
       <p>
   Progress: ${fundraiser.progress} raised of ${fundraiser.goal} goal
