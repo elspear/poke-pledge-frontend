@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
+import "./LoginForm.css";
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -85,6 +86,7 @@ function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
+          <div className="form-container">
             <div className="form-group">
                 <label htmlFor="username">Username:</label>
                 <input 
@@ -114,13 +116,15 @@ function LoginForm() {
                 {errors.password && (
                     <span className="error-message">{errors.password}</span>
                 )}
-            </div>
-            <button 
+                <button 
                 type="submit" 
                 disabled={isLoading}
             >
                 {isLoading ? "Logging in..." : "Login"}
             </button>
+            <p>Don't have an account? Sign up here</p>
+            </div> 
+          </div> 
         </form>
     );
 }

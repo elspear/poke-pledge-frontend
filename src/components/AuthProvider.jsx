@@ -11,8 +11,10 @@ export const AuthProvider = (props) => {
     user: JSON.parse(window.localStorage.getItem("user")) || null,
   });
 
+  const isLoggedIn = !!auth.token; // true if token exists
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, isLoggedIn }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -154,6 +154,7 @@ function CompleteSignupForm() {
 
         return (
         <form onSubmit={handleSubmit}>
+            <div className="form-container"></div>
             <div className="form-group">
                 <label htmlFor="username">Username (for logging in):</label>
                 <input 
