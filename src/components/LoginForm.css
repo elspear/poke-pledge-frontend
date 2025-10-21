@@ -1,0 +1,18 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    max-width: 100%; /* make it responsive on small screens */
+    margin: 0 auto; /* center the fixed-width container horizontally */
+    padding: 1rem;
+    box-sizing: border-box; 
+}
+
+.form-group {
+    max-width: 100%;
+}
+
+.form-group input {
+    max-width: 90%;
+}

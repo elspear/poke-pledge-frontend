@@ -116,14 +116,16 @@ function LoginForm() {
                 {errors.password && (
                     <span className="error-message">{errors.password}</span>
                 )}
-                <button 
+                
+            </div>
+            <div class></div>
+            <button 
                 type="submit" 
                 disabled={isLoading}
             >
                 {isLoading ? "Logging in..." : "Login"}
             </button>
             <p>Don't have an account? Sign up here</p>
-            </div> 
           </div> 
         </form>
     );

@@ -177,6 +177,7 @@ function FundraiserForm({
       <div>
       <h2>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h2>
       <form onSubmit={handleSubmit}>
+        
         {/* Title */}
         <div className="form-group">
           <label htmlFor="title">Fundraiser Title</label>
