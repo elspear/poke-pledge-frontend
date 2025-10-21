@@ -119,12 +119,15 @@ function LoginForm() {
                 
             </div>
             <div class></div>
-            <button 
+            <div className="form-group">
+              <button className="submit-button" 
                 type="submit" 
                 disabled={isLoading}
             >
                 {isLoading ? "Logging in..." : "Login"}
             </button>
+            </div>
+            
             <p>Don't have an account? Sign up here</p>
           </div> 
         </form>

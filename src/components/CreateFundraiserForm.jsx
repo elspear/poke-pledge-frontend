@@ -117,6 +117,11 @@ function FundraiserForm({
           ...fundraiserData,
           goal: parseFloat(fundraiserData.goal),
         };
+
+        // If end_date is empty string or falsy, remove it so the API doesn't try to parse it
+        if (!apiData.end_date) {
+          delete apiData.end_date;
+        }
         if (onSubmit) {
           await onSubmit(apiData);
         } else {
