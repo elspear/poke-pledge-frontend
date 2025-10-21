@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import './AboutPage.css';
 
 
 
 const AboutPage = () => {
   return (
     <div className='about-page'>
-        <div className='container'>
+        <div className='about-page-container'>
             <div className='about-title'>
                 <h1>About PokePledge</h1>
             </div>
@@ -13,7 +14,7 @@ const AboutPage = () => {
                 PokePledge is a crowdfunding platform where Trainers, Pokemon Centers, and Safari Parks 
                 raise PokeDollars (₽) for causes that help Pokemon and their communities.
             </p>
-        </div>
+       
 
         <section className='about-mission'>
             <h2>Our Mission</h2>
@@ -28,13 +29,13 @@ const AboutPage = () => {
             <h2>How PokePledge Works</h2>
             <ul>
                 <li>
-                    <strong>Create:</strong> Choose your role, tell your story, set a goal, and list any items needed.
+                    <strong>Create</strong> - Choose your role, tell your story, set a goal, and list any items needed.
                 </li>
                 <li>
-                    <strong>Share:</strong> Write a description, add an image, and publish your fundraiser. Supporters can browse and pledge.
+                    <strong>Share</strong> - Write a description, add an image, and publish your fundraiser. Supporters can browse and pledge.
                 </li>
                 <li>
-                    <strong>Deliver:</strong> Track progress, post updates, and close the campaign when you are done.
+                    <strong>Deliver</strong> - Track progress, post updates, and close the campaign when you are done.
                 </li>
             </ul>
         </section>
@@ -43,7 +44,7 @@ const AboutPage = () => {
             <h2>Who Can Create Fundraisers?</h2>
             <ul>
                 <li>
-                    <strong>Trainer</strong> personal or team needs (e.g., potions, gear, TMs).
+                    <strong>Trainer</strong> - personal or team needs (e.g., potions, gear, TMs).
                 </li>
                 <li>
                     <strong>Pokemon Center Admin</strong> - town/civic welfare (relocations, treatment, equipment).
@@ -71,7 +72,8 @@ const AboutPage = () => {
                 <p>Yes - this keeps the platform safe and accountable. It also allows you to track your pledges.</p>
             </details>
         </section>
-    </div>
+    </div></div>     
+            
   );
 };
 
