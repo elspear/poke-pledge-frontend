@@ -13,6 +13,7 @@ import PledgeForm from "./components/PledgeForm.jsx";
 
 import NavBar from "./components/NavBar.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
  
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
           { path: "/", element: <HomePage /> },
           { path: "/login/", element: <LoginPage /> },
           { path: "/signup/", element: <SignupPage /> },
+          { path: "/about/", element: <AboutPage /> },
           { path: "/complete-signup/", element: <CompleteSignupForm /> },
           { path: "/fundraiser/:id/", element: <FundraiserPage /> },
           { path: "/create-fundraiser/", element: <CreateFundraiserPage />},
