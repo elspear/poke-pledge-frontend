@@ -12,8 +12,10 @@ import EditFundraiserPage from "./pages/EditFundraiserPage.jsx";
 import PledgeForm from "./components/PledgeForm.jsx";
 
 import NavBar from "./components/NavBar.jsx";
-import { AuthProvider } from "./components/AuthProvider.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
+import { AuthProvider } from "./components/AuthProvider.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
+import AuthRequiredPage from "./pages/AuthRequiredPage.jsx";
  
 const router = createBrowserRouter([
   {
@@ -26,7 +28,13 @@ const router = createBrowserRouter([
           { path: "/about/", element: <AboutPage /> },
           { path: "/complete-signup/", element: <CompleteSignupForm /> },
           { path: "/fundraiser/:id/", element: <FundraiserPage /> },
-          { path: "/create-fundraiser/", element: <CreateFundraiserPage />},
+          { path: "/create-fundraiser/", element: (
+              <RequireAuth>
+                <CreateFundraiserPage />
+              </RequireAuth>
+            )
+          },
+          { path: "/auth-required/", element: <AuthRequiredPage /> },
           { path: "/fundraiser/:id/edit", element: <EditFundraiserPage />},
           { path: "/fundraiser/:id/pledge", element: <PledgeForm />},
       ],

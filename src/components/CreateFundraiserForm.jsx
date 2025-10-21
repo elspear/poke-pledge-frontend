@@ -171,7 +171,10 @@ function FundraiserForm({
   };
 
   return (
-    <div>
+    
+   
+
+      <div>
       <h2>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h2>
       <form onSubmit={handleSubmit}>
         {/* Title */}
