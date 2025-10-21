@@ -8,8 +8,12 @@ async function postFundraiser(fundraiserData) {
     const apiData = {
         ...rest,
         goal: parseFloat(fundraiserData.goal),
-        items_needed: itemsNeeded
     };
+
+    // Only include items_needed if the caller provided a non-empty value
+    if (itemsNeeded !== undefined && itemsNeeded !== null && String(itemsNeeded).trim() !== "") {
+        apiData.items_needed = itemsNeeded;
+    }
 
     const response = await fetch(url, {
         method: "POST",

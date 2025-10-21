@@ -92,10 +92,7 @@ function FundraiserForm({
         newErrors.goal = `Goal cannot be less than total pledged (${totalPledged})`;
       }
     }
-    // Items needed validation
-    if (!fundraiserData.itemsNeeded.trim()) {
-      newErrors.itemsNeeded = "Items required";
-    }
+   
     // Image URL validation
     if (!fundraiserData.image.trim()) {
       newErrors.image = "Image URL is required";
@@ -247,7 +244,7 @@ function FundraiserForm({
 
         {/* Items Needed */}
         <div className="form-group">
-          <label htmlFor="itemsNeeded">Items Needed</label>
+          <label htmlFor="itemsNeeded">Items Needed (optional)</label>
           <input
             type="text"
             id="itemsNeeded"
