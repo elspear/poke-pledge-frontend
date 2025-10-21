@@ -58,10 +58,17 @@ function FundraiserPage() {
         </p>
       )}
       <h3>Status: {fundraiser.is_open ? "Open" : "Closed"}</h3>
-      {!showPledgeForm && (
+      {/* Only show the Pledge button to users who are not the fundraiser owner */}
+      {!isOwner && !showPledgeForm && (
         <button onClick={() => setShowPledgeForm(true)}>Pledge</button>
       )}
-  {showPledgeForm && <PledgeForm fundraiserId={fundraiser.id} onSuccess={refetch} />}
+
+      {/* If the current user is the owner, show a short note instead of the pledge button */}
+      {isOwner && (
+        <p style={{ color: '#4a5568', fontStyle: 'italic' }}>You are the owner of this fundraiser. You cannot pledge to your own fundraiser.</p>
+      )}
+
+      {showPledgeForm && <PledgeForm fundraiserId={fundraiser.id} onSuccess={refetch} />}
       <div className="progress-bar-container">
       <p>
   Progress: ${fundraiser.progress} raised of ${fundraiser.goal} goal
