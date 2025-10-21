@@ -22,17 +22,17 @@ function NavBar() {
             <img src={PokePledge} alt="Logo" />
           </Link>
           <ul className="nav-bar-links">
-            <li className="pill"><Link to="/about" className="about-link">About</Link></li>
+            <li><Link to="/about" className="about-link">About</Link></li>
           </ul>
         </div>
         <div className="nav-right">
           <ul className="nav-bar-links">
-            {/* Authenication-gated navigation */}
-            {auth.token && (
+            
+            
               <li className="pill">
                 <Link to="/create-fundraiser">Create a Fundraiser</Link>
               </li>
-            )}
+
             {/*Authentication links - combined login and signup, both don't show when logged in*/}
             {auth.token ? ( 
               <li className="pill">
@@ -42,8 +42,11 @@ function NavBar() {
               </li>
             ) : (
               <>
-                <li className="pill">
+                <li>
                   <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/signup/">Sign Up</Link>
                 </li>
               </>
             )}
