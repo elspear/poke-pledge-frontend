@@ -47,7 +47,7 @@ export const AuthProvider = (props) => {
     return () => {
       cancelled = true;
     };
-  }, [auth.token]);
+  }, [auth.token, auth.user]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, isLoggedIn }}>

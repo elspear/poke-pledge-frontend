@@ -25,20 +25,29 @@ function FundraiserPage() {
   if (!fundraiser) {
     return <p>Fundraiser not found.</p>;
   }
+  
 
-  // Now it's safe to access fundraiser.owner_username
-  const isOwner = auth.user && auth.user.username === fundraiser.owner_username;
+  // Now it's safe to access fundraiser owner fields. Be defensive because
+  // different API responses may include owner as an id, a nested object, or
+  // separate username fields. Prefer numeric id when possible, otherwise use
+  // username to build the profile route.
+  const ownerIdRaw = fundraiser.owner ?? fundraiser.owner_id ?? null;
+  const ownerId = typeof ownerIdRaw === "number" ? ownerIdRaw : (ownerIdRaw && typeof ownerIdRaw.id === "number" ? ownerIdRaw.id : null);
+  const ownerUsername = fundraiser.owner_username || fundraiser.owner?.username || fundraiser.owner?.user?.username || fundraiser.owner_name || null;
 
-  console.log("auth.user:", auth.user);
-  console.log("fundraiser.owner_username:", fundraiser.owner_username);
-  console.log("isOwner:", isOwner);
-  console.log("fundraiser object:", fundraiser);
-  console.log("fundraiser.end_date:", fundraiser.end_date);
+  const isOwner = auth.user && (auth.user.username === ownerUsername || auth.user.id === ownerId);
+  const profilePath = ownerId ? `/profile/${ownerId}/` : ownerUsername ? `/profile/${ownerUsername}/` : `/profile/`;
+  const ownerLabel = ownerUsername || (ownerId ? String(ownerId) : "user");
 
   return (
     <div className="fundraiser-page-container">
         <div className="fundraiser-title">
             <h1>{fundraiser.title}</h1>
+        </div>
+        <div style={{ margin: '6px 0' }} className="owner-badge">
+          <strong>Owner:</strong>{" "}
+          <Link to={profilePath}>{ownerLabel}</Link>
+          <span style={{ marginLeft: 8, color: '#666', fontSize: 12 }}>(id: {ownerId ?? 'n/a'})</span>
         </div>
         <div className="fundraiser-image">
              <img
@@ -47,17 +56,7 @@ function FundraiserPage() {
       />
 
         </div>
-      <p>
-        Owner: {
-          (() => {
-            // Prefer linking by numeric owner id if available, otherwise fall back to username
-            const ownerId = fundraiser.owner || fundraiser.owner_id || null;
-            const ownerLabel = fundraiser.owner_username || fundraiser.owner_name || String(ownerId || "user");
-            const profilePath = ownerId ? `/profile/${ownerId}/` : `/profile/${ownerLabel}/`;
-            return <Link to={profilePath}>{ownerLabel}</Link>;
-          })()
-        }
-      </p>
+      
       <p>{fundraiser.description}</p>
       <p>
         Created at: {new Date(fundraiser.date_created).toLocaleDateString()}

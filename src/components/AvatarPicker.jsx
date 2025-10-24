@@ -44,7 +44,7 @@ export default function AvatarPicker({ avatars: avatarsProp, fetchUrl, initialSe
   // sync prop changes
   useEffect(() => {
     if (Array.isArray(avatarsProp) && avatarsProp !== avatars) setAvatars(avatarsProp);
-  }, [avatarsProp]);
+  }, [avatarsProp, avatars]);
 
   const handleTileKey = (e, id) => {
     if (e.key === "Enter" || e.key === " ") {

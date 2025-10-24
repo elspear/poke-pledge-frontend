@@ -73,8 +73,63 @@ function ProfilePage() {
   const displayedUser = viewingOther ? otherUser : user;
   const displayedProfile = displayedUser?.profile || {};
 
+  // Determine whether the current viewer is the profile owner. Used to
+  // conditionally render private fields (email, pledges, edit controls).
+  const isOwner = Boolean(
+    auth?.user &&
+      displayedUser &&
+      (
+        // Prefer comparing profile id when available
+        (auth.user?.profile?.id && displayedUser?.profile?.id && auth.user.profile.id === displayedUser.profile.id) ||
+        // Fallback to username
+        (auth.user?.username && displayedUser?.username && auth.user.username === displayedUser.username) ||
+        // Last resort: user id
+        (auth.user?.id && displayedUser?.id && auth.user.id === displayedUser.id)
+      )
+  );
+
   // ownerIdentifier prefers a profile id, then username, then user id.
-  const ownerIdentifier = displayedUser ? (displayedUser?.profile?.id || displayedUser?.username || displayedUser?.id) : null;
+  // When viewing another user's profile we avoid passing a placeholder or
+  // partially-loaded value to the hook. Also sanitize any string that
+  // contains the literal 'undefined' (these are usually placeholder usernames
+  // produced during fallback logic).
+  let ownerIdentifier = null;
+  if (viewingOther) {
+    if (loadingOther || otherError || !otherUser) {
+      ownerIdentifier = null;
+    } else {
+      // Prefer a concrete profile id when available.
+      ownerIdentifier = otherUser?.profile?.id ?? otherUser?.username ?? otherUser?.id ?? null;
+
+      // If the username is a placeholder like "user-undefined" we may still
+      // be able to derive a valid owner id from the profile's fundraisers
+      // payload (some backends attach fundraisers to the profile). Use the
+      // first fundraiser's owner fields as a fallback so we can display the
+      // correct list on other users' profiles.
+      if (typeof ownerIdentifier === "string" && ownerIdentifier.includes("undefined")) {
+        const p = otherUser?.profile;
+        if (p && Array.isArray(p.fundraisers) && p.fundraisers.length > 0) {
+          const first = p.fundraisers[0];
+          if (first) {
+            if (typeof first.owner === "number") {
+              ownerIdentifier = first.owner;
+            } else if (first.owner_username) {
+              ownerIdentifier = first.owner_username;
+            }
+          }
+        }
+      }
+    }
+  } else {
+    ownerIdentifier = user?.profile?.id ?? user?.username ?? user?.id ?? null;
+  }
+
+  if (typeof ownerIdentifier === "string" && ownerIdentifier.includes("undefined")) {
+    ownerIdentifier = null;
+  }
+
+  // debug logs removed
+
   const { fundraisers: ownerFundraisers, isLoading: ownerIsLoading, error: ownerError } = useFundraisersByOwner(ownerIdentifier);
 
   const myFundraisers = ownerFundraisers || [];
@@ -107,26 +162,26 @@ function ProfilePage() {
         </div>
 
         <div className="profile-meta">
-          <h2>{displayedUser?.username}</h2>
+          <h2>{displayedUser?.username}{isOwner ? ' (you)' : ''}</h2>
           {displayedProfile.name && <p className="profile-name">{displayedProfile.name}</p>}
           {displayedProfile.bio && <p className="profile-bio">{displayedProfile.bio}</p>}
-          {displayedUser?.email && <p className="profile-email">{displayedUser.email}</p>}
+          {isOwner && displayedUser?.email && <p className="profile-email">{displayedUser.email}</p>}
           <p className="profile-actions">
-              {!viewingOther && (
-                <>
-                  <Link to="/profile/edit">Edit profile</Link> ·{" "}
-                  <Link to="/create">Create fundraiser</Link>
-                  <button style={{ marginLeft: 12 }} onClick={() => setShowPicker(true)}>
-                    Choose avatar
-                  </button>
-                </>
-              )}
+            {isOwner && (
+              <>
+                <Link to="/profile/edit">Edit profile</Link> ·{" "}
+                <Link to="/create">Create fundraiser</Link>
+                <button style={{ marginLeft: 12 }} onClick={() => setShowPicker(true)}>
+                  Choose avatar
+                </button>
+              </>
+            )}
           </p>
         </div>
       </header>
 
-        {/* Only allow avatar picker for the current logged-in user (not when viewing another profile) */}
-        {showPicker && !viewingOther && (
+        {/* Only allow avatar picker for the profile owner */}
+        {showPicker && isOwner && (
         <AvatarPicker
           avatars={avatars}
           initialSelectedId={profile?.avatar?.id}
@@ -148,6 +203,19 @@ function ProfilePage() {
               }
               return { ...prev, user: newUser };
             });
+
+            // If we're viewing a profile via the route (viewingOther) and the
+            // displayed profile corresponds to the current user (isOwner), also
+            // update the `otherUser` state so the UI updates immediately while
+            // we persist to the server. Without this, owners who visit their
+            // own profile via a username/id route would not see the optimistic
+            // avatar change because `displayedUser` is `otherUser`.
+            if (viewingOther && isOwner && typeof setOtherUser === "function") {
+              setOtherUser((prev) => ({
+                ...(prev || {}),
+                profile: { ...((prev && prev.profile) || {}), avatar: newAvatar },
+              }));
+            }
 
             setShowPicker(false);
 
@@ -180,7 +248,7 @@ function ProfilePage() {
       )}
 
       <section className="profile-fundraisers">
-        <h3>Your fundraisers</h3>
+        <h3>{isOwner ? 'Your fundraisers' : `${displayedUser?.username || 'This user'}'s fundraisers`}</h3>
 
         {viewingOther && loadingOther && <div className="loading">Loading profile...</div>}
         {viewingOther && otherError && <div className="error">Error loading profile: {otherError.message}</div>}
@@ -195,16 +263,25 @@ function ProfilePage() {
 
         {!ownerIsLoading && myFundraisers.length === 0 && (
           <div className="no-fundraisers">
-            <p>You haven't created any fundraisers yet.</p>
-            <Link to="/create">
-              <button>Create your first fundraiser</button>
-            </Link>
+            {viewingOther ? (
+              <p>{displayedUser?.username || 'This user'} hasn't created any fundraisers yet.</p>
+            ) : (
+              <>
+                <p>You haven't created any fundraisers yet.</p>
+                <Link to="/create">
+                  <button>Create your first fundraiser</button>
+                </Link>
+              </>
+            )}
           </div>
         )}
 
         <div id="fundraiser-list">
           {myFundraisers.map((fundraiserData, key) => (
-            <FundraiserCard key={key} fundraiserData={fundraiserData} />
+            <FundraiserCard
+              key={fundraiserData?.id ?? fundraiserData?.pk ?? fundraiserData?._id ?? key}
+              fundraiserData={fundraiserData}
+            />
           ))}
         </div>
       </section>
