@@ -22,7 +22,7 @@ async function patchProfile(profileId, patchData) {
     let data = null;
     try {
       data = responseText ? JSON.parse(responseText) : null;
-    } catch (e) {
+    } catch {
       // ignore
     }
     const err = new Error(data?.detail || responseText || `Failed to patch profile: ${response.status}`);

@@ -20,7 +20,7 @@ async function postSignup(userData) {
             let data;
             try {
                 data = JSON.parse(responseText);
-            } catch (parseError) {
+            } catch {
                 // If it's not JSON, treat the text as the error message
                 const error = new Error(responseText || fallbackError);
                 error.response = {

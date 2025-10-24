@@ -73,7 +73,7 @@ function CompleteSignupForm() {
                     const user = await getCurrentUserByUsername(fullUserData.username);
                     window.localStorage.setItem("user", JSON.stringify(user));
                     setAuth({ token: `Token ${loginResponse.token}`, user });
-                } catch (e) {
+                } catch {
                     // Fallback to minimal user so basic UI logic works
                     const minimal = { username: fullUserData.username };
                     window.localStorage.setItem("user", JSON.stringify(minimal));

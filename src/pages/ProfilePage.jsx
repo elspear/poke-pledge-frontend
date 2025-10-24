@@ -1,20 +1,87 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./ProfilePage.css";
 import { useAuth } from "../hooks/use-auth";
-import useFundraisers from "../hooks/use-fundraisers";
+import useFundraisersByOwner from "../hooks/use-fundraisers-by-owner";
 import FundraiserCard from "../components/FundraiserCard";
 import Avatar from "../components/Avatar";
 import AvatarPicker from "../components/AvatarPicker";
 import patchProfile from "../api/patch-profile";
+import getCurrentUserByUsername from "../api/get-current-user";
 import avatars from "../assets/avatars";
 
 function ProfilePage() {
-  const { auth, isLoggedIn } = useAuth();
-  const { fundraisers, isLoading, error } = useFundraisers();
+  const { auth, isLoggedIn, setAuth } = useAuth();
 
-  // If user is not logged in, prompt to login or signup
-  if (!isLoggedIn) {
+  const { id: routeId } = useParams();
+
+  // If the route includes an `id` param we should try to load that user's profile
+  // and allow unauthenticated visitors to view it. If no id is present then we
+  // require the current user to be logged in to view their own profile page.
+
+  const user = auth.user || {};
+  const profile = user.profile || {};
+
+  // State for when viewing another user's profile via route param
+  const [otherUser, setOtherUser] = useState(null);
+  const [loadingOther, setLoadingOther] = useState(false);
+  const [otherError, setOtherError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!routeId) return;
+
+    const load = async () => {
+      setLoadingOther(true);
+      setOtherError(null);
+      try {
+        // If routeId is numeric, try fetching the profile endpoint by id
+        if (/^\d+$/.test(routeId)) {
+          const token = window.localStorage.getItem("token");
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/users/profiles/${routeId}/`, {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: token }),
+            },
+          });
+          if (!res.ok) throw new Error(`Failed to fetch profile ${routeId}`);
+          const profileData = await res.json();
+          // Wrap into a user-shaped object the page expects: { username?, profile }
+          const wrapped = { username: profileData.user?.username || profileData.username || `user-${profileData.id}`, profile: profileData };
+          if (!cancelled) setOtherUser(wrapped);
+        } else {
+          // treat routeId as a username
+          const userObj = await getCurrentUserByUsername(routeId);
+          if (!cancelled) setOtherUser(userObj);
+        }
+      } catch {
+        if (!cancelled) setOtherError(new Error('Failed to load profile'));
+      } finally {
+        if (!cancelled) setLoadingOther(false);
+      }
+    };
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [routeId]);
+  const [showPicker, setShowPicker] = useState(false);
+  // Always determine displayed user and fetch their fundraisers here so hooks
+  // are executed unconditionally (avoid the Rules of Hooks ESLint errors).
+  const viewingOther = Boolean(routeId);
+  const displayedUser = viewingOther ? otherUser : user;
+  const displayedProfile = displayedUser?.profile || {};
+
+  // ownerIdentifier prefers a profile id, then username, then user id.
+  const ownerIdentifier = displayedUser ? (displayedUser?.profile?.id || displayedUser?.username || displayedUser?.id) : null;
+  const { fundraisers: ownerFundraisers, isLoading: ownerIsLoading, error: ownerError } = useFundraisersByOwner(ownerIdentifier);
+
+  const myFundraisers = ownerFundraisers || [];
+
+  // If user is not logged in and no routeId is present, show a friendly prompt.
+  // This appears after the hook calls to satisfy the Rules of Hooks.
+  if (!isLoggedIn && !routeId) {
     return (
       <div className="profile-page not-logged-in">
         <h2>Your profile</h2>
@@ -26,55 +93,40 @@ function ProfilePage() {
     );
   }
 
-  const user = auth.user || {};
-  const profile = user.profile || {};
-  const [showPicker, setShowPicker] = useState(false);
 
-  // setAuth is provided by AuthContext; useAuth() returns { auth, setAuth, isLoggedIn }
-  const { setAuth } = useAuth();
-
-  // Filter fundraisers that belong to this user. The API surface in other
-  // components uses `owner_username` so we match on username if available.
-  const myFundraisers = Array.isArray(fundraisers)
-    ? fundraisers.filter((f) => {
-        if (!f) return false;
-        if (f.owner_username && user.username)
-          return f.owner_username === user.username;
-        // fallback: try owner id fields
-        if (f.owner && typeof f.owner === "number" && user.id)
-          return f.owner === user.id;
-        if (f.owner && f.owner.id && user.id) return f.owner.id === user.id;
-        return false;
-      })
-    : [];
 
   return (
     <div className="profile-page">
       <header className="profile-header">
         <div className="profile-avatar">
           <Avatar
-            avatar={profile.avatar}
-            src={profile.image}
-            username={user.username}
+            avatar={displayedProfile.avatar}
+            src={displayedProfile.image}
+            username={displayedUser?.username}
           />
         </div>
 
         <div className="profile-meta">
-          <h2>{user.username}</h2>
-          {profile.name && <p className="profile-name">{profile.name}</p>}
-          {profile.bio && <p className="profile-bio">{profile.bio}</p>}
-          {user.email && <p className="profile-email">{user.email}</p>}
+          <h2>{displayedUser?.username}</h2>
+          {displayedProfile.name && <p className="profile-name">{displayedProfile.name}</p>}
+          {displayedProfile.bio && <p className="profile-bio">{displayedProfile.bio}</p>}
+          {displayedUser?.email && <p className="profile-email">{displayedUser.email}</p>}
           <p className="profile-actions">
-            <Link to="/profile/edit">Edit profile</Link> ·{" "}
-            <Link to="/create">Create fundraiser</Link>
-            <button style={{ marginLeft: 12 }} onClick={() => setShowPicker(true)}>
-              Choose avatar
-            </button>
+              {!viewingOther && (
+                <>
+                  <Link to="/profile/edit">Edit profile</Link> ·{" "}
+                  <Link to="/create">Create fundraiser</Link>
+                  <button style={{ marginLeft: 12 }} onClick={() => setShowPicker(true)}>
+                    Choose avatar
+                  </button>
+                </>
+              )}
           </p>
         </div>
       </header>
 
-      {showPicker && (
+        {/* Only allow avatar picker for the current logged-in user (not when viewing another profile) */}
+        {showPicker && !viewingOther && (
         <AvatarPicker
           avatars={avatars}
           initialSelectedId={profile?.avatar?.id}
@@ -91,7 +143,7 @@ function ProfilePage() {
               const newUser = { ...(prev.user || {}), profile: { ...(prev.user?.profile || {}), avatar: newAvatar } };
               try {
                 window.localStorage.setItem("user", JSON.stringify(newUser));
-              } catch (e) {
+              } catch {
                 // ignore storage errors
               }
               return { ...prev, user: newUser };
@@ -117,7 +169,7 @@ function ProfilePage() {
               try {
                 setAuth((prev) => ({ ...prev, user: prevAuth.user }));
                 window.localStorage.setItem("user", JSON.stringify(prevAuth.user));
-              } catch (e) {
+              } catch {
                 // ignore
               }
               // inform the user
@@ -130,14 +182,18 @@ function ProfilePage() {
       <section className="profile-fundraisers">
         <h3>Your fundraisers</h3>
 
-        {isLoading && <div className="loading">Loading fundraisers...</div>}
-        {error && (
-          <div className="error">
-            Error loading fundraisers: {error.message || String(error)}
-          </div>
-        )}
+        {viewingOther && loadingOther && <div className="loading">Loading profile...</div>}
+        {viewingOther && otherError && <div className="error">Error loading profile: {otherError.message}</div>}
 
-        {!isLoading && myFundraisers.length === 0 && (
+        {ownerIsLoading ? (
+          <div className="loading">Loading fundraisers...</div>
+        ) : null}
+
+        {ownerError ? (
+          <div className="error">Error loading fundraisers: {ownerError.message || String(ownerError)}</div>
+        ) : null}
+
+        {!ownerIsLoading && myFundraisers.length === 0 && (
           <div className="no-fundraisers">
             <p>You haven't created any fundraisers yet.</p>
             <Link to="/create">

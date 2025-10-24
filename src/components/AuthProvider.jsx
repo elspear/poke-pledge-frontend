@@ -1,8 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import getCurrentUserByUsername from "../api/get-current-user";
-
-// Here we create the Context
-export const AuthContext = createContext();
+import { AuthContext } from "../contexts/auth";
 
 // Here we create the component that will wrap our app, this means all it children can access the context using are hook.
 export const AuthProvider = (props) => {

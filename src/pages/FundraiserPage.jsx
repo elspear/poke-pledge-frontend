@@ -47,7 +47,17 @@ function FundraiserPage() {
       />
 
         </div>
-      <p>Owner: {fundraiser.owner_username}</p>
+      <p>
+        Owner: {
+          (() => {
+            // Prefer linking by numeric owner id if available, otherwise fall back to username
+            const ownerId = fundraiser.owner || fundraiser.owner_id || null;
+            const ownerLabel = fundraiser.owner_username || fundraiser.owner_name || String(ownerId || "user");
+            const profilePath = ownerId ? `/profile/${ownerId}/` : `/profile/${ownerLabel}/`;
+            return <Link to={profilePath}>{ownerLabel}</Link>;
+          })()
+        }
+      </p>
       <p>{fundraiser.description}</p>
       <p>
         Created at: {new Date(fundraiser.date_created).toLocaleDateString()}

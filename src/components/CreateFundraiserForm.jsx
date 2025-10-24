@@ -54,18 +54,11 @@ function FundraiserForm({
     try {
       new URL(string);
       return string.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-    } catch (_) {
+    } catch {
       return false;
     }
   };
 
-  const validatePokemonName = async (name) => {
-    if (!name) return { valid: false, error: "Pokemon is required" };
-    if (name.trim().toLowerCase() === "pikachu") {
-      return { valid: true };
-    }
-    return { valid: false, error: "Select a real Pokémon." };
-  };
 
   const validateForm = async () => {
     const newErrors = {};

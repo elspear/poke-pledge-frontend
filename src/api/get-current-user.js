@@ -20,7 +20,7 @@ async function getCurrentUserByUsername(username) {
       let data = null;
       try {
         data = responseText ? JSON.parse(responseText) : null;
-      } catch (e) {
+      } catch {
         // not JSON, keep raw text
       }
 
@@ -60,14 +60,14 @@ async function getCurrentUserByUsername(username) {
           // Attach profile under `profile` key for frontend use
           foundUser.profile = profile;
         }
-      } catch (e) {
+      } catch {
         // If profile fetch fails, keep the user object as-is
-        // console.debug('Profile fetch failed', e);
+        // console.debug('Profile fetch failed');
       }
 
       return foundUser;
     }
-  } catch (e) {
+  } catch {
     // ignore and fall back
   }
 

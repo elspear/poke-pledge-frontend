@@ -7,7 +7,7 @@ import "./LoginForm.css";
 
 function LoginForm() {
     const navigate = useNavigate();
-    const {auth, setAuth} = useAuth();
+  const { setAuth } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
     const [credentials, setCredentials] = useState({
@@ -83,7 +83,7 @@ function LoginForm() {
                 navigate("/");
               });
             navigate("/");
-          }).catch(error => {
+          }).catch(() => {
             setErrors({
               username: "Invalid username or password",
               password: "Invalid username or password",
