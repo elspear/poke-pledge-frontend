@@ -16,6 +16,8 @@ import AboutPage from "./pages/AboutPage.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";
 import AuthRequiredPage from "./pages/AuthRequiredPage.jsx";
+
+import ProfilePage from "./pages/ProfilePage.jsx";
  
 const router = createBrowserRouter([
   {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
           { path: "/auth-required/", element: <AuthRequiredPage /> },
           { path: "/fundraiser/:id/edit", element: <EditFundraiserPage />},
           { path: "/fundraiser/:id/pledge", element: <PledgeForm />},
+
+          // Profile routes (current users profikle or specific user by id)
+          { path: "/profile/", element: <ProfilePage />},
+          { path: "/profile/:id/", element: <ProfilePage />},
       ],
   },
 ]);
