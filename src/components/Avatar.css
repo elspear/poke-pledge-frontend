@@ -1,0 +1,26 @@
+.app-avatar {
+  display: inline-block;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.app-avatar-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  user-select: none;
+}
+
+.app-avatar-initials-text {
+  line-height: 1;
+  font-size: 1rem;
+}
+
+/* Small utility if you want to show a border or shadow */
+.app-avatar--outlined {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
