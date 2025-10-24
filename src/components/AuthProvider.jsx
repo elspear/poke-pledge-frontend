@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import getCurrentUserByUsername from "../api/get-current-user";
 
 // Here we create the Context
 export const AuthContext = createContext();
@@ -12,6 +13,43 @@ export const AuthProvider = (props) => {
   });
 
   const isLoggedIn = !!auth.token; // true if token exists
+
+  // When the app starts (or when token changes), try to load the full user/profile
+  // If a token exists but we only have a minimal user (or none), try to fetch the
+  // full user object from the API and persist it to localStorage.
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadUser = async () => {
+      try {
+        if (!auth.token) return;
+
+        // Get the current user from context/localStorage
+        const currentUser = auth.user || JSON.parse(window.localStorage.getItem("user"));
+
+        // If we already have a `profile` object attached, skip fetching
+        if (currentUser && currentUser.profile) return;
+
+        const username = currentUser?.username;
+        if (!username) return;
+
+        const user = await getCurrentUserByUsername(username);
+        if (!cancelled && user) {
+          setAuth((prev) => ({ ...prev, user }));
+          window.localStorage.setItem("user", JSON.stringify(user));
+        }
+      } catch (error) {
+        // If fetch fails, we silently ignore — app can still function with minimal user info
+        console.error("Failed to fetch current user/profile:", error);
+      }
+    };
+
+    loadUser();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [auth.token]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, isLoggedIn }}>

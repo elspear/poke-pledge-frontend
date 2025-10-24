@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import postSignup from "../api/post-signup";
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
+import getCurrentUserByUsername from "../api/get-current-user";
 
 function CompleteSignupForm() {
     const navigate = useNavigate();
@@ -66,7 +67,18 @@ function CompleteSignupForm() {
 
                 // set the token and update auth context
                 window.localStorage.setItem("token", `Token ${loginResponse.token}`);
-                setAuth({ token: `Token ${loginResponse.token}` });
+
+                // Fetch the full user/profile created by the backend (signals created Profile)
+                try {
+                    const user = await getCurrentUserByUsername(fullUserData.username);
+                    window.localStorage.setItem("user", JSON.stringify(user));
+                    setAuth({ token: `Token ${loginResponse.token}`, user });
+                } catch (e) {
+                    // Fallback to minimal user so basic UI logic works
+                    const minimal = { username: fullUserData.username };
+                    window.localStorage.setItem("user", JSON.stringify(minimal));
+                    setAuth({ token: `Token ${loginResponse.token}`, user: minimal });
+                }
                 
                 setSuccessMessage("Account created successfully! Redirecting...");
                 

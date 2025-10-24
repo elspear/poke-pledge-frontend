@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
+import getCurrentUserByUsername from "../api/get-current-user";
 import "./LoginForm.css";
 
 function LoginForm() {
@@ -67,11 +68,20 @@ function LoginForm() {
           ).then((response) => {
             const token = response.token;
             window.localStorage.setItem("token", `Token ${token}`); //must be bearer token
-            window.localStorage.setItem("user", JSON.stringify({ username: credentials.username }));
-            setAuth({
-              token: `Token ${token}`,
-              user: { username: credentials.username }
-            });
+            // Try to fetch the full user/profile from the API. If that fails,
+            // fall back to storing the minimal username object so UI checks still work.
+            getCurrentUserByUsername(credentials.username)
+              .then((user) => {
+                window.localStorage.setItem("user", JSON.stringify(user));
+                setAuth({ token: `Token ${token}`, user });
+                navigate("/");
+              })
+              .catch(() => {
+                const minimal = { username: credentials.username };
+                window.localStorage.setItem("user", JSON.stringify(minimal));
+                setAuth({ token: `Token ${token}`, user: minimal });
+                navigate("/");
+              });
             navigate("/");
           }).catch(error => {
             setErrors({
@@ -118,7 +128,7 @@ function LoginForm() {
                 )}
                 
             </div>
-            <div class></div>
+            <div className=""></div>
             <div className="form-group">
               <button className="submit-button" 
                 type="submit" 
