@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './use-auth';
+import getProfile from '../api/get-profile';
+import updateProfile from '../api/update-profile';
 
 function useProfile(profileId) {
     const [profile, setProfile] = useState(null);
@@ -10,34 +12,12 @@ function useProfile(profileId) {
     useEffect(() => {
         async function fetchProfile() {
             try {
-                // Safety check for auth
                 if (!auth?.token) {
                     throw new Error("Not authenticated");
                 }
 
-                const base = import.meta.env.VITE_API_URL;
                 const userId = profileId || auth.user.id;
-                
-                const response = await fetch(`${base}/users/profiles/${userId}/`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": auth.token
-                    }
-                });
-
-                if (!response.ok) {
-                    const text = await response.text();
-                    let data;
-                    try {
-                        data = JSON.parse(text);
-                    } catch {
-                        data = text;
-                    }
-                    console.error(`Profile fetch failed: ${response.status}`, data);
-                    throw new Error(response.status === 404 ? "Profile not found" : "Failed to fetch profile");
-                }
-
-                const data = await response.json();
+                const data = await getProfile(userId, auth.token);
                 setProfile(data);
             } catch (err) {
                 setError(err.message);
@@ -51,7 +31,34 @@ function useProfile(profileId) {
         }
     }, [profileId, auth]);
 
-    return { profile, isLoading, error };
+    // Add function to update profile
+    const updateProfileData = async (profileData) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            
+            if (!auth?.token) {
+                throw new Error("Not authenticated");
+            }
+
+            const userId = profileId || auth.user.id;
+            const updatedProfile = await updateProfile(userId, auth.token, profileData);
+            setProfile(updatedProfile);
+            return updatedProfile;
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return { 
+        profile, 
+        isLoading, 
+        error,
+        updateProfileData  // Include the update function in the return
+    };
 }
 
 export default useProfile;
