@@ -34,6 +34,7 @@ export default function StatsBanner() {
     <div className="stats-banner" role="region" aria-label="Site statistics">
       <div className="stats-banner__inner">
         <div className="stat">Pokémon helped: <strong>{fmt(stats.total_pokemon_helped)}</strong></div>
+        <div className="stat">PokePledge users: <strong>{fmt(stats.total_users)}</strong></div>
         <div className="stat">Fundraisers: <strong>{fmt(stats.total_fundraisers)}</strong></div>
         <div className="stat">Pledges: <strong>{fmt(stats.total_pledges)}</strong></div>
         <div className="stat">Total pledged: <strong>${fmt(stats.total_amount_pledged)}</strong></div>
