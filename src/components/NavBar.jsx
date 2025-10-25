@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
 import PokePledge from "../assets/PokePledge.png";
 
@@ -7,9 +7,15 @@ import "./NavBar.css";
 function NavBar() {
   const {auth, setAuth} = useAuth();
 
-  const handleLogout = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    // Keep token storage the same (other components rely on it). Remove token
+    // then update auth in-memory and navigate after logout completes so we
+    // avoid racing a Link navigation.
     window.localStorage.removeItem("token");
     setAuth({ token: null });
+    navigate("/", { replace: true });
   };
 
 
@@ -34,11 +40,11 @@ function NavBar() {
               </li>
 
             {/*Authentication links - combined login and signup, both don't show when logged in*/}
-            {auth.token ? ( 
+            {auth.token ? (
               <li className="pill">
-                <Link to="/" onClick={handleLogout}>
+                <button type="button" className="logout-button" onClick={handleLogout}>
                   Log Out
-                </Link>
+                </button>
               </li>
             ) : (
               <>
