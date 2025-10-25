@@ -1,1 +1,34 @@
-/* AvatarPicker styles removed during profile UI cleanup. */
+.avatar-picker {
+    padding: 1rem;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+    max-width: 400px;
+}
+
+.avatar-option {
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+    transform: scale(1.1);
+}
+
+.avatar-option.selected {
+    border-color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.avatar-image {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
