@@ -1,6 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
 import PokePledge from "../assets/PokePledge.png";
+import StatsBanner from "./StatsBanner";
 
 import "./NavBar.css";
 
@@ -21,6 +22,7 @@ function NavBar() {
 
   return (
     <>
+    <StatsBanner />
     <div className="nav-container">
       <nav className="nav-bar">
         <div className="nav-left">
