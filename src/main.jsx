@@ -10,6 +10,7 @@ import CompleteSignupForm from "./components/CompleteSignupForm.jsx";
 import CreateFundraiserPage from "./pages/CreateFundraiserPage.jsx";
 import EditFundraiserPage from "./pages/EditFundraiserPage.jsx";
 import PledgeForm from "./components/PledgeForm.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 import NavBar from "./components/NavBar.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
@@ -39,8 +40,23 @@ const router = createBrowserRouter([
           { path: "/fundraiser/:id/edit", element: <EditFundraiserPage />},
           { path: "/fundraiser/:id/pledge", element: <PledgeForm />},
 
-          // Profile routes (current users profikle or specific user by id)
-          /* Profile routes removed - profile UI stripped */
+          // Profile routes
+          { 
+              path: "/profile/", 
+              element: (
+                  <RequireAuth>
+                      <ProfilePage />
+                  </RequireAuth>
+              )
+          },
+          { 
+              path: "/profile/:id/", 
+              element: (
+                  <RequireAuth>
+                      <ProfilePage />
+                  </RequireAuth>
+              )
+          }
       ],
   },
 ]);
