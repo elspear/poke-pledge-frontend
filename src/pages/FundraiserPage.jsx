@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import PledgeForm from "../components/PledgeForm";
 import useFundraiser from "../hooks/use-fundraiser";
@@ -36,7 +36,6 @@ function FundraiserPage() {
   const ownerUsername = fundraiser.owner_username || fundraiser.owner?.username || fundraiser.owner?.user?.username || fundraiser.owner_name || null;
 
   const isOwner = auth.user && (auth.user.username === ownerUsername || auth.user.id === ownerId);
-  const profilePath = ownerId ? `/profile/${ownerId}/` : ownerUsername ? `/profile/${ownerUsername}/` : `/profile/`;
   const ownerLabel = ownerUsername || (ownerId ? String(ownerId) : "user");
 
   return (
@@ -46,7 +45,7 @@ function FundraiserPage() {
         </div>
         <div style={{ margin: '6px 0' }} className="owner-badge">
           <strong>Owner:</strong>{" "}
-          <Link to={profilePath}>{ownerLabel}</Link>
+          <span>{ownerLabel}</span>
           <span style={{ marginLeft: 8, color: '#666', fontSize: 12 }}>(id: {ownerId ?? 'n/a'})</span>
         </div>
         <div className="fundraiser-image">
