@@ -47,6 +47,9 @@ function NavBar() {
             {auth.token ? (
               <>
                 <li className="pill">
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li className="pill">
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li className="pill">
