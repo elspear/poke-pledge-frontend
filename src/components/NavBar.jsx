@@ -28,7 +28,9 @@ function NavBar() {
             <img src={PokePledge} alt="Logo" />
           </Link>
           <ul className="nav-bar-links">
-            <li><Link to="/about" className="about-link">About</Link></li>
+            <li className="pill">
+              <Link to="/about" className="about-link">About</Link>
+              </li>
           </ul>
         </div>
         <div className="nav-right">
@@ -41,11 +43,16 @@ function NavBar() {
 
             {/*Authentication links - combined login and signup, both don't show when logged in*/}
             {auth.token ? (
-              <li className="pill">
-                <button type="button" className="logout-button" onClick={handleLogout}>
-                  Log Out
-                </button>
-              </li>
+              <>
+                <li className="pill">
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li className="pill">
+                  <button type="button" className="logout-button" onClick={handleLogout}>
+                    Log Out
+                  </button>
+                </li>
+              </>
             ) : (
               <>
                 <li>
