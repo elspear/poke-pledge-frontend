@@ -5,7 +5,7 @@ async function updateFundraiser(fundraiserId, data) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ...(token && { "Authorization": token })
+      ...(token && { "Authorization": token.startsWith('Token') ? token : `Token ${token}` })
     },
     body: JSON.stringify(data),
   });

@@ -67,7 +67,7 @@ function LoginForm() {
             credentials.password,
           ).then((response) => {
             const token = response.token;
-            window.localStorage.setItem("token", `Token ${token}`); //must be bearer token
+            window.localStorage.setItem("token", `Token ${token}`);
             // Try to fetch the full user/profile from the API. If that fails,
             // fall back to storing the minimal username object so UI checks still work.
             getCurrentUserByUsername(credentials.username)

@@ -5,7 +5,7 @@ async function updateProfile(userId, token, profileData) {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token
+            "Authorization": token.startsWith('Token') ? token : `Token ${token}`
         },
         body: JSON.stringify(profileData)
     });

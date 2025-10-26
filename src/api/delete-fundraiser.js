@@ -4,7 +4,7 @@ async function deleteFundraiser(fundraiserId) {
   const response = await fetch(url, {
     method: "DELETE",
     headers: {
-      ...(token && { "Authorization": token })
+      ...(token && { "Authorization": token.startsWith('Token') ? token : `Token ${token}` })
     },
   });
 

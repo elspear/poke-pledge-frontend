@@ -10,7 +10,7 @@ async function getCurrentUserByUsername(username) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        ...(token && { Authorization: token }),
+        ...(token && { Authorization: token.startsWith('Token') ? token : `Token ${token}` }),
       },
     });
 

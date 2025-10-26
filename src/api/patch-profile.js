@@ -12,7 +12,7 @@ async function patchProfile(profileId, patchData) {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      ...(token && { Authorization: token }),
+      ...(token && { Authorization: token.startsWith('Token') ? token : `Token ${token}` }),
     },
     body: JSON.stringify(patchData),
   });

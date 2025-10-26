@@ -6,7 +6,7 @@ export default async function postPledge({ amount, comment, anonymous, fundraise
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(token && { "Authorization": token })
+      ...(token && { "Authorization": token.startsWith('Token') ? token : `Token ${token}` })
     },
     body: JSON.stringify({ amount, comment, anonymous, fundraiser }),
   });
