@@ -3,7 +3,7 @@ import { useAuth } from './use-auth';
 import getProfile from '../api/get-profile';
 import updateProfile from '../api/update-profile';
 
-function useProfile(profileId) {
+function useProfile(identifier) {
     const [profile, setProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,8 +16,11 @@ function useProfile(profileId) {
                     throw new Error("Not authenticated");
                 }
 
-                const userId = profileId || auth.user.id;
-                const data = await getProfile(userId, auth.token);
+                console.log('Auth token in hook:', auth.token); // Debug log
+
+                // Use current user's ID if no identifier provided
+                const id = identifier || auth.user.id;
+                const data = await getProfile(id, auth.token);
                 setProfile(data);
             } catch (err) {
                 setError(err.message);
@@ -29,7 +32,7 @@ function useProfile(profileId) {
         if (auth?.token) {
             fetchProfile();
         }
-    }, [profileId, auth]);
+    }, [identifier, auth]);
 
     // Add function to update profile
     const updateProfileData = async (profileData) => {
@@ -41,8 +44,8 @@ function useProfile(profileId) {
                 throw new Error("Not authenticated");
             }
 
-            const userId = profileId || auth.user.id;
-            const updatedProfile = await updateProfile(userId, auth.token, profileData);
+            const id = identifier || auth.user.id;
+            const updatedProfile = await updateProfile(id, auth.token, profileData);
             setProfile(updatedProfile);
             return updatedProfile;
         } catch (err) {
@@ -57,7 +60,7 @@ function useProfile(profileId) {
         profile, 
         isLoading, 
         error,
-        updateProfileData  // Include the update function in the return
+        updateProfileData
     };
 }
 
