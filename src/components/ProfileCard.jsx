@@ -38,7 +38,38 @@ function ProfileCard({ profile }) {
       <div className="profile-body">
         <div className="bio-section">
           <h3>Bio</h3>
-          <p>{profile.bio || 'No bio yet'}</p>
+          {isEditing ? (
+              <div>
+                  <textarea
+                      value={editData.bio}
+                      onChange={(e) => setEditData(prev => ({
+                          ...prev,
+                          bio: e.target.value
+                      }))}
+                      placeholder="Write your bio..."
+                      className="bio-textarea"
+                  />
+                  <div className="edit-actions">
+                      <button 
+                          type="button" 
+                          onClick={() => setIsEditing(false)}
+                      >
+                          Cancel
+                      </button>
+                      <button 
+                          type="button" 
+                          onClick={() => {
+                              // We'll implement save functionality next
+                              console.log('Saving:', editData);
+                          }}
+                      >
+                          Save
+                      </button>
+                  </div>
+              </div>
+          ) : (
+              <p>{profile.bio || 'No bio yet'}</p>
+          )}
         </div>
       </div>
     </div>
