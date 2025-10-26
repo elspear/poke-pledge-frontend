@@ -2,7 +2,7 @@ import './ProfileCard.css';
 import { useState } from 'react';
 import { useAuth } from '../hooks/use-auth';
 
-function ProfileCard({ profile }) {
+function ProfileCard({ profile, onUpdate }) {
   const { auth } = useAuth();
   const isOwnProfile = auth.user && auth.user.id === profile.user.id;
   const [isEditing, setIsEditing] = useState(false);
@@ -10,6 +10,16 @@ function ProfileCard({ profile }) {
     bio: profile.bio || '',
     avatar: profile.avatar || ''
   });
+
+  const handleSave = async () => {
+    try {
+        await onUpdate(editData);
+        setIsEditing(false);
+    } catch (error) {
+        // note - add error handling
+        console.error('Failed to update profile:', error);
+    }
+}
 
   if (!profile) return null;
 
@@ -58,10 +68,7 @@ function ProfileCard({ profile }) {
                       </button>
                       <button 
                           type="button" 
-                          onClick={() => {
-                              // We'll implement save functionality next
-                              console.log('Saving:', editData);
-                          }}
+                          onClick={handleSave}
                       >
                           Save
                       </button>
