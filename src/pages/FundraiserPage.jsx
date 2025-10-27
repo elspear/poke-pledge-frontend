@@ -27,10 +27,7 @@ function FundraiserPage() {
   }
   
 
-  // Now it's safe to access fundraiser owner fields. Be defensive because
-  // different API responses may include owner as an id, a nested object, or
-  // separate username fields. Prefer numeric id when possible, otherwise use
-  // username to build the profile route.
+
   const ownerIdRaw = fundraiser.owner ?? fundraiser.owner_id ?? null;
   const ownerId = typeof ownerIdRaw === "number" ? ownerIdRaw : (ownerIdRaw && typeof ownerIdRaw.id === "number" ? ownerIdRaw.id : null);
   const ownerUsername = fundraiser.owner_username || fundraiser.owner?.username || fundraiser.owner?.user?.username || fundraiser.owner_name || null;
@@ -45,8 +42,9 @@ function FundraiserPage() {
         </div>
         <div style={{ margin: '6px 0' }} className="owner-badge">
           <strong>Owner:</strong>{" "}
-          <span>{ownerLabel}</span>
-          <span style={{ marginLeft: 8, color: '#666', fontSize: 12 }}>(id: {ownerId ?? 'n/a'})</span>
+          <Link to={`/profile/${ownerId}`} className="owner-link">
+            {ownerLabel}
+          </Link>
         </div>
         <div className="fundraiser-image">
              <img

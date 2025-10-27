@@ -1,6 +1,7 @@
 import './ProfileCard.css';
 import { useState } from 'react';
 import { useAuth } from '../hooks/use-auth';
+import AvatarPicker from './AvatarPicker';
 
 function ProfileCard({ profile, onUpdate }) {
   const { auth } = useAuth();
@@ -8,12 +9,21 @@ function ProfileCard({ profile, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     bio: profile.bio || '',
-    avatar: profile.avatar || ''
+    avatar: profile.avatar || '',
+    location: profile.location || '',
+    showAvatarPicker: false
   });
 
   const handleSave = async () => {
     try {
-        await onUpdate(editData);
+        // Only send the fields that the backend expects
+        const updateData = {
+            bio: editData.bio,
+            avatar: editData.avatar,
+            location: editData.location
+        };
+        console.log('Saving profile data:', updateData);
+        await onUpdate(updateData);
         setIsEditing(false);
     } catch (error) {
         // note - add error handling
@@ -34,31 +44,72 @@ function ProfileCard({ profile, onUpdate }) {
         </button>
     )}
       <div className="profile-header">
-        <div className="profile-avatar">
+        <div className="avatar-container">
           <img
             src={profile.avatar || '/default-avatar.png'}
             alt={`${profile.username}'s avatar`}
+            className="profile-avatar"
           />
+          {isEditing && isOwnProfile && (
+            <button 
+              className="avatar-edit-icon"
+              onClick={() => setEditData(prev => ({ ...prev, showAvatarPicker: true }))}
+              title="Change avatar"
+            >
+              ✎
+            </button>
+          )}
+          {isEditing && editData.showAvatarPicker && (
+            <AvatarPicker
+              selected={editData.avatar}
+              onSelect={(avatarId) => 
+                setEditData(prev => ({
+                  ...prev, 
+                  avatar: avatarId,
+                  showAvatarPicker: false
+                }))
+              }
+            />
+          )}
         </div>
         <div className="profile-info">
           <h2>{profile.username}</h2>
           <p className="role">{profile.user.role}</p>
+          <p className="location">Location: {profile.location || 'No location set'}</p>
         </div>
       </div>
       <div className="profile-body">
         <div className="bio-section">
-          <h3>Bio</h3>
+          <h3>About</h3>
           {isEditing ? (
               <div>
-                  <textarea
-                      value={editData.bio}
-                      onChange={(e) => setEditData(prev => ({
-                          ...prev,
-                          bio: e.target.value
-                      }))}
-                      placeholder="Write your bio..."
-                      className="bio-textarea"
-                  />
+                  <div className="edit-field">
+                      <label htmlFor="location">Location</label>
+                      <input
+                          type="text"
+                          id="location"
+                          value={editData.location}
+                          onChange={(e) => setEditData(prev => ({
+                              ...prev,
+                              location: e.target.value
+                          }))}
+                          placeholder="Enter your location"
+                          className="location-input"
+                      />
+                  </div>
+                  <div className="edit-field">
+                      <label htmlFor="bio">Bio</label>
+                      <textarea
+                          id="bio"
+                          value={editData.bio}
+                          onChange={(e) => setEditData(prev => ({
+                              ...prev,
+                              bio: e.target.value
+                          }))}
+                          placeholder="Write your bio..."
+                          className="bio-textarea"
+                      />
+                  </div>
                   <div className="edit-actions">
                       <button 
                           type="button" 

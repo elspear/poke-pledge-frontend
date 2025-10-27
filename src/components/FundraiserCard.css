@@ -10,3 +10,25 @@
   height: 300px;
   object-fit: cover;
 }
+
+.fundraiser-owner {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.fundraiser-owner .owner-link {
+  color: #4CAF50;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.fundraiser-owner .owner-link:hover {
+  color: #388E3C;
+  text-decoration: underline;
+}
+
+.fundraiser-link {
+  text-decoration: none;
+  color: inherit;
+}

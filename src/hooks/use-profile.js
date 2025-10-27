@@ -45,7 +45,7 @@ function useProfile(identifier) {
             }
 
             const id = identifier || auth.user.id;
-            const updatedProfile = await updateProfile(id, auth.token, profileData);
+            const updatedProfile = await updateProfile(id, profileData);
             setProfile(updatedProfile);
             return updatedProfile;
         } catch (err) {
