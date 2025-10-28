@@ -29,9 +29,9 @@ function ProfilePromptModal({ onClose }) {
                         Would you like to personalize your profile now? You can:
                     </p>
                     <ul>
-                        <li>Choose your Pokemon trainer avatar</li>
-                        <li>Add a bio about yourself</li>
-                        <li>Customize your profile</li>
+                        <li>Choose an avatar</li>
+                        <li>Add a bio about yourself or organisation</li>
+                        <li>Display your location</li>
                     </ul>
                 </div>
 

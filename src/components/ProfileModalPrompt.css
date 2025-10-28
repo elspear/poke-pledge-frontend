@@ -4,74 +4,111 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.85);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    font-family: 'Courier New', monospace;
 }
 
 .profile-modal-prompt-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 90%;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid var(--primary);
+    padding: 40px 20px;
+    background-color: var(--secondary);
+    background: white;
+    box-shadow: var(--shadow);
     position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin: 20px;
+    box-sizing: border-box;
+}
+
+.profile-modal-prompt-content::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: -6px;
+    bottom: -6px;
+    border: 1px solid var(--primary);
+    z-index: -1;
+    border-radius: 12px;
 }
 
 .profile-modal-prompt-header {
+    margin-bottom: 30px;
     text-align: center;
-    margin-bottom: 1.5rem;
 }
 
 .profile-modal-prompt-header h2 {
-    color: #333;
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 700;
     margin: 0;
-    font-size: 1.5rem;
+    font-family: 'Courier New', monospace;
 }
 
 .profile-modal-prompt-message {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #666;
-    line-height: 1.5;
+    margin: 0 15px 30px;
+    color: var(--primary);
+}
+
+.profile-modal-prompt-message p {
+    margin-bottom: 15px;
+}
+
+.profile-modal-prompt-message ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.profile-modal-prompt-message li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.profile-modal-prompt-message li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
 }
 
 .profile-modal-prompt-buttons {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 15px;
 }
 
 .profile-modal-prompt-buttons button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.profile-modal-prompt-buttons button:hover {
-    transform: translateY(-1px);
+    border: 2px solid var(--primary);
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s;
+    background-color: var(--secondary);
 }
 
 .profile-modal-prompt-buttons .primary-button {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.profile-modal-prompt-buttons .primary-button:hover {
-    background-color: #45a049;
+    background-color: var(--accent);
+    color: var(--secondary);
 }
 
 .profile-modal-prompt-buttons .secondary-button {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--secondary);
+    color: var(--primary);
 }
 
-.profile-modal-prompt-buttons .secondary-button:hover {
-    background-color: #e8e8e8;
+.profile-modal-prompt-buttons button:hover {
+    box-shadow: 4px 4px 0px var(--primary);
+    transform: translate(-2px, -2px);
 }
