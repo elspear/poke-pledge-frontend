@@ -52,7 +52,7 @@ function ProfileCard({ profile, onUpdate }) {
   if (!profile) return null;
 
   return (
-    <div className="profile-card">
+    <div className="card-container">
       {isOwnProfile && !isEditing && (
         <button 
             onClick={() => setIsEditing(true)}
