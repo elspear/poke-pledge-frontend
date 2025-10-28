@@ -3,6 +3,15 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/use-auth';
 import AvatarPicker from './AvatarPicker';
 
+const formatRole = (role) => {
+  if (!role) return '';
+  // Split by underscore, capitalize each word, then join with space
+  return role
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 function ProfileCard({ profile, onUpdate }) {
   const { auth } = useAuth();
   const isOwnProfile = auth.user && auth.user.id === profile.user.id;
@@ -74,7 +83,7 @@ function ProfileCard({ profile, onUpdate }) {
         </div>
         <div className="profile-info">
           <h2>{profile.username}</h2>
-          <p className="role">{profile.user.role}</p>
+          <p className="role">{formatRole(profile.user.role)}</p>
           <p className="location">Location: {profile.location || 'No location set'}</p>
         </div>
       </div>
