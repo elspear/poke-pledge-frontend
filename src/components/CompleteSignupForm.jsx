@@ -5,6 +5,7 @@ import postSignup from "../api/post-signup";
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
 import getCurrentUserByUsername from "../api/get-current-user";
+import './SharedForm.css';
 
 function CompleteSignupForm() {
     const navigate = useNavigate();
@@ -166,8 +167,9 @@ function CompleteSignupForm() {
 
         return (
         <form onSubmit={handleSubmit}>
-            <div className="form-container"></div>
-            <div className="form-group">
+            <div className="form-container">
+                <h1>Just a few more details...</h1>
+                <div className="form-group">
                 <label htmlFor="username">Username (for logging in):</label>
                 <input 
                     type="text"
@@ -178,6 +180,7 @@ function CompleteSignupForm() {
                 />
                 {errors.username && <span className="error">{errors.username}</span>}
             </div>
+
             <div className="form-group">
                 <label htmlFor="firstName">First Name:</label>
                 <input
@@ -189,6 +192,7 @@ function CompleteSignupForm() {
                 />
                 {errors.firstName && <span className="error">{errors.firstName}</span>}
             </div>
+
             <div className="form-group">
                 <label htmlFor="lastName">Last Name:</label>
                 <input
@@ -200,7 +204,8 @@ function CompleteSignupForm() {
                 />
                 {errors.lastName && <span className="error">{errors.lastName}</span>}
             </div>
-            <div className="form-group">
+
+             <div className="form-group">
                 <label htmlFor="role">Role:</label>
                 <select
                     id="role"
@@ -214,15 +219,23 @@ function CompleteSignupForm() {
                 </select>
                 {errors.role && <span className="error">{errors.role}</span>}
             </div>
-            
-            {/* User Feedback Messages */}
+
+             {/* User Feedback Messages */}
             {errors.submit && <div className="error">{errors.submit}</div>}
             {successMessage && <div className="success">{successMessage}</div>}
             {isLoading && <div className="loading">Creating your account...</div>}
             
-            <button type="submit" disabled={isLoading}>
+            <button className="form-btn" type="submit" disabled={isLoading}>
                 {isLoading ? "Creating Account..." : "Complete Sign Up"}
             </button>
+
+            </div>
+            
+            
+            
+           
+            
+           
         </form>
     );
 }

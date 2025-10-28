@@ -1,0 +1,165 @@
+:root {
+  --primary: #000000;
+  --secondary: #FFFFFF;
+  --accent: #FF5E5B;
+  --shadow: 8px 8px 0px var(--primary);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--primary);
+  padding: 40px 20px;
+  background-color: var(--secondary);
+  box-shadow: var(--shadow);
+  position: relative;
+  border-radius: 12px;
+  margin: 20px auto;
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+}
+
+.form-container::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  border: 1px solid var(--primary);
+  z-index: -1;
+  border-radius: 12px;
+}
+
+.form-container h1 {
+  color: var(--primary);
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.form-group label {
+  display: block;
+  margin: 0 15px 8px 15px;
+  font-weight: bold;
+  color: var(--primary);
+  font-family: 'Courier New', monospace;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--primary);
+  background-color: var(--secondary);
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s;
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  box-shadow: 4px 4px 0px var(--primary);
+}
+
+.form-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent);
+  color: var(--secondary);
+  border: 2px solid var(--primary);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px 0;
+  transition: all 0.3s;
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+}
+
+.form-btn:hover {
+  box-shadow: 4px 4px 0px var(--primary);
+  transform: translate(-2px, -2px);
+}
+
+.form-divider {
+  display: flex;
+  align-items: center;
+  margin: 25px 15px;
+  color: var(--primary);
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid var(--primary);
+  margin: 0 10px;
+}
+
+.form-social-login {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.form-social-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: var(--secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.form-social-btn:hover {
+  box-shadow: 4px 4px 0px var(--primary);
+  transform: translate(-2px, -2px);
+}
+
+.form-footer {
+  text-align: center;
+  margin: 20px 15px 0;
+  color: var(--primary);
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+}
+
+.form-footer a {
+  color: var(--primary);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Error states */
+.form-group.error input,
+.form-group.error textarea,
+.form-group.error select {
+  border-color: var(--accent);
+}
+
+.form-error-message {
+  color: var(--accent);
+  font-size: 14px;
+  margin-top: 5px;
+  font-family: 'Courier New', monospace;
+}

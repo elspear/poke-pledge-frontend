@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";   
+import { useNavigate } from "react-router-dom";  
+import './SharedForm.css'; 
 
 function SignupForm() {
     const navigate = useNavigate();
@@ -46,8 +47,10 @@ function SignupForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
+            <div className="form-container">
+                <h1>SIGNUP</h1>
+                <div className="form-group">
+                <label htmlFor="email">EMAIL</label>
                 <input
                     type="email"
                     id="email"
@@ -66,7 +69,7 @@ function SignupForm() {
                 )}
             </div>
             <div className="form-group">
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">PASSWORD</label>
                 <input
                     type="password"
                     id="password"
@@ -84,12 +87,18 @@ function SignupForm() {
                     </span>
                 )}
             </div>
-            <button 
+            <button
+                className="form-btn" 
                 type="submit" 
                 disabled={isLoading}
             >
                 {isLoading ? "Creating Account..." : "Continue"}
             </button>
+                
+            </div>
+            
+            
+            
         </form>
     );
 }

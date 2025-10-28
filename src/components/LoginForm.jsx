@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
 import getCurrentUserByUsername from "../api/get-current-user";
-import "./LoginForm.css";
+import "./SharedForm.css";
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -97,48 +97,53 @@ function LoginForm() {
     return (
         <form onSubmit={handleSubmit}>
           <div className="form-container">
-            <div className="form-group">
-                <label htmlFor="username">Username:</label>
+            <h1>LOGIN</h1>
+            
+            <div className={`form-group ${errors.username ? "error" : ""}`}>
+                <label htmlFor="username">USERNAME</label>
                 <input 
                     type="text"
                     id="username"
                     placeholder="Enter username"
                     onChange={handleChange}
                     value={credentials.username}
-                    className={errors.username ? "error" : ""}
                     disabled={isLoading}
                 />
                 {errors.username && (
-                    <span className="error-message">{errors.username}</span>
+                    <span className="form-error-message">{errors.username}</span>
                 )}
             </div>
-            <div className="form-group">
-                <label htmlFor="password">Password:</label>
+            
+            <div className={`form-group ${errors.password ? "error" : ""}`}>
+                <label htmlFor="password">PASSWORD</label>
                 <input
                     type="password"
                     id="password"
-                    placeholder="Password"
+                    placeholder="••••••••"
                     onChange={handleChange}
                     value={credentials.password}
-                    className={errors.password ? "error" : ""}
                     disabled={isLoading}
                 />
                 {errors.password && (
-                    <span className="error-message">{errors.password}</span>
+                    <span className="form-error-message">{errors.password}</span>
                 )}
-                
             </div>
-            <div className=""></div>
-            <div className="form-group">
-              <button className="submit-button" 
+            
+            <button 
+                className="form-btn" 
                 type="submit" 
                 disabled={isLoading}
             >
-                {isLoading ? "Logging in..." : "Login"}
+                {isLoading ? "LOGGING IN..." : "SIGN IN"}
             </button>
-            </div>
             
-            <p>Don't have an account? Sign up here</p>
+            <div className="form-divider">OR</div>
+            
+            
+            
+            <div className="form-footer">
+                Don't have an account? <a href="/signup">Sign up</a>
+            </div>
           </div> 
         </form>
     );
