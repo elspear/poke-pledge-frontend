@@ -1,106 +1,111 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";  
-import './SharedForm.css'; 
+import { useNavigate } from "react-router-dom";
+import "./SharedForm.css";
 
 function SignupForm() {
-    const navigate = useNavigate();
-    const [errors, setErrors] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [credentials, setCredentials] = useState({
-        email: "",
-        password: "",
-    });
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
 
-    const handleChange = (event) => {
-        const { id, value } = event.target;
-        setCredentials((prevCredentials) => ({
-            ...prevCredentials,
-            [id]: value,
-        }));
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      email: "",
+      password: "",
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (validateForm()) {
-            setIsLoading(true);
-            // Store credentials in sessionStorage
-            sessionStorage.setItem("signupData", JSON.stringify(credentials));
-            // Navigate to signup completion page
-            navigate("/complete-signup");
-        }
-    };
-
-    const validateForm = () => {
-        const newErrors = {};
-        if (!credentials.email) newErrors.email = "Email is required";
-        if (!credentials.password) newErrors.password = "Password is required";
-        
-        // Basic email format check (must contain @ and .com)
-        if (credentials.email && !credentials.email.includes('@') || !credentials.email.toLowerCase().endsWith('.com')) {
-            newErrors.email = "Must be in email format (include @ and .com)";
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    //Email validation
+    if (!credentials.email) {
+      newErrors.email = "Email address is required";
+      isValid = false;
     }
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-container">
-                <h1>SIGNUP</h1>
-                <div className="form-group">
-                <label htmlFor="email">EMAIL</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={credentials.email}
-                    onChange={handleChange}
-                    placeholder="Enter a valid email address"
-                    className={errors.email ? "input-error" : ""}
-                    aria-invalid={Boolean(errors.email)}
-                    aria-describedby={errors.email ? "email-error" : undefined}
-                    disabled={isLoading}
-                />
-                {errors.email && (
-                    <span className="error-message" id="email-error">
-                        {errors.email}
-                    </span>
-                )}
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">PASSWORD</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className={errors.password ? "input-error" : ""}
-                    aria-invalid={Boolean(errors.password)}
-                    aria-describedby={errors.password ? "password-error" : undefined}
-                    disabled={isLoading}
-                />
-                {errors.password && (
-                    <span className="error-message" id="password-error">
-                        {errors.password}
-                    </span>
-                )}
-            </div>
-            <button
-                className="form-btn" 
-                type="submit" 
-                disabled={isLoading}
-            >
-                {isLoading ? "Creating Account..." : "Continue"}
-            </button>
-                
-            </div>
-            
-            
-            
-        </form>
-    );
+    // Password validation
+    if (!credentials.password) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      [id]: value,
+    }));
+
+    // clear error when user starts typing
+    setErrors((prev) => ({
+      ...prev,
+      [id]: "",
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (validateForm()) {
+      setIsLoading(true);
+      // Store credentials in sessionStorage
+      sessionStorage.setItem("signupData", JSON.stringify(credentials));
+      // Navigate to signup completion page
+      navigate("/complete-signup");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="form-container">
+        <h1>SIGNUP</h1>
+
+        <div className={`form-group ${errors.email ? "error" : ""}`}>
+          <label htmlFor="email">EMAIL</label>
+          <input
+            type="text"
+            id="email"
+            placeholder="Enter a valid email address"
+            onChange={handleChange}
+            value={credentials.email}
+            disabled={isLoading} 
+          />
+          {errors.email && (
+            <span className="form-error-message">{errors.email}</span>
+          )}
+        </div>
+
+        <div className={`form-group ${errors.password ? "error" : ""}`}>
+          <label htmlFor="password">PASSWORD</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            onChange={handleChange}
+            value={credentials.password}
+            disabled={isLoading}
+          />
+          {errors.password && (
+            <span className="form-error-message">{errors.password}</span>
+          )}
+        </div>
+
+        <button className="form-btn" type="submit" disabled={isLoading}>
+          {isLoading ? "CREATING ACCOUNT..." : "CONTINUE"}
+        </button>
+      </div>
+    </form>
+  );
 }
 
 export default SignupForm;
