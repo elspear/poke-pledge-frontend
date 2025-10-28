@@ -1,6 +1,9 @@
 async function postSignup(userData) {
     const url = `${import.meta.env.VITE_API_URL}/users/`;
     
+    console.log('Sending signup request to:', url);
+    console.log('With data:', userData);
+    
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -8,56 +11,33 @@ async function postSignup(userData) {
         },
         body: JSON.stringify(userData),
     });
+    
+    console.log('Signup response status:', response.status);
+    
+    const responseText = await response.text();
+    console.log('Signup response text:', responseText);
+
+    let data;
+    try {
+        data = JSON.parse(responseText);
+    } catch (e) {
+        // If it's not valid JSON, use the text as is
+        data = { detail: responseText };
+    }
 
     if (!response.ok) {
         const fallbackError = `HTTP ${response.status}: Error trying to sign up`;
-
-        try {
-            // Try to get the response text first
-            const responseText = await response.text();
-            
-            // Try to parse as JSON
-            let data;
-            try {
-                data = JSON.parse(responseText);
-            } catch {
-                // If it's not JSON, treat the text as the error message
-                const error = new Error(responseText || fallbackError);
-                error.response = {
-                    status: response.status,
-                    statusText: response.statusText,
-                    data: { detail: responseText }
-                };
-                throw error;
-            }
-            
-            // Create a detailed error that preserves the response
-            const error = new Error(data?.detail || fallbackError);
-            error.response = {
-                status: response.status,
-                statusText: response.statusText,
-                data: data
-            };
-            error.serverData = data;
-            throw error;
-        } catch (networkError) {
-            // If there's a network error or other issue
-            if (networkError.response) {
-                // Re-throw if it's already our formatted error
-                throw networkError;
-            } else {
-                const error = new Error(fallbackError);
-                error.response = {
-                    status: response.status,
-                    statusText: response.statusText,
-                    data: null
-                };
-                throw error;
-            }
-        }
+        const error = new Error(data?.detail || fallbackError);
+        error.response = {
+            status: response.status,
+            statusText: response.statusText,
+            data: data
+        };
+        error.serverData = data;
+        throw error;
     }
-
-    return await response.json();
+    console.log('Signup response:', data);
+    return data;
 }
 
 export default postSignup;

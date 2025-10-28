@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import postSignup from "../api/post-signup";
 import postLogin from "../api/post-login";
+import patchProfile from "../api/patch-profile";
+import { getAvatarByRole } from "../utils/AvatarUtils";
 import { useAuth } from "../hooks/use-auth";
 import getCurrentUserByUsername from "../api/get-current-user";
 import checkUsername from "../api/check-username";
@@ -129,6 +131,10 @@ function CompleteSignupForm() {
         const signupData = JSON.parse(sessionStorage.getItem("signupData"));
 
         // combine both sets of data
+        const avatar = getAvatarByRole(profileData.role);
+        console.log('Selected role:', profileData.role);
+        console.log('Avatar assigned:', avatar);
+        
         const fullUserData = {
           email: signupData.email,
           password: signupData.password,
@@ -136,9 +142,11 @@ function CompleteSignupForm() {
           first_name: profileData.firstName,
           last_name: profileData.lastName,
           role: profileData.role,
+          avatar: avatar  // Assign avatar based on role
         };
 
         // First create the account with all data
+        console.log('Signing up with data:', fullUserData);
         await postSignup(fullUserData);
 
         // Then login with the credentials
@@ -153,6 +161,21 @@ function CompleteSignupForm() {
         // Fetch the full user/profile created by the backend (signals created Profile)
         try {
           const user = await getCurrentUserByUsername(fullUserData.username);
+          console.log('User data from server:', user);
+          console.log('User profile from server:', user.profile);
+          
+          // Update the profile with the avatar
+          if (user.profile && !user.profile.avatar) {
+            try {
+              const avatar = getAvatarByRole(user.role);
+              console.log('Updating profile with avatar:', avatar);
+              await patchProfile(user.profile.id, { avatar });
+              user.profile.avatar = avatar; // Update local user object
+            } catch (error) {
+              console.error('Failed to update profile with avatar:', error);
+            }
+          }
+          
           window.localStorage.setItem("user", JSON.stringify(user));
           setAuth({ token: `Token ${loginResponse.token}`, user });
         } catch {

@@ -1,4 +1,4 @@
-import { avatars } from '../../assets/avatars';
+import { avatars } from '../assets/avatars';
 
 // Map roles to specific avatars with meaningful assignments
 const roleAvatarMap = {

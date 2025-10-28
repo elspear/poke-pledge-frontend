@@ -2,6 +2,7 @@ import './ProfileCard.css';
 import { useState } from 'react';
 import { useAuth } from '../hooks/use-auth';
 import AvatarPicker from './AvatarPicker';
+import { getAvatarById, getAvatarByRole } from '../utils/AvatarUtils';
 
 const formatRole = (role) => {
   if (!role) return '';
@@ -14,7 +15,15 @@ const formatRole = (role) => {
 
 function ProfileCard({ profile, onUpdate }) {
   const { auth } = useAuth();
-  const isOwnProfile = auth.user && auth.user.id === profile.user.id;
+  const isOwnProfile = auth.user && auth.user.id === profile.user?.id;
+  
+  console.log('Full profile data in ProfileCard:', profile);
+  console.log('Profile structure:', {
+    hasAvatar: 'avatar' in profile,
+    avatarValue: profile.avatar,
+    userInfo: profile.user,
+    resolvedAvatar: profile.avatar ? getAvatarById(profile.avatar) : 'no avatar'
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     bio: profile.bio || '',
@@ -54,11 +63,49 @@ function ProfileCard({ profile, onUpdate }) {
     )}
       <div className="profile-header">
         <div className="avatar-container">
-          <img
-            src={profile.avatar || '/default-avatar.png'}
-            alt={`${profile.username}'s avatar`}
-            className="profile-avatar"
-          />
+          {(() => {
+            // Determine the avatar source outside of the JSX
+            let avatarSrc;
+            if (profile.avatar && profile.avatar.trim()) {
+              const avatarObj = getAvatarById(profile.avatar);
+              avatarSrc = avatarObj?.src;
+            } else if (profile.user?.role) {
+              const roleAvatar = getAvatarByRole(profile.user.role);
+              const avatarObj = roleAvatar ? getAvatarById(roleAvatar) : null;
+              avatarSrc = avatarObj?.src;
+            }
+            
+            // If no avatar was resolved, use ditto as default
+            if (!avatarSrc) {
+              const defaultAvatar = getAvatarById('ditto');
+              avatarSrc = defaultAvatar?.src;
+            }
+
+            console.log('Avatar resolution:', {
+              profileAvatar: profile.avatar,
+              userRole: profile.user?.role,
+              resolvedSrc: avatarSrc
+            });
+
+            return (
+              <img
+                src={avatarSrc}
+                alt={profile.user?.username ? `${profile.user.username}'s avatar` : 'Default avatar'}
+                className="profile-avatar"
+                onError={(e) => {
+                  console.error('Avatar failed to load:', {
+                    profileAvatar: profile.avatar,
+                    userRole: profile.user?.role,
+                    attemptedSrc: e.target.src
+                  });
+                  const defaultAvatar = getAvatarById('ditto');
+                  if (e.target.src !== defaultAvatar?.src) {
+                    e.target.src = defaultAvatar?.src;
+                  }
+                }}
+              />
+            );
+          })()}
           {isEditing && isOwnProfile && (
             <button 
               className="avatar-edit-icon"
