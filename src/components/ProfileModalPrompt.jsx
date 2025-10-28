@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
-import "./SharedForm.css";
+import "./ProfileModalPrompt.css";
 
 function ProfilePromptModal({ onClose }) {
     const navigate = useNavigate();
@@ -18,29 +18,33 @@ function ProfilePromptModal({ onClose }) {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="form-container">
-                <h1>Complete Your Profile?</h1>
+        <div className="profile-modal-prompt-overlay">
+            <div className="profile-modal-prompt-content">
+                <div className="profile-modal-prompt-header">
+                    <h2>Complete Your Profile?</h2>
+                </div>
                 
-                <p className="modal-text">
-                    Would you like to personalize your profile now? You can:
-                </p>
-                <ul className="modal-list">
-                    <li>Choose your Pokemon trainer avatar</li>
-                    <li>Add a bio about yourself</li>
-                    <li>Customize your profile</li>
-                </ul>
+                <div className="profile-modal-prompt-message">
+                    <p>
+                        Would you like to personalize your profile now? You can:
+                    </p>
+                    <ul>
+                        <li>Choose your Pokemon trainer avatar</li>
+                        <li>Add a bio about yourself</li>
+                        <li>Customize your profile</li>
+                    </ul>
+                </div>
 
-                <div className="modal-buttons">
+                <div className="profile-modal-prompt-buttons">
                     <button 
-                        className="form-btn" 
+                        className="primary-button" 
                         onClick={handleCompleteProfile}
                     >
                         Yes, Customize Profile
                     </button>
                     
                     <button 
-                        className="form-btn secondary" 
+                        className="secondary-button" 
                         onClick={handleSkip}
                     >
                         I'll Do It Later
