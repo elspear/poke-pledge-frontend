@@ -6,6 +6,7 @@ import postLogin from "../api/post-login";
 import { useAuth } from "../hooks/use-auth";
 import getCurrentUserByUsername from "../api/get-current-user";
 import checkUsername from "../api/check-username";
+import ProfilePromptModal from "./ProfileModalPrompt";
 import "./SharedForm.css";
 
 function CompleteSignupForm() {
@@ -13,6 +14,7 @@ function CompleteSignupForm() {
   const { setAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showProfilePrompt, setShowProfilePrompt] = useState(false);
 
   const [profileData, setProfileData] = useState({
     username: "",
@@ -160,12 +162,8 @@ function CompleteSignupForm() {
           setAuth({ token: `Token ${loginResponse.token}`, user: minimal });
         }
 
-        setSuccessMessage("Account created successfully! Redirecting...");
-
-        // Small delay to show success message before redirect
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
+        setSuccessMessage("Account created successfully!");
+        setShowProfilePrompt(true);
       } catch (error) {
         // Now we have access to the actual server response!
         if (error.serverData) {
@@ -263,12 +261,11 @@ function CompleteSignupForm() {
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-container">
-        <h1>Just a few more details...</h1>
-
-        <div className={`form-group ${errors.username ? "error" : ""}`}>
+    return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="form-container">
+          <h1>Just a few more details...</h1>        <div className={`form-group ${errors.username ? "error" : ""}`}>
           <label htmlFor="username">USERNAME</label>
           <input
             type="text"
@@ -336,6 +333,12 @@ function CompleteSignupForm() {
         </button>
       </div>
     </form>
+    {showProfilePrompt && (
+      <ProfilePromptModal
+        onClose={() => setShowProfilePrompt(false)}
+      />
+    )}
+    </>
   );
 }
 
