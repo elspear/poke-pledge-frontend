@@ -18,6 +18,8 @@ import { AuthProvider } from "./components/AuthProvider.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";
 import AuthRequiredPage from "./pages/AuthRequiredPage.jsx";
 
+import './main.css';
+
  
 const router = createBrowserRouter([
   {

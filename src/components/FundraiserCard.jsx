@@ -1,12 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./FundraiserCard.css";
 
 function FundraiserCard(props) {
   const { fundraiserData } = props;
+  const navigate = useNavigate();
   const fundraiserLink = `fundraiser/${fundraiserData.id}`;
   
+  const handleCardClick = () => {
+    navigate(fundraiserLink);
+  };
+
+  const handleOwnerClick = (e) => {
+    e.stopPropagation(); // Prevent card click when clicking owner link
+  };
+  
   return (
-    <Link to={fundraiserLink} className="fundraiser-card">
+    <div onClick={handleCardClick} className="fundraiser-card clickable">
       <div className="fundraiser-title-section">
         <h3>{fundraiserData.title}</h3>
       </div>
@@ -30,6 +39,7 @@ function FundraiserCard(props) {
           <Link 
             to={`/profile/${fundraiserData.owner?.id || fundraiserData.owner}`} 
             className="owner-link"
+            onClick={handleOwnerClick}
           >
             {fundraiserData.owner_username || 'Unknown'}
           </Link>
@@ -55,7 +65,7 @@ function FundraiserCard(props) {
           </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
 

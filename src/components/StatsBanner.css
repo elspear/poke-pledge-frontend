@@ -1,15 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
 .stats-banner {
-  width: 100%;
-  background: linear-gradient(90deg, #f6f8fa, #ffffff);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
+  width: 800px;
+  border-radius: 20px;
+  font-family: 'Space Mono', sans-serif;
+  font-size: 12px;
+  margin: 0 auto;
+  background-color:   rgba(205, 117, 227, 0.1)
 }
 
 .stats-banner__inner {
-  max-width: 1100px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 6px 16px;
+  padding: 8px 6px;
   display: flex;
   gap: 18px;
   align-items: center;

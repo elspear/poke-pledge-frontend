@@ -22,49 +22,71 @@ function ProfileCard({ profile, onUpdate }) {
     hasAvatar: 'avatar' in profile,
     avatarValue: profile.avatar,
     userInfo: profile.user,
+    username: profile.username,
+    nestedUsername: profile.user?.username,
     resolvedAvatar: profile.avatar ? getAvatarById(profile.avatar) : 'no avatar'
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     bio: profile.bio || '',
-    avatar: profile.avatar || '',
+    avatar: profile.avatar?.includes('/') ? profile.avatar.split('/').pop().replace('.svg', '') : profile.avatar || '',
     location: profile.location || '',
     showAvatarPicker: false
   });
 
   const handleSave = async () => {
     try {
+        // Ensure we're sending just the avatar ID
+        const avatarId = editData.avatar?.includes('/') 
+          ? editData.avatar.split('/').pop().replace('.svg', '')
+          : editData.avatar;
+        
+        console.log('Saving avatar:', {
+          originalValue: editData.avatar,
+          processedId: avatarId
+        });
+
         // Only send the fields that the backend expects
         const updateData = {
             bio: editData.bio,
-            avatar: editData.avatar,
+            avatar: avatarId,
             location: editData.location
         };
         console.log('Saving profile data:', updateData);
-        await onUpdate(updateData);
+        const updatedProfile = await onUpdate(updateData);
+        console.log('Profile after update:', updatedProfile);
+        
+        // Make sure the local state reflects the server state
+        setEditData(prev => ({
+            ...prev,
+            bio: updatedProfile.bio || '',
+            avatar: updatedProfile.avatar || '',
+            location: updatedProfile.location || '',
+            showAvatarPicker: false
+        }));
+        
         setIsEditing(false);
     } catch (error) {
-        // note - add error handling
         console.error('Failed to update profile:', error);
+        alert('Failed to update profile. Please try again.');
     }
-}
+  }
 
   if (!profile) return null;
 
   return (
-    <div className="card-container">
-      {isOwnProfile && !isEditing && (
-        <button 
+    <div className="profile-card">
+      <div className="profile-header">
+        {isOwnProfile && !isEditing && (
+          <button 
             onClick={() => setIsEditing(true)}
             className="edit-button"
-        >
-            Edit Profile
-        </button>
-    )}
-      <div className="profile-header">
+          >
+            Edit
+          </button>
+        )}
         <div className="avatar-container">
           {(() => {
-            // Determine the avatar source outside of the JSX
             let avatarSrc;
             if (profile.avatar && profile.avatar.trim()) {
               const avatarObj = getAvatarById(profile.avatar);
@@ -75,17 +97,10 @@ function ProfileCard({ profile, onUpdate }) {
               avatarSrc = avatarObj?.src;
             }
             
-            // If no avatar was resolved, use ditto as default
             if (!avatarSrc) {
               const defaultAvatar = getAvatarById('ditto');
               avatarSrc = defaultAvatar?.src;
             }
-
-            console.log('Avatar resolution:', {
-              profileAvatar: profile.avatar,
-              userRole: profile.user?.role,
-              resolvedSrc: avatarSrc
-            });
 
             return (
               <img
@@ -93,11 +108,6 @@ function ProfileCard({ profile, onUpdate }) {
                 alt={profile.user?.username ? `${profile.user.username}'s avatar` : 'Default avatar'}
                 className="profile-avatar"
                 onError={(e) => {
-                  console.error('Avatar failed to load:', {
-                    profileAvatar: profile.avatar,
-                    userRole: profile.user?.role,
-                    attemptedSrc: e.target.src
-                  });
                   const defaultAvatar = getAvatarById('ditto');
                   if (e.target.src !== defaultAvatar?.src) {
                     e.target.src = defaultAvatar?.src;
@@ -118,73 +128,79 @@ function ProfileCard({ profile, onUpdate }) {
           {isEditing && editData.showAvatarPicker && (
             <AvatarPicker
               selected={editData.avatar}
-              onSelect={(avatarId) => 
+              onSelect={(avatarId) => {
+                console.log('Selected avatar ID:', avatarId);
                 setEditData(prev => ({
                   ...prev, 
                   avatar: avatarId,
                   showAvatarPicker: false
-                }))
-              }
+                }));
+              }}
             />
           )}
         </div>
-        <div className="profile-info">
-          <h2>{profile.username}</h2>
-          <p className="role">{formatRole(profile.user.role)}</p>
-          <p className="location">Location: {profile.location || 'No location set'}</p>
-        </div>
       </div>
-      <div className="profile-body">
-        <div className="bio-section">
-          <h3>About</h3>
+      <div className="lower-container">
+        <div className="user-info">
+          {console.log('Rendering user info:', {
+            username: profile.username,
+            role: profile.user?.role,
+            location: profile.location
+          })}
+          <h3 className="username">{profile.username}</h3>
+          <h4 className="role">{formatRole(profile.user?.role)}</h4>
           {isEditing ? (
-              <div>
-                  <div className="edit-field">
-                      <label htmlFor="location">Location</label>
-                      <input
-                          type="text"
-                          id="location"
-                          value={editData.location}
-                          onChange={(e) => setEditData(prev => ({
-                              ...prev,
-                              location: e.target.value
-                          }))}
-                          placeholder="Enter your location"
-                          className="location-input"
-                      />
-                  </div>
-                  <div className="edit-field">
-                      <label htmlFor="bio">Bio</label>
-                      <textarea
-                          id="bio"
-                          value={editData.bio}
-                          onChange={(e) => setEditData(prev => ({
-                              ...prev,
-                              bio: e.target.value
-                          }))}
-                          placeholder="Write your bio..."
-                          className="bio-textarea"
-                      />
-                  </div>
-                  <div className="edit-actions">
-                      <button 
-                          type="button" 
-                          onClick={() => setIsEditing(false)}
-                      >
-                          Cancel
-                      </button>
-                      <button 
-                          type="button" 
-                          onClick={handleSave}
-                      >
-                          Save
-                      </button>
-                  </div>
-              </div>
+            <div>
+            <input
+              type="text"
+              value={editData.location}
+              onChange={(e) => setEditData(prev => ({
+                ...prev,
+                location: e.target.value
+              }))}
+              placeholder="Enter your location"
+              className="location-input"
+            />
+            </div>
           ) : (
-              <p>{profile.bio || 'No bio yet'}</p>
+            profile.location && <p className="location">{profile.location}</p>
           )}
         </div>
+        {isEditing ? (
+          <div>
+            <div className="edit-field">
+              <label htmlFor="bio">Bio</label>
+              <textarea
+                id="bio"
+                value={editData.bio}
+                onChange={(e) => setEditData(prev => ({
+                  ...prev,
+                  bio: e.target.value
+                }))}
+                placeholder="Write your bio..."
+                className="bio-textarea"
+              />
+            </div>
+            <div className="edit-actions">
+              <button 
+                type="button" 
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="bio-section">
+            <p>{profile.bio || 'No bio yet'}</p>
+          </div>
+        )}
       </div>
     </div>
   );

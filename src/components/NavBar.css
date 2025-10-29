@@ -6,12 +6,16 @@
     width: 100%;
     margin: 0 auto;
     flex-direction: row;
+    border: 0px solid black;
+    border-radius: 30px;
 }
 
 
 .nav-container {
     width: 100%;
     justify-content: center;
+    padding: 10px 20px; /* This adds 20px padding on left and right */
+    box-sizing: border-box; /* This ensures padding doesn't add to the width */
 }
 
 
@@ -22,10 +26,11 @@
 }
 
 .nav-left img {
-    height: 100px;
+    height: 40px;
     width: auto;
     margin: 0;
     padding-left: 10px;
+    padding-top: 8px;
 }
 
 .nav-left .about-link {
@@ -47,7 +52,7 @@
 
 .nav-bar-links li {
     list-style: none;
-    font-family: 'Poppins', sans-serif ;
+    font-family: 'Space Mono', sans-serif ;
     font-size: 16px;
 }
 
@@ -62,7 +67,8 @@
 
 
 .pill {
-    background: #d5d5d5;
+    background: transparent;
+    border: 0px solid black;
     border-radius: 999px;
     /* reduce vertical padding so pill height matches other nav items */
     padding: 0.25rem 0.9rem;
@@ -75,7 +81,7 @@
 /* Style logout button to look like a link/pill while remaining a semantic button */
 .logout-button {
     background: transparent;
-    border: none;
+    border: 0px solid black;
     color: inherit;
     font: inherit;
     cursor: pointer;

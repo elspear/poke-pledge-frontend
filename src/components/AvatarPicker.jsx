@@ -9,8 +9,8 @@ function AvatarPicker({ selectedAvatar, onSelect }) {
                 {avatars.map((avatar) => (
                     <button
                         key={avatar.id}
-                        className={`avatar-option ${selectedAvatar === avatar.src ? 'selected' : ''}`}
-                        onClick={() => onSelect(avatar.src)}
+                        className={`avatar-option ${selectedAvatar === avatar.id ? 'selected' : ''}`}
+                        onClick={() => onSelect(avatar.id)}
                         type="button"
                         title={avatar.alt}
                     >
