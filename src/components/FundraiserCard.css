@@ -2,21 +2,20 @@
 
 .fundraiser-card {
   width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 4px solid black;
+  box-shadow: 8px 8px 0 #000;
   text-decoration: none;
   color: inherit;
   display: block;
   cursor: pointer;
-  font-family: 'Space Mono', sans-serif;
+  font-family: 'Space Mono', monospace;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fundraiser-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(-4px) translateY(-4px);
+  box-shadow: 12px 12px 0 #000;
 }
 
 .fundraiser-link {
@@ -31,19 +30,33 @@
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
-  padding: 0 1.5rem;
+  padding: 20px 20px;
+}
+
+.fundraiser-header {
+  height: 230px;
+  background: rgb(192, 176, 244);
+  border-top: 0px solid #000;
+  border-bottom: 3px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 30px;
 }
 
 .fundraiser-image {
-  width: 180px;
-  min-width: 180px;
-  height: 180px;
-  overflow: hidden;
+  width: 200px;
+  height: 200px;
+  background: white;
+  border: 4px solid #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 0rem;
+  box-sizing: border-box;
+  margin: 0px;
 }
 
 .fundraiser-image img {
@@ -55,10 +68,6 @@
   transition: transform 0.3s ease;
 }
 
-.fundraiser-card:hover .fundraiser-image img {
-  transform: scale(1.05);
-}
-
 .fundraiser-right {
   flex: 1;
   display: flex;
@@ -66,11 +75,12 @@
   justify-content: center;
   min-height: 180px;
   padding: 0.5rem 0;
+  border: 0px dotted black;
 }
 
 .fundraiser-bottom-section {
   padding: 1rem 1.5rem 1.5rem 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 0px solid black;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -78,60 +88,36 @@
 
 .fundraiser-title-section {
   padding: 1.9rem 1.9rem 2rem 2rem;
+  background-color: rgb(192, 176, 244);
+  border-bottom: 0px solid black;
 }
 
 .fundraiser-title-section h3 {
   margin: 0;
-  color: #333;
-  font-size: 1.4rem;
+  color: black;
+  font-size: 1.6rem;
+  font-weight: bolder;
   line-height: 1.4;
   text-align: center;
 }
 
-.fundraiser-owner {
-  text-align: left;
-  padding: 4px;
-}
 
-.owner-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.owner-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.fundraiser-owner .owner-link {
-  color: #4CAF50;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  font-weight: 500;
-}
-
-.fundraiser-owner .owner-link:hover {
-  color: #388E3C;
-  text-decoration: underline;
-}
 
 .fundraiser-description {
-  color: #666;
+  color: #000;
   font-size: 0.9rem;
   line-height: 1.5;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  height: 100%;
+  margin: 30px 60px;
+  padding: 10px;
+  background: #f0f0f0;
+  border: 2px dashed #000;
+  text-align: center;
 }
 
 .fundraiser-stats {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 0px solid #eee;
 }
 
 .progress-section {
@@ -139,36 +125,45 @@
 }
 
 .progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #eee;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 0.5rem;
+  width: 200px;
+  height: 12px;
+  margin: 0 auto;
+  background: #f0f0f0;
+  border: 0px solid #000;
+  border-radius: 10px;
+  position: relative;
+  margin-bottom: 0.8rem;
 }
 
 .progress-fill {
   height: 100%;
-  background: #4CAF50;
-  border-radius: 4px;
+  background: rgb(192, 176, 244);
+  border-radius: 10px;
+  border-right: 0px solid #000;
   transition: width 0.3s ease;
 }
 
 .progress-text {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 1rem;
+  color: #000;
   margin: 0;
+  font-weight: bold;
+  text-align: center;
 }
 
 .items-needed {
-  font-size: 0.85rem;
-  color: #666;
-  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #000;
+  padding: 0.8rem;
+  background: #f0f0f0;
+  border: 0px solid #000;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .items-needed span {
-  color: #333;
-  font-weight: 500;
+  font-weight: bold;
+  color: #ff006e;
 }
 
 .fundraiser-link {
@@ -196,7 +191,3 @@
   min-height: 180px;
 }
 
-/* Add hover state for interactive elements */
-.fundraiser-card:hover .progress-fill {
-  background: #388E3C;
-}

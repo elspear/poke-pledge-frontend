@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+:root {
+  --primary: #000000;
+  --secondary: #FFFFFF;
+  --brand: rgb(192, 176, 244);
+  --accent: rgb(246, 109, 109);
+  --shadow: 8px 8px 0px var(--primary);
+  font-family: 'Space Mono', sans-serif;
+}
+
 .profile-modal-prompt-overlay {
     position: fixed;
     top: 0;
@@ -9,19 +20,17 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    font-family: 'Courier New', monospace;
 }
 
 .profile-modal-prompt-content {
     width: 100%;
     max-width: 450px;
-    border: 1px solid var(--primary);
+    border: 3px solid var(--primary);
     padding: 40px 20px;
     background-color: var(--secondary);
     background: white;
     box-shadow: var(--shadow);
     position: relative;
-    border-radius: 12px;
     margin: 20px;
     box-sizing: border-box;
 }
@@ -48,7 +57,6 @@
     font-size: 28px;
     font-weight: 700;
     margin: 0;
-    font-family: 'Courier New', monospace;
 }
 
 .profile-modal-prompt-message {
@@ -76,7 +84,7 @@
     content: "•";
     position: absolute;
     left: 0;
-    color: var(--accent);
+    color: var(--primary);
 }
 
 .profile-modal-prompt-buttons {
@@ -93,13 +101,12 @@
     font-weight: bold;
     cursor: pointer;
     border: 2px solid var(--primary);
-    font-family: 'Courier New', monospace;
     transition: all 0.3s;
-    background-color: var(--secondary);
+    background-color: var(--brand);
 }
 
 .profile-modal-prompt-buttons .primary-button {
-    background-color: var(--accent);
+    background-color: var(--brand);
     color: var(--secondary);
 }
 

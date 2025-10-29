@@ -26,7 +26,8 @@ function ProfilePromptModal({ onClose }) {
                 
                 <div className="profile-modal-prompt-message">
                     <p>
-                        Would you like to personalize your profile now? You can:
+                        Would you like to personalize your profile now? <br />
+                        You can:
                     </p>
                     <ul>
                         <li>Choose an avatar</li>

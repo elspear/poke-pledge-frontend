@@ -204,8 +204,8 @@
 
 .edit-actions button {
   padding: 8px 16px;
-  background: #ff006e;
-  color: #fff;
+  background: #fff;
+  color: #000000;
   border: 3px solid #000;
   box-shadow: 3px 3px 0 #000;
   font-weight: bold;
@@ -221,11 +221,11 @@
 }
 
 .edit-actions button:last-child {
-  background: #ffe600;
+  background: rgb(192, 176, 244);
 }
 
 .edit-actions button:last-child:hover {
   background: #fff;
-  color: #ffe600;
+  color: #ff006e;
 }
 

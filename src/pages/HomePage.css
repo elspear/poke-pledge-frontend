@@ -1,9 +1,9 @@
 
 #fundraiser-list {
   display: grid;
-  grid-template-columns: 30% 30% 30%;
-  column-gap: 10px;
-  row-gap: 10px;
+  grid-template-columns: 25% 25% 25%;
+  column-gap: 50px;
+  row-gap: 30px;
   padding: 90px 20px;
   justify-content: center;
 }
