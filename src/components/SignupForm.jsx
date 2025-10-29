@@ -103,6 +103,11 @@ function SignupForm() {
         <button className="form-btn" type="submit" disabled={isLoading}>
           {isLoading ? "CREATING ACCOUNT..." : "CONTINUE"}
         </button>
+        <div className="form-divider">OR</div>
+
+        <div className="form-footer">
+          Already have an account? <a href="/signup">Log In</a>
+        </div>
       </div>
     </form>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postFundraiser from "../api/post-fundraiser";
-import './CreateFundraiser.css';
+import './SharedForm.css';
 
 function FundraiserForm({
   initialValues = {
@@ -169,8 +169,8 @@ function FundraiserForm({
     
    
 
-      <div>
-      <h2>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h2>
+      <div className="form-container">
+      <h1>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h1>
       <form onSubmit={handleSubmit}>
         
         {/* Title */}
@@ -182,10 +182,10 @@ function FundraiserForm({
             value={fundraiserData.title}
             onChange={handleChange}
             placeholder="Enter fundraiser title"
-            className={errors.title ? "input-error" : ""}
+            className={errors.title ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
-          {errors.title && <span className="error-message">{errors.title}</span>}
+          {errors.title && <span className="form-error-message">{errors.title}</span>}
         </div>
 
         {/* Description */}
@@ -197,7 +197,7 @@ function FundraiserForm({
             onChange={handleChange}
             placeholder="Describe your fundraiser"
             rows={4}
-            className={errors.description ? "input-error" : ""}
+            className={errors.description ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
           {errors.description && <span className="error-message">{errors.description}</span>}
@@ -212,7 +212,7 @@ function FundraiserForm({
             value={fundraiserData.pokemon}
             onChange={handleChange}
             placeholder="Which Pokemon is this for?"
-            className={errors.pokemon ? "input-error" : ""}
+            className={errors.pokemon ? "error" : ""}
             disabled={mode === "edit" || isLoading || externalLoading}
           />
           {errors.pokemon && <span className="error-message">{errors.pokemon}</span>}
@@ -229,7 +229,7 @@ function FundraiserForm({
             placeholder="0.00"
             min="0"
             step="0.01"
-            className={errors.goal ? "input-error" : ""}
+            className={errors.goal ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
           {errors.goal && <span className="error-message">{errors.goal}</span>}
@@ -244,7 +244,7 @@ function FundraiserForm({
             value={fundraiserData.itemsNeeded}
             onChange={handleChange}
             placeholder="What items do you need?"
-            className={errors.itemsNeeded ? "input-error" : ""}
+            className={errors.itemsNeeded ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
           {errors.itemsNeeded && <span className="error-message">{errors.itemsNeeded}</span>}
@@ -259,7 +259,7 @@ function FundraiserForm({
             value={fundraiserData.image}
             onChange={handleChange}
             placeholder="https://example.com/image.jpg"
-            className={errors.image ? "input-error" : ""}
+            className={errors.image ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
           {errors.image && <span className="error-message">{errors.image}</span>}
@@ -273,18 +273,22 @@ function FundraiserForm({
             id="end_date"
             value={fundraiserData.end_date}
             onChange={handleChange}
-            className={errors.end_date ? "input-error" : ""}
+            className={errors.end_date ? "error" : ""}
             disabled={isLoading || externalLoading}
           />
           {errors.end_date && <span className="error-message">{errors.end_date}</span>}
         </div>
 
         {/* Submit Error */}
-        {errors.submit && <div className="error-message submit-error">{errors.submit}</div>}
+        {errors.submit && <div className="form-error-message">{errors.submit}</div>}
 
         {/* Submit Buttons */}
-        <div className="form-buttons">
-          <button type="submit" disabled={isLoading || externalLoading}>
+        <div className="form-group">
+          <button 
+            type="submit" 
+            className="form-btn"
+            disabled={isLoading || externalLoading}
+          >
             {isLoading || externalLoading
               ? mode === "edit"
                 ? "Saving..."
@@ -293,15 +297,22 @@ function FundraiserForm({
               ? "Save Changes"
               : "Create Fundraiser"}
           </button>
-          <button type="button" onClick={() => navigate("/")} disabled={isLoading || externalLoading}>
+          <button 
+            type="button" 
+            className="form-btn"
+            onClick={() => navigate("/")} 
+            disabled={isLoading || externalLoading}
+            style={{ backgroundColor: 'var(--accent)' }}
+          >
             Cancel
           </button>
           {mode === "edit" && onDelete && (
             <button
               type="button"
-              className="delete-button"
+              className="form-btn"
               onClick={handleDelete}
               disabled={isLoading || externalLoading}
+              style={{ backgroundColor: 'var(--accent)' }}
             >
               Delete Fundraiser
             </button>
