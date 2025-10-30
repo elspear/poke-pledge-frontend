@@ -1,79 +1,52 @@
 import './AboutPage.css';
 
-
-
-const AboutPage = () => {
-  return (
-    <div className='about-page'>
-        <div className='about-page-container'>
-            <div className='about-title'>
-                <h1>About PokePledge</h1>
+function AboutPage() {
+    return (
+        <div className="about-page">
+            <div className="about-header">
+                <h1>ABOUT POKÉPLEDGE</h1>
             </div>
-            <p className='about-tagline'>
-                PokePledge is a crowdfunding platform where Trainers, Pokemon Centers, and Safari Parks 
-                raise PokeDollars (₽) for causes that help Pokemon and their communities.
-            </p>
-       
-
-        <section className='about-mission'>
-            <h2>Our Mission</h2>
-            <p>
-                Make community care in the Pokemon world fun, transparent and safe.
-                Whether it's relocating a sleepy Snorlax, or building enrichment for Growlithe pups, 
-                we want stories to be easy to start and simple to support.
-            </p>
-        </section>
-
-        <section className='about-how'>
-            <h2>How PokePledge Works</h2>
-            <ul>
-                <li>
-                    <strong>Create</strong> - Choose your role, tell your story, set a goal, and list any items needed.
-                </li>
-                <li>
-                    <strong>Share</strong> - Write a description, add an image, and publish your fundraiser. Supporters can browse and pledge.
-                </li>
-                <li>
-                    <strong>Deliver</strong> - Track progress, post updates, and close the campaign when you are done.
-                </li>
-            </ul>
-        </section>
-
-        <section className='about-roles'>
-            <h2>Who Can Create Fundraisers?</h2>
-            <ul>
-                <li>
-                    <strong>Trainer</strong> - personal or team needs (e.g., potions, gear, TMs).
-                </li>
-                <li>
-                    <strong>Pokemon Center Admin</strong> - town/civic welfare (relocations, treatment, equipment).
-                </li>
-                <li>
-                    <strong>Safari Parks</strong> - conservation and wild Pokemon welfare projects.
-                </li>
-            </ul>
-        </section>
-
-        <section className='about-faq'>
-            <h2>FAQ</h2>
-            <details>
-                <summary>Is this real money?</summary>
-                <p>No. Pledges are simulated in PokeDollars for demo (nintendo please don't sue me)</p>
-            </details>
-            <details>
-                <summary>Can I edit my fundraiser?</summary>
-                <p>You can edit your fundraiser's title, description, image, and items. The goal can't go below
-                    what is already pledged.
-                </p>
-            </details>
-            <details>
-                <summary>Do I need an account to pledge?</summary>
-                <p>Yes - this keeps the platform safe and accountable. It also allows you to track your pledges.</p>
-            </details>
-        </section>
-    </div></div>     
             
-  );
-};
+            <div className="about-content">
+                <section className="mission">
+                    <h2>Our Mission</h2>
+                    <p>
+                        PokéPledge brings together Pokémon trainers and supporters to help 
+                        injured, abandoned, or struggling Pokémon find their way back to health 
+                        and happiness. We believe every Pokémon deserves a chance to thrive.
+                    </p>
+                </section>
+
+                <section className="how-it-works">
+                    <h2>How It Works</h2>
+                    <div className="steps">
+                        <div className="step">
+                            <h3>Create</h3>
+                            <p>Trainers create fundraisers for Pokémon in need, detailing their story and required items.</p>
+                        </div>
+                        <div className="step">
+                            <h3>Support</h3>
+                            <p>Fellow trainers and Pokémon enthusiasts contribute to fundraisers by pledging items or support.</p>
+                        </div>
+                        <div className="step">
+                            <h3>Heal</h3>
+                            <p>Together, we help Pokémon recover and find their path to a better life.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="join-community">
+                    <h2>Join Our Community</h2>
+                    <p>
+                        Whether you're a trainer looking to help a Pokémon in need or a supporter 
+                        wanting to make a difference, PokéPledge is your platform to create positive 
+                        change in the Pokémon world.
+                    </p>
+                    <button className="start-fundraiser-button">Start a Fundraiser</button>
+                </section>
+            </div>
+        </div>
+    );
+}
 
 export default AboutPage;

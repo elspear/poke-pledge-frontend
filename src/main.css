@@ -7,7 +7,8 @@
   --secondary: #FFFFFF;
   --brand: #d3daf7;
   --accent: rgb(246, 109, 109);
-  --background: rgb(234, 237, 245);
+  --site-background: rgb(234, 237, 245);
+  --background-light: #f5f5f5;
   
   /* Typography */
   --font-main: 'Space Mono', monospace;
