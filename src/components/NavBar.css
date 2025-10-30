@@ -97,7 +97,8 @@
 /* Logout button specific */
 .logout-button {
     font-family: var(--font-main);
-    font-size: var(--font-size-base);
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
 }
 
