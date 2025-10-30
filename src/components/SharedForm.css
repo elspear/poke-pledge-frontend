@@ -1,13 +1,12 @@
 .form-container {
   width: 100%;
-  max-width: 400px;
-  border: 4px solid black;
-  padding: 40px 20px;
+  max-width: var(--container-width);
+  border: var(--border-thick);
+  padding: var(--spacing-xl) var(--spacing-md);
   background-color: var(--secondary);
   box-shadow: var(--shadow);
   position: relative;
-  margin: 20px auto;
-  box-sizing: border-box;
+  margin: var(--spacing-md) auto;
 }
 
 .form-container::before {
@@ -17,36 +16,35 @@
   left: 6px;
   right: -6px;
   bottom: -6px;
-  border: 1px solid var(--primary);
+  border: var(--border-thin);
   z-index: -1;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
 }
 
 .form-header {
-  margin: -40px -20px 30px -20px;
-  padding: 30px 20px;
+  margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-md)) var(--spacing-xl) calc(-1 * var(--spacing-md));
+  padding: var(--spacing-xl) var(--spacing-md);
   background: var(--brand);
-  border-bottom: 4px solid var(--primary);
+  border-bottom: var(--border-thick);
 }
 
 .form-header h1 {
   color: var(--primary);
-  font-size: 28px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   text-align: center;
   margin: 0;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-md);
   position: relative;
-  padding: 0 15px;
-  box-sizing: border-box;
+  padding: 0 var(--spacing-sm);
 }
 
 .form-group label {
   display: block;
-  margin: 0 15px 8px 15px;
+  margin: 0 var(--spacing-sm) var(--spacing-xs) var(--spacing-sm);
   font-weight: bold;
   color: var(--primary);
 }
@@ -55,13 +53,10 @@
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 12px 15px;
-  border: 2px solid var(--primary);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  border: var(--border-thin);
   background-color: var(--secondary);
-  font-size: 16px;
-  outline: none;
   transition: all 0.3s;
-  box-sizing: border-box;
 }
 
 .form-group input:focus,
@@ -72,16 +67,13 @@
 
 .form-btn {
   width: 100%;
-  padding: 12px;
+  padding: var(--spacing-sm);
   background-color: var(--brand);
   color: var(--primary);
-  border: 2px solid var(--primary);
-  font-size: 16px;
+  border: var(--border-thin);
   font-weight: bold;
-  cursor: pointer;
-  margin: 10px 0;
+  margin: var(--spacing-xs) 0;
   transition: all 0.3s;
-  box-sizing: border-box;
 }
 
 .form-btn:hover {
@@ -92,7 +84,7 @@
 .form-divider {
   display: flex;
   align-items: center;
-  margin: 25px 15px;
+  margin: var(--spacing-lg) var(--spacing-sm);
   color: var(--primary);
   font-weight: bold;
 }
@@ -101,21 +93,19 @@
 .form-divider::after {
   content: "";
   flex: 1;
-  border-bottom: 2px solid var(--primary);
-  margin: 0 10px;
+  border-bottom: var(--border-thin);
+  margin: 0 var(--spacing-xs);
 }
 
 .form-footer {
   text-align: center;
-  margin: 20px 15px 0;
+  margin: var(--spacing-md) var(--spacing-sm) 0;
   color: var(--primary);
-  box-sizing: border-box;
 }
 
 .form-footer a {
   color: var(--primary);
   font-weight: bold;
-  text-decoration: underline;
 }
 
 /* Error states */
@@ -127,6 +117,6 @@
 
 .form-error-message {
   color: var(--accent);
-  font-size: 14px;
-  margin-top: 5px;
+  font-size: var(--font-size-small);
+  margin-top: var(--spacing-xs);
 }
