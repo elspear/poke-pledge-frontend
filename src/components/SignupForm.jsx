@@ -106,7 +106,7 @@ function SignupForm() {
         <div className="form-divider">OR</div>
 
         <div className="form-footer">
-          Already have an account? <a href="/signup">Log In</a>
+          Already have an account? <a href="/login">Log In</a>
         </div>
       </div>
     </form>

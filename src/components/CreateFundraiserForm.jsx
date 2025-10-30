@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postFundraiser from "../api/post-fundraiser";
-import './SharedForm.css';
+import './CreateFundraiser.css';
 
 function FundraiserForm({
   initialValues = {
@@ -169,7 +169,7 @@ function FundraiserForm({
     
    
 
-      <div className="form-container">
+      <div className="form-container-fundraiser">
       <h1>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h1>
       <form onSubmit={handleSubmit}>
         
@@ -302,7 +302,7 @@ function FundraiserForm({
             className="form-btn"
             onClick={() => navigate("/")} 
             disabled={isLoading || externalLoading}
-            style={{ backgroundColor: 'var(--accent)' }}
+        
           >
             Cancel
           </button>
@@ -312,7 +312,7 @@ function FundraiserForm({
               className="form-btn"
               onClick={handleDelete}
               disabled={isLoading || externalLoading}
-              style={{ backgroundColor: 'var(--accent)' }}
+              
             >
               Delete Fundraiser
             </button>
