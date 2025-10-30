@@ -8,7 +8,7 @@
     flex-direction: row;
     border: 4px solid black;
     border-radius: 10px;
-    background-color: rgb(192, 176, 244);
+    background-color: var(--brand);
 }
 
 

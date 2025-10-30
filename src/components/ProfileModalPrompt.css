@@ -1,14 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
-
-:root {
-  --primary: #000000;
-  --secondary: #FFFFFF;
-  --brand: rgb(192, 176, 244);
-  --accent: rgb(246, 109, 109);
-  --shadow: 8px 8px 0px var(--primary);
-  font-family: 'Space Mono', sans-serif;
-}
-
 .profile-modal-prompt-overlay {
     position: fixed;
     top: 0;
@@ -28,7 +17,7 @@
     border: 3px solid var(--primary);
     padding: 40px 20px;
     background-color: var(--secondary);
-    background: white;
+    background: var(--brand);
     box-shadow: var(--shadow);
     position: relative;
     margin: 20px;
@@ -102,12 +91,12 @@
     cursor: pointer;
     border: 2px solid var(--primary);
     transition: all 0.3s;
-    background-color: var(--brand);
+    background-color: var(--secondary);
 }
 
 .profile-modal-prompt-buttons .primary-button {
-    background-color: var(--brand);
-    color: var(--secondary);
+    background-color: var(--secondary);
+    color: var(--primary);
 }
 
 .profile-modal-prompt-buttons .secondary-button {

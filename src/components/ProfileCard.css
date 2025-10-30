@@ -13,7 +13,7 @@
 
 .profile-header {
   height: 150px;
-  background: #c0acff;
+  background: var(--brand);
   border-bottom: 4px solid #000;
   display: flex;
   justify-content: center;

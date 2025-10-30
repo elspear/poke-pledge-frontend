@@ -35,7 +35,7 @@
 
 .fundraiser-header {
   height: 230px;
-  background: rgb(192, 176, 244);
+  background: var(--brand);
   border-top: 0px solid #000;
   border-bottom: 3px solid #000;
   display: flex;
@@ -88,7 +88,7 @@
 
 .fundraiser-title-section {
   padding: 1.9rem 1.9rem 2rem 2rem;
-  background-color: rgb(192, 176, 244);
+  background-color: var(--brand);
   border-bottom: 0px solid black;
 }
 

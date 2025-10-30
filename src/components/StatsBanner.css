@@ -6,7 +6,7 @@
   font-family: 'Space Mono', sans-serif;
   font-size: 12px;
   margin: 0 auto;
-  background-color:   rgba(205, 117, 227, 0.1)
+  background-color: var(--brand)
 }
 
 .stats-banner__inner {
