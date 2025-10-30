@@ -33,18 +33,19 @@
 .stats-banner__inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: 4px var(--spacing-lg);
   display: flex;
   gap: var(--spacing-md);
   align-items: center;
   justify-content: center;
   background-color: var(--brand);
   flex-wrap: nowrap;
+  min-height: 32px;
 }
 
 .stats-banner .stat {
   color: var(--primary);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
   transition: transform 0.2s ease;
   text-align: center;
   font-size: var(--font-size-small);
@@ -75,7 +76,7 @@
 
 /* Add padding to body to prevent footer overlap */
 body {
-  padding-bottom: 80px; /* Adjust this value based on your footer height */
+  padding-bottom: 40px; /* Adjusted for shorter banner */
 }
 
 @media (max-width: 768px) {
