@@ -1,1 +1,25 @@
-/* ProfilePage styles removed during profile UI cleanup. */
+.profile-page {
+    padding: 100px 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: transparent;
+}
+
+.profile-loading,
+.profile-error {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 20px;
+    text-align: center;
+    background: white;
+    border: 4px solid black;
+    box-shadow: 8px 8px 0 #000;
+    font-family: 'Space Mono', monospace;
+}
+
+.profile-error {
+    background-color: rgb(246, 109, 109);
+    color: white;
+}

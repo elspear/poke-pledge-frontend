@@ -68,7 +68,9 @@ function SignupForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-container">
-        <h1>SIGNUP</h1>
+        <div className="form-header">
+          <h1>SIGNUP</h1>
+        </div>
 
         <div className={`form-group ${errors.email ? "error" : ""}`}>
           <label htmlFor="email">EMAIL</label>

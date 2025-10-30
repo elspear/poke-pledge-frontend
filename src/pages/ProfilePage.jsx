@@ -16,9 +16,9 @@ function ProfilePage() {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if (!profile) return <div>Profile not found</div>;
+    if (isLoading) return <div className="profile-loading">Loading...</div>;
+    if (error) return <div className="profile-error">Error: {error}</div>;
+    if (!profile) return <div className="profile-error">Profile not found</div>;
 
     return (
         <div className="profile-page">

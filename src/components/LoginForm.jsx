@@ -98,7 +98,9 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-container">
-        <h1>LOGIN</h1>
+        <div className="form-header">
+          <h1>LOGIN</h1>
+        </div>
 
         <div className={`form-group ${errors.username ? "error" : ""}`}>
           <label htmlFor="username">USERNAME</label>

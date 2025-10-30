@@ -288,7 +288,9 @@ function CompleteSignupForm() {
     <>
       <form onSubmit={handleSubmit}>
         <div className="form-container">
-          <h1>Just a few more details...</h1>        <div className={`form-group ${errors.username ? "error" : ""}`}>
+          <div className="form-header">
+            <h1>Just a few more details...</h1>
+          </div>        <div className={`form-group ${errors.username ? "error" : ""}`}>
           <label htmlFor="username">USERNAME</label>
           <input
             type="text"

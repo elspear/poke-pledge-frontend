@@ -33,12 +33,19 @@
   border-radius: 12px;
 }
 
-.form-container h1 {
+.form-header {
+  margin: -40px -20px 30px -20px;
+  padding: 30px 20px;
+  background: var(--brand);
+  border-bottom: 4px solid var(--primary);
+}
+
+.form-header h1 {
   color: var(--primary);
-  margin-bottom: 30px;
   font-size: 28px;
   font-weight: 700;
   text-align: center;
+  margin: 0;
 }
 
 .form-group {
