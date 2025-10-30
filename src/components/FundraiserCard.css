@@ -134,7 +134,7 @@
 
 .progress-fill {
   height: 100%;
-  background: rgb(192, 176, 244);
+  background: rgb(138, 127, 232);
   border-radius: 10px;
   border-right: 0px solid #000;
   transition: width 0.3s ease;

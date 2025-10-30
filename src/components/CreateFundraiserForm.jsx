@@ -170,12 +170,10 @@ function FundraiserForm({
    
 
       <div className="form-container-fundraiser">
-      <h1>{mode === "edit" ? "Edit Fundraiser" : "Create a New Fundraiser"}</h1>
-      <form onSubmit={handleSubmit}>
-        
-        {/* Title */}
+      <h1>{mode === "edit" ? "EDIT FUNDRAISER" : "CREATE A NEW FUNDRAISER"}</h1>
+      <form onSubmit={handleSubmit}>        {/* Title */}
         <div className="form-group">
-          <label htmlFor="title">Fundraiser Title</label>
+          <label htmlFor="title">FUNDRAISER TITLE</label>
           <input
             type="text"
             id="title"
@@ -190,7 +188,7 @@ function FundraiserForm({
 
         {/* Description */}
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">DESCRIPTION</label>
           <textarea
             id="description"
             value={fundraiserData.description}
@@ -205,13 +203,13 @@ function FundraiserForm({
 
         {/* Pokemon (disabled in edit mode) */}
         <div className="form-group">
-          <label htmlFor="pokemon">Pokemon</label>
+          <label htmlFor="pokemon">POKÉMON</label>
           <input
             type="text"
             id="pokemon"
             value={fundraiserData.pokemon}
             onChange={handleChange}
-            placeholder="Which Pokemon is this for?"
+            placeholder="Which Pokémon is this for?"
             className={errors.pokemon ? "error" : ""}
             disabled={mode === "edit" || isLoading || externalLoading}
           />
@@ -220,7 +218,7 @@ function FundraiserForm({
 
         {/* Goal */}
         <div className="form-group">
-          <label htmlFor="goal">Goal Amount ₽</label>
+          <label htmlFor="goal">GOAL AMOUNT ₽</label>
           <input
             type="number"
             id="goal"
@@ -237,7 +235,7 @@ function FundraiserForm({
 
         {/* Items Needed */}
         <div className="form-group">
-          <label htmlFor="itemsNeeded">Items Needed (optional)</label>
+          <label htmlFor="itemsNeeded">ITEMS NEEDED (OPTIONAL)</label>
           <input
             type="text"
             id="itemsNeeded"
@@ -252,7 +250,7 @@ function FundraiserForm({
 
         {/* Image URL */}
         <div className="form-group">
-          <label htmlFor="image">Image URL:</label>
+          <label htmlFor="image">IMAGE URL</label>
           <input
             type="url"
             id="image"
@@ -267,7 +265,7 @@ function FundraiserForm({
 
         {/* End Date (optional) */}
         <div className="form-group">
-          <label htmlFor="end_date">End Date (optional):</label>
+          <label htmlFor="end_date">END DATE (OPTIONAL)</label>
           <input
             type="datetime-local"
             id="end_date"
@@ -291,20 +289,19 @@ function FundraiserForm({
           >
             {isLoading || externalLoading
               ? mode === "edit"
-                ? "Saving..."
-                : "Creating..."
+                ? "SAVING..."
+                : "CREATING..."
               : mode === "edit"
-              ? "Save Changes"
-              : "Create Fundraiser"}
+              ? "SAVE CHANGES"
+              : "CREATE FUNDRAISER"}
           </button>
           <button 
             type="button" 
             className="form-btn"
             onClick={() => navigate("/")} 
             disabled={isLoading || externalLoading}
-        
           >
-            Cancel
+            CANCEL
           </button>
           {mode === "edit" && onDelete && (
             <button
@@ -312,9 +309,8 @@ function FundraiserForm({
               className="form-btn"
               onClick={handleDelete}
               disabled={isLoading || externalLoading}
-              
             >
-              Delete Fundraiser
+              DELETE FUNDRAISER
             </button>
           )}
         </div>

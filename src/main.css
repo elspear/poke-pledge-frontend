@@ -32,7 +32,7 @@
   
   /* Layout */
   --container-width: 400px;
-  --header-height: 60px;
+  --header-height: 120px;
 }
 
 /* Reset & Base Styles */
@@ -51,6 +51,7 @@ html, body {
   font-size: var(--font-size-base);
   line-height: 1.5;
   color: var(--primary);
+  padding-top: 0;
 }
 
 #root {

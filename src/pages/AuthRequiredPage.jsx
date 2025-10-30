@@ -1,39 +1,27 @@
-import { useState } from "react";
-import LoginForm from "../components/LoginForm.jsx";
-import SignupForm from "../components/SignupForm.jsx";
+import { Link } from "react-router-dom";
 import "./AuthRequiredPage.css";
 
-
 const AuthRequiredPage = () => {
-  const [formType, setFormType] = useState(null); // null, 'signup', or 'login'
-
   return (
-    <div className="auth-required-page">
-      <h2 className="auth-required-heading">Account required</h2>
+    <div className="auth-required-container">
+      <div className="auth-required-page">
+        <h2 className="auth-required-heading">Account required</h2>
 
-      <p className="auth-required-message">
-        You must be logged in to create a fundraiser.
-      </p>
+        <p className="auth-required-message">
+          You must be logged in to create a fundraiser.
+        </p>
 
-      <div className="links">
-        <ul>
-          <li className="auth-link" onClick={() => setFormType('signup')}>Sign up</li>
-          <li className="auth-link" onClick={() => setFormType('login')}>Log in</li>
-        </ul>
+        <div className="links">
+          <ul>
+            <li>
+              <Link to="/signup" className="auth-link">Sign up</Link>
+            </li>
+            <li>
+              <Link to="/login" className="auth-link">Log in</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      {formType === 'signup' && (
-        <div className="auth-form-section">
-          <h3>Sign up</h3>
-          <SignupForm />
-        </div>
-      )}
-      {formType === 'login' && (
-        <div className="auth-form-section">
-          <h3>Log in</h3>
-          <LoginForm />
-        </div>
-      )}
     </div>
   );
 };

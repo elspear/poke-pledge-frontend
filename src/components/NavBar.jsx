@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
-import PokePledge from "../assets/PokePledge.svg";
+import PokePledge from "../assets/PokePledge6.svg";
 import StatsBanner from "./StatsBanner";
 
 import "./NavBar.css";
@@ -22,23 +22,18 @@ function NavBar() {
 
   return (
     <>
-    
-    <div className="nav-container">
-      <nav className="nav-bar">
+    <nav className="nav-bar">
+      <div className="nav-container">
         <div className="nav-left">
           <Link to="/">
             <img src={PokePledge} alt="Logo" />
           </Link>
-          <ul className="nav-bar-links">
-            <li className="pill">
-              <Link to="/about" className="about-link">About</Link>
-              </li>
-          </ul>
         </div>
         <div className="nav-right">
           <ul className="nav-bar-links">
-            
-            
+              <li className="pill">
+                <Link to="/about">About</Link>
+              </li>
               <li className="pill">
                 <Link to="/create-fundraiser">Create a Fundraiser</Link>
               </li>
@@ -70,11 +65,10 @@ function NavBar() {
             )}
           </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
     <StatsBanner />
     <Outlet />
-    
     </>
   );
 }

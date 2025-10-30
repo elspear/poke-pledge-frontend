@@ -1,0 +1,94 @@
+.auth-required-container {
+    padding: 100px 20px;
+    min-height: 100vh;
+    display: block;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: transparent;
+}
+
+.auth-required-page {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: var(--brand);
+    border: 3px solid var(--primary);
+    box-shadow: var(--shadow);
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.auth-required-page::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: -6px;
+    bottom: -6px;
+    border: 1px solid var(--primary);
+    z-index: -1;
+    border-radius: 12px;
+}
+
+.auth-required-heading {
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+    text-transform: uppercase;
+}
+
+.auth-required-message {
+    margin: 0 15px 30px;
+    padding: var(--spacing-md);
+    color: var(--primary);
+    font-size: var(--font-size-large);
+    background-color: var(--secondary);
+    border: 2px solid var(--primary);
+}
+
+.links ul {
+    list-style: none;
+    padding: 0 15px;
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    flex-direction: column;
+}
+
+.auth-link {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: var(--secondary);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.auth-link:hover {
+    box-shadow: 4px 4px 0px var(--primary);
+    transform: translate(-2px, -2px);
+}
+
+.auth-form-section {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background-color: var(--secondary);
+    border: var(--border-thick);
+}
+
+.auth-form-section h3 {
+    font-family: var(--font-main);
+    font-size: var(--font-size-large);
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary);
+    text-transform: uppercase;
+    font-weight: 800;
+}

@@ -49,12 +49,14 @@ section h2 {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
     margin-top: var(--spacing-lg);
+    
 }
 
 .step {
     text-align: center;
     padding: var(--spacing-md);
     border: 2px dashed var(--primary);
+    background-color: #f0f0f0;
 }
 
 .step h3 {
