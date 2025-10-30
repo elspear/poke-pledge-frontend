@@ -17,6 +17,7 @@ import AboutPage from "./pages/AboutPage.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";
 import AuthRequiredPage from "./pages/AuthRequiredPage.jsx";
+import Error404Page from "./pages/Error404Page.jsx";
 
 import './main.css';
 
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
                       <ProfilePage />
                   </RequireAuth>
               )
+          },
+          {
+              path: "*",
+              element: <Error404Page />
           }
       ],
   },
