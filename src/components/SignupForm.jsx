@@ -66,12 +66,12 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-container">
-        <div className="form-header">
-          <h1>SIGNUP</h1>
-        </div>
-
+    <div className="form-container">
+      <div className="form-header">
+        <h1>SIGNUP</h1>
+      </div>
+      
+      <form onSubmit={handleSubmit}>
         <div className={`form-group ${errors.email ? "error" : ""}`}>
           <label htmlFor="email">EMAIL</label>
           <input
@@ -110,8 +110,8 @@ function SignupForm() {
         <div className="form-footer">
           Already have an account? <a href="/login">Log In</a>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 

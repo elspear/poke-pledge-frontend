@@ -1,0 +1,10 @@
+.complete-signup-page {
+    padding: 100px 20px;
+    min-height: 100vh;
+    display: block;
+    background-color: #f5f5f5;
+}
+
+.complete-signup-page  form {
+    margin: 0 auto;
+}
