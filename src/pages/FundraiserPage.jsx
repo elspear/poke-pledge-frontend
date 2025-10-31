@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from "react-router-dom";
 import useFundraiser from "../hooks/use-fundraiser";
 import { useAuth } from "../hooks/use-auth";
+import PledgeForm from '../components/PledgeForm';
 import './FundraiserPage.css';
 
 // Loading and error components
@@ -52,6 +53,18 @@ function FundraiserPage() {
   const { fundraiser, isLoading, error, refetch } = useFundraiser(id);
   const { auth } = useAuth();
   const [isPledgesExpanded, setIsPledgesExpanded] = useState(false);
+  const [showPledgeForm, setShowPledgeForm] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
+
+  const handlePledgeClick = () => {
+    setShowPledgeForm(true);
+    setShowDetails(false);
+  };
+
+  const handlePledgeClose = () => {
+    setShowPledgeForm(false);
+    setShowDetails(true);
+  };
 
   if (isLoading) {
     return <LoadingState />;
@@ -107,10 +120,10 @@ function FundraiserPage() {
 
           {/* Right Card */}
           <div className="right-card">
-            <div className="right-card-header">
+            <div className={`right-card-header ${!showDetails ? 'collapsed' : ''}`}>
               <h2 className="fundraiser-details">FUNDRAISER DETAILS</h2>
             </div>
-            <div className="metadata-container">
+            <div className={`metadata-container ${!showDetails ? 'collapsed' : ''}`}>
               <div className="metadata-item">
                 <span className="metadata-label">Status:</span>
                 <span className={`metadata-value status ${fundraiser.is_open ? 'open' : 'closed'}`}>
@@ -151,17 +164,27 @@ function FundraiserPage() {
                 max={fundraiser?.goal || 100}
                 aria-label="Fundraising progress"
               />
-              {!isOwner && (
-                <button 
-                  className="pledge-button"
-                  aria-label="Make a pledge"
-                >
-                  PLEDGE
-                </button>
-              )}
-              {isOwner && (
-                <p className="owner-note" role="alert">You cannot pledge to your own fundraiser</p>
-              )}
+              <div className="pledge-section">
+                {!isOwner && (
+                  showPledgeForm ? (
+                    <PledgeForm 
+                      fundraiserId={fundraiser.id}
+                      onClose={handlePledgeClose}
+                    />
+                  ) : (
+                    <button 
+                      className="pledge-button"
+                      onClick={handlePledgeClick}
+                      aria-label="Make a pledge"
+                    >
+                      PLEDGE
+                    </button>
+                  )
+                )}
+                {isOwner && (
+                  <p className="owner-note" role="alert">You cannot pledge to your own fundraiser</p>
+                )}
+              </div>
             </div>
 
             <div className="pledges-header" onClick={() => setIsPledgesExpanded(!isPledgesExpanded)} style={{ cursor: 'pointer' }}>

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import postPledge from "../api/post-pledge";
 
-function PledgeForm({ fundraiserId, onSuccess }) {
+function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 	const [amount, setAmount] = useState("");
 	const [comment, setComment] = useState("");
 	const [anonymous, setAnonymous] = useState(false);
@@ -43,7 +43,17 @@ function PledgeForm({ fundraiserId, onSuccess }) {
 	return (
 		<div className="form-container">
 			<div className="form-header">
-				<h1>MAKE A PLEDGE</h1>
+				<div className="form-header-content">
+					<h1>MAKE A PLEDGE</h1>
+					<button 
+						type="button" 
+						className="close-button"
+						onClick={onClose}
+						aria-label="Close pledge form"
+					>
+						×
+					</button>
+				</div>
 			</div>
 			
 			<form onSubmit={handleSubmit}>
