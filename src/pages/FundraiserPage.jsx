@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import useFundraiser from "../hooks/use-fundraiser";
 import { useAuth } from "../hooks/use-auth";
@@ -55,6 +55,14 @@ function FundraiserPage() {
   const [isPledgesExpanded, setIsPledgesExpanded] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
+  const [localFundraiser, setLocalFundraiser] = useState(null);
+
+  // Initialize localFundraiser when fundraiser data is loaded
+  useEffect(() => {
+    if (fundraiser) {
+      setLocalFundraiser(fundraiser);
+    }
+  }, [fundraiser]);
 
   const handlePledgeClick = () => {
     setShowPledgeForm(true);
@@ -74,17 +82,45 @@ function FundraiserPage() {
     return <ErrorState message={error.message} onRetry={refetch} />;
   }
 
-  if (!fundraiser) {
+  if (!fundraiser && !localFundraiser) {
     return <NotFoundState />;
   }
 
+  // Use localFundraiser if available, otherwise use fundraiser
+  const currentFundraiser = localFundraiser || fundraiser;
+
   // Safely extract owner information with fallbacks
-  const ownerIdRaw = fundraiser?.owner ?? fundraiser?.owner_id ?? null;
+  const ownerIdRaw = currentFundraiser?.owner ?? currentFundraiser?.owner_id ?? null;
   const ownerId = typeof ownerIdRaw === "number" ? ownerIdRaw : (ownerIdRaw && typeof ownerIdRaw.id === "number" ? ownerIdRaw.id : null);
   const ownerUsername = fundraiser?.owner_username || fundraiser?.owner?.username || fundraiser?.owner?.user?.username || fundraiser?.owner_name || null;
 
   const isOwner = auth?.user && (auth.user.username === ownerUsername || auth.user.id === ownerId);
   const ownerLabel = ownerUsername || (ownerId ? String(ownerId) : "user");
+
+  const handlePledgeSuccess = (newPledge) => {
+    // Update local state immediately
+    setLocalFundraiser(prev => {
+      if (!prev) return null;
+      
+      const updatedPledges = [...(prev.pledges || []), {
+        amount: newPledge.amount,
+        supporter_username: auth.user.username,
+      }];
+      
+      const newProgress = (prev.progress || 0) + newPledge.amount;
+      const newPercentage = Math.round((newProgress / prev.goal) * 100);
+      
+      return {
+        ...prev,
+        pledges: updatedPledges,
+        progress: newProgress,
+        progress_percentage: newPercentage
+      };
+    });
+
+    // Close the pledge form
+    handlePledgeClose();
+  };
 
   return (
     <div className="page-container">
@@ -92,7 +128,7 @@ function FundraiserPage() {
           {/* Left Card */}
           <div className="left-card">
             <header className="fundraiser-header">
-              <h1 className="fundraiser-title">{fundraiser.title}</h1>
+              <h1 className="fundraiser-title">{currentFundraiser.title}</h1>
               {isOwner && (
                 <Link to={`/fundraiser/${fundraiser.id}/edit`}>
                   <button className="edit-button">EDIT</button>
@@ -101,18 +137,18 @@ function FundraiserPage() {
             </header>
 
             <div className="image-container">
-              <img src={fundraiser.image} alt={fundraiser.title} />
+              <img src={currentFundraiser.image} alt={currentFundraiser.title} />
             </div>
 
             <div className="description-container">
-              <p>{fundraiser?.description || 'No description available.'}</p>
+              <p>{currentFundraiser?.description || 'No description available.'}</p>
             </div>
 
             <div className="owner-info">
               <p>Created by: <span className="owner-name">{ownerUsername}</span></p>
-              <p>Created: <span>{formatDate(fundraiser.date_created)}</span></p>
-              <p>Role: <span>{fundraiser.owner?.role ? fundraiser.owner.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Trainer'}</span></p>
-              <p>Location: <span>{fundraiser.owner?.location || 'Location not specified'}</span></p>
+              <p>Created: <span>{formatDate(currentFundraiser.date_created)}</span></p>
+              <p>Role: <span>{currentFundraiser.owner?.role ? currentFundraiser.owner.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Trainer'}</span></p>
+              <p>Location: <span>{currentFundraiser.owner?.location || 'Location not specified'}</span></p>
             </div>
 
             
@@ -126,24 +162,24 @@ function FundraiserPage() {
             <div className={`metadata-container ${!showDetails ? 'collapsed' : ''}`}>
               <div className="metadata-item">
                 <span className="metadata-label">Status:</span>
-                <span className={`metadata-value status ${fundraiser.is_open ? 'open' : 'closed'}`}>
-                  {fundraiser.is_open ? 'OPEN' : 'CLOSED'}
+                <span className={`metadata-value status ${currentFundraiser.is_open ? 'open' : 'closed'}`}>
+                  {currentFundraiser.is_open ? 'OPEN' : 'CLOSED'}
                 </span>
               </div>
               <div className="metadata-item">
                 <span className="metadata-label">Pokemon:</span>
-                <span className="metadata-value">{fundraiser.pokemon}</span>
+                <span className="metadata-value">{currentFundraiser.pokemon}</span>
               </div>
-              {fundraiser.items_needed && (
+              {currentFundraiser.items_needed && (
                 <div className="metadata-item">
                   <span className="metadata-label">Items Needed:</span>
-                  <span className="metadata-value">{fundraiser.items_needed}</span>
+                  <span className="metadata-value">{currentFundraiser.items_needed}</span>
                 </div>
               )}
-              {fundraiser.end_date && (
+              {currentFundraiser.end_date && (
                 <div className="metadata-item">
                   <span className="metadata-label">End Date:</span>
-                  <span className="metadata-value">{formatDate(fundraiser.end_date)}</span>
+                  <span className="metadata-value">{formatDate(currentFundraiser.end_date)}</span>
                 </div>
               )}
             </div>
@@ -153,23 +189,24 @@ function FundraiserPage() {
                 <h3 className="progress-title">PROGRESS</h3>
               </div>
               <p className="progress-amount">
-                ${fundraiser?.progress || 0} raised of ${fundraiser?.goal || 0} goal
+                ${currentFundraiser?.progress || 0} raised of ${currentFundraiser?.goal || 0} goal
               </p>
               <p className="progress-percentage">
-                {fundraiser?.progress_percentage || 0}% Complete
+                {currentFundraiser?.progress_percentage || 0}% Complete
               </p>
               <progress 
                 className="progress-bar" 
-                value={fundraiser?.progress || 0} 
-                max={fundraiser?.goal || 100}
+                value={currentFundraiser?.progress || 0} 
+                max={currentFundraiser?.goal || 100}
                 aria-label="Fundraising progress"
               />
               <div className="pledge-section">
                 {!isOwner && (
                   showPledgeForm ? (
                     <PledgeForm 
-                      fundraiserId={fundraiser.id}
+                      fundraiserId={currentFundraiser.id}
                       onClose={handlePledgeClose}
+                      onSuccess={handlePledgeSuccess}
                     />
                   ) : (
                     <button 
@@ -188,12 +225,12 @@ function FundraiserPage() {
             </div>
 
             <div className="pledges-header" onClick={() => setIsPledgesExpanded(!isPledgesExpanded)} style={{ cursor: 'pointer' }}>
-              <h3 className="pledges-title">PLEDGES ({fundraiser?.pledges?.length || 0})</h3>
+              <h3 className="pledges-title">PLEDGES ({currentFundraiser?.pledges?.length || 0})</h3>
               <span className="expand-icon">{isPledgesExpanded ? '▼' : '▶'}</span>
             </div>
             <div className={`pledges-container ${isPledgesExpanded ? 'expanded' : ''}`}>
               <div className="pledges-list">
-                {(fundraiser?.pledges || []).map((pledgeData, key) => (
+                {(currentFundraiser?.pledges || []).map((pledgeData, key) => (
                   <div key={key} className="pledge-item">
                     <span className="pledge-amount">${pledgeData.amount}</span>
                     <span className="pledge-supporter">{pledgeData.supporter_username}</span>

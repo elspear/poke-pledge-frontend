@@ -29,18 +29,19 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 				return;
 			}
 			try {
-				await postPledge({
+				const pledgeData = {
 					amount: parseInt(amount, 10),
 					comment: comment ? comment.trim() : "",
 					anonymous,
 					fundraiser: fundraiserId,
-				});
+				};
+				const response = await postPledge(pledgeData);
 				setSuccess("Pledge submitted!");
 				setAmount("");
 				setComment("");
 				setAnonymous(false);
 				if (onSuccess) {
-				  onSuccess();
+				  onSuccess(pledgeData);
 				}
 			} catch (err) {
 				setError(err.message || "Failed to submit pledge");

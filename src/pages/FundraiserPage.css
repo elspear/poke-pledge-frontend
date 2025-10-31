@@ -84,7 +84,7 @@
 
 .owner-name {
   font-weight: bold;
-  color: var(--brand);
+  color: #000;
   text-transform: uppercase;
 }
 
