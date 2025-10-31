@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import useFundraiser from "../hooks/use-fundraiser";
 import { useAuth } from "../hooks/use-auth";
 import PledgeForm from '../components/PledgeForm';
+import PledgeAuthModal from '../components/PledgeAuthModal';
 import './FundraiserPage.css';
 
 // Loading and error components
@@ -51,11 +52,12 @@ function formatDate(dateString) {
 function FundraiserPage() {
   const { id } = useParams();
   const { fundraiser, isLoading, error, refetch } = useFundraiser(id);
-  const { auth } = useAuth();
+  const { auth, isLoggedIn } = useAuth();
   const [isPledgesExpanded, setIsPledgesExpanded] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
   const [localFundraiser, setLocalFundraiser] = useState(null);
+  const [showPledgeAuthModal, setShowPledgeAuthModal] = useState(false);
 
   // Initialize localFundraiser when fundraiser data is loaded
   useEffect(() => {
@@ -202,20 +204,37 @@ function FundraiserPage() {
               />
               <div className="pledge-section">
                 {!isOwner && (
-                  showPledgeForm ? (
-                    <PledgeForm 
-                      fundraiserId={currentFundraiser.id}
-                      onClose={handlePledgeClose}
-                      onSuccess={handlePledgeSuccess}
-                    />
+                  isLoggedIn ? (
+                    showPledgeForm ? (
+                      <PledgeForm 
+                        fundraiserId={currentFundraiser.id}
+                        onClose={handlePledgeClose}
+                        onSuccess={handlePledgeSuccess}
+                      />
+                    ) : (
+                      <button 
+                        className="pledge-button"
+                        onClick={handlePledgeClick}
+                        aria-label="Make a pledge"
+                      >
+                        PLEDGE
+                      </button>
+                    )
                   ) : (
-                    <button 
-                      className="pledge-button"
-                      onClick={handlePledgeClick}
-                      aria-label="Make a pledge"
-                    >
-                      PLEDGE
-                    </button>
+                    <>
+                      <button 
+                        className="pledge-button"
+                        onClick={() => setShowPledgeAuthModal(true)}
+                        aria-label="Make a pledge"
+                      >
+                        PLEDGE
+                      </button>
+                      {showPledgeAuthModal && (
+                        <PledgeAuthModal 
+                          onClose={() => setShowPledgeAuthModal(false)} 
+                        />
+                      )}
+                    </>
                   )
                 )}
                 {isOwner && (
