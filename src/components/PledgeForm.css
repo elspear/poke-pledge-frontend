@@ -1,3 +1,14 @@
+.pledge-form-container {
+  width: 100%;
+  max-width: var(--container-width);
+  border: var(--border-thick);
+  padding: var(--spacing-xl) var(--spacing-md);
+  background-color: var(--secondary);
+  position: relative;
+  margin: var(--spacing-md) auto;
+}
+
+
 .checkbox-group {
     display: flex;
     align-items: center;

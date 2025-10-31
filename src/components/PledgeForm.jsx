@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import postPledge from "../api/post-pledge";
+import './PledgeForm.css'
 
 function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 	const [amount, setAmount] = useState("");
@@ -8,6 +9,12 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 	const [anonymous, setAnonymous] = useState(false);
 	const [success, setSuccess] = useState("");
 	const [error, setError] = useState("");
+
+	// Ensure comment is always a string
+	const getComment = () => {
+		if (comment === null || comment === undefined) return "";
+		return comment.trim();
+	};
 
 		const handleSubmit = async (e) => {
 			e.preventDefault();
@@ -24,7 +31,7 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 			try {
 				await postPledge({
 					amount: parseInt(amount, 10),
-					comment,
+					comment: comment ? comment.trim() : "",
 					anonymous,
 					fundraiser: fundraiserId,
 				});
@@ -41,7 +48,7 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 		};
 
 	return (
-		<div className="form-container">
+		<div className="pledge-form-container">
 			<div className="form-header">
 				<div className="form-header-content">
 					<h1>MAKE A PLEDGE</h1>
