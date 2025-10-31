@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from "react-router-dom";
 import useFundraiser from "../hooks/use-fundraiser";
 import { useAuth } from "../hooks/use-auth";
@@ -50,6 +51,7 @@ function FundraiserPage() {
   const { id } = useParams();
   const { fundraiser, isLoading, error, refetch } = useFundraiser(id);
   const { auth } = useAuth();
+  const [isPledgesExpanded, setIsPledgesExpanded] = useState(false);
 
   if (isLoading) {
     return <LoadingState />;
@@ -89,21 +91,54 @@ function FundraiserPage() {
               <img src={fundraiser.image} alt={fundraiser.title} />
             </div>
 
-            <div className="owner-info">
-              <p>Created by: <span className="owner-name">{ownerUsername}</span></p>
-              <p>Created: <span>{formatDate(fundraiser.date_created)}</span></p>
-              <p>Last updated: <span>{fundraiser?.date_updated || 'Not available'}</span></p>
-            </div>
-
             <div className="description-container">
               <p>{fundraiser?.description || 'No description available.'}</p>
             </div>
+
+            <div className="owner-info">
+              <p>Created by: <span className="owner-name">{ownerUsername}</span></p>
+              <p>Created: <span>{formatDate(fundraiser.date_created)}</span></p>
+              <p>Role: <span>{fundraiser.owner?.role ? fundraiser.owner.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Trainer'}</span></p>
+              <p>Location: <span>{fundraiser.owner?.location || 'Location not specified'}</span></p>
+            </div>
+
+            
           </div>
 
           {/* Right Card */}
           <div className="right-card">
+            <div className="right-card-header">
+              <h2 className="fundraiser-details">FUNDRAISER DETAILS</h2>
+            </div>
+            <div className="metadata-container">
+              <div className="metadata-item">
+                <span className="metadata-label">Status:</span>
+                <span className={`metadata-value status ${fundraiser.is_open ? 'open' : 'closed'}`}>
+                  {fundraiser.is_open ? 'OPEN' : 'CLOSED'}
+                </span>
+              </div>
+              <div className="metadata-item">
+                <span className="metadata-label">Pokemon:</span>
+                <span className="metadata-value">{fundraiser.pokemon}</span>
+              </div>
+              {fundraiser.items_needed && (
+                <div className="metadata-item">
+                  <span className="metadata-label">Items Needed:</span>
+                  <span className="metadata-value">{fundraiser.items_needed}</span>
+                </div>
+              )}
+              {fundraiser.end_date && (
+                <div className="metadata-item">
+                  <span className="metadata-label">End Date:</span>
+                  <span className="metadata-value">{formatDate(fundraiser.end_date)}</span>
+                </div>
+              )}
+            </div>
             
             <div className="progress-stats">
+              <div className="progress-header">
+                <h3 className="progress-title">PROGRESS</h3>
+              </div>
               <p className="progress-amount">
                 ${fundraiser?.progress || 0} raised of ${fundraiser?.goal || 0} goal
               </p>
@@ -129,8 +164,11 @@ function FundraiserPage() {
               )}
             </div>
 
-            <div className="pledges-container">
-              <h3 className="pledges-title">PLEDGES</h3>
+            <div className="pledges-header" onClick={() => setIsPledgesExpanded(!isPledgesExpanded)} style={{ cursor: 'pointer' }}>
+              <h3 className="pledges-title">PLEDGES ({fundraiser?.pledges?.length || 0})</h3>
+              <span className="expand-icon">{isPledgesExpanded ? '▼' : '▶'}</span>
+            </div>
+            <div className={`pledges-container ${isPledgesExpanded ? 'expanded' : ''}`}>
               <div className="pledges-list">
                 {(fundraiser?.pledges || []).map((pledgeData, key) => (
                   <div key={key} className="pledge-item">
