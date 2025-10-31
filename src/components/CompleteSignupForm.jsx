@@ -157,6 +157,7 @@ function CompleteSignupForm() {
 
         // First create the account with all data
         console.log('Signing up with data:', fullUserData);
+        console.log('fullUserData being sent:', fullUserData);
         await postSignup(fullUserData);
 
         // Then login with the credentials
@@ -174,15 +175,19 @@ function CompleteSignupForm() {
           console.log('User data from server:', user);
           console.log('User profile from server:', user.profile);
           
-          // Update the profile with the avatar
-          if (user.profile && !user.profile.avatar) {
+          // Update the profile with avatar and location
+          if (user.profile) {
             try {
               const avatar = getAvatarByRole(user.role);
-              console.log('Updating profile with avatar:', avatar);
-              await patchProfile(user.profile.id, { avatar });
+              console.log('Updating profile with avatar and location:', { avatar, location: profileData.location });
+              await patchProfile(user.id, { 
+                avatar,
+                location: profileData.location 
+              });
               user.profile.avatar = avatar; // Update local user object
+              user.profile.location = profileData.location; // Update local user object
             } catch (error) {
-              console.error('Failed to update profile with avatar:', error);
+              console.error('Failed to update profile:', error);
             }
           }
           

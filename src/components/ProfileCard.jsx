@@ -163,7 +163,7 @@ function ProfileCard({ profile, onUpdate }) {
             />
             </div>
           ) : (
-            profile.location && <p className="location">{profile.location}</p>
+            <p className="location">{profile.location || 'Location not set'}</p>
           )}
         </div>
         {isEditing ? (

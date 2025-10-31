@@ -32,7 +32,6 @@ function ProfilePromptModal({ onClose }) {
                     <ul>
                         <li>Choose an avatar</li>
                         <li>Add a bio about yourself or organisation</li>
-                        <li>Display your location</li>
                     </ul>
                 </div>
 
