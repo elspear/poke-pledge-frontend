@@ -35,6 +35,17 @@ const NotFoundState = () => (
   </div>
 );
 
+// Function to format date
+function formatDate(dateString) {
+  if (!dateString) return "Not available";
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
 function FundraiserPage() {
   const { id } = useParams();
   const { fundraiser, isLoading, error, refetch } = useFundraiser(id);
@@ -80,7 +91,7 @@ function FundraiserPage() {
 
             <div className="owner-info">
               <p>Created by: <span className="owner-name">{ownerUsername}</span></p>
-              <p>Created: <span>{fundraiser?.date_created || 'Not available'}</span></p>
+              <p>Created: <span>{formatDate(fundraiser.date_created)}</span></p>
               <p>Last updated: <span>{fundraiser?.date_updated || 'Not available'}</span></p>
             </div>
 
