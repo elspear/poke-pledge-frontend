@@ -20,7 +20,7 @@ function FundraiserCard(props) {
         <h3>{fundraiserData.title}</h3>
       </div>
 
-      <div className="fundraiser-header">
+      <div className="fundraiser-card-header">
         <div className="fundraiser-image">
           <img src={fundraiserData.image} alt={fundraiserData.title} />
         </div>
@@ -34,7 +34,7 @@ function FundraiserCard(props) {
 
       <div className="fundraiser-stats">
         <div className="progress-section">
-          <div className="progress-bar">
+          <div className="fundraiser-card-progress-bar">
             <div 
               className="progress-fill" 
               style={{ width: `${Math.min((fundraiserData.progress / fundraiserData.goal) * 100, 100)}%` }}
