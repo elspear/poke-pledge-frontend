@@ -23,6 +23,7 @@ function CompleteSignupForm() {
     firstName: "",
     lastName: "",
     role: "",
+    location: "",
   });
 
   // Get the email & password data from session storage
@@ -39,6 +40,7 @@ function CompleteSignupForm() {
     firstName: "",
     lastName: "",
     role: "",
+    location: "",
   });
 
   const validateForm = () => {
@@ -48,6 +50,7 @@ function CompleteSignupForm() {
       firstName: "",
       lastName: "",
       role: "",
+      location: "",
     };
 
     //Username validation
@@ -71,6 +74,12 @@ function CompleteSignupForm() {
     //Role validation
     if (!profileData.role) {
       newErrors.role = "Role is required";
+      isValid = false;
+    }
+
+    //Location validation
+    if (!profileData.location) {
+      newErrors.location = "Location is required";
       isValid = false;
     }
 
@@ -142,7 +151,8 @@ function CompleteSignupForm() {
           first_name: profileData.firstName,
           last_name: profileData.lastName,
           role: profileData.role,
-          avatar: avatar  // Assign avatar based on role
+          avatar: avatar,  // Assign avatar based on role
+          location: profileData.location,
         };
 
         // First create the account with all data
@@ -332,6 +342,21 @@ function CompleteSignupForm() {
           />
           {errors.lastName && (
             <span className="form-error-message">{errors.lastName}</span>
+          )}
+        </div>
+
+        <div className={`form-group ${errors.location ? "error" : ""}`}>
+          <label htmlFor="location">Location:</label>
+          <input
+            type="text"
+            id="location"
+            placeholder="Your Location"
+            onChange={handleChange}
+            value={profileData.location}
+            disabled={isLoading}
+          />
+          {errors.location && (
+            <span className="form-error-message">{errors.location}</span>
           )}
         </div>
 
