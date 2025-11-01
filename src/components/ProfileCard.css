@@ -133,6 +133,18 @@
   text-align: center;
 }
 
+.user-info .location-input.error {
+  border-color: #ff006e;
+  background-color: #fff0f4;
+}
+
+.error-message {
+  color: #ff006e;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+}
+
 .bio-section {
   padding: 0 20px 20px;
   text-align: center;

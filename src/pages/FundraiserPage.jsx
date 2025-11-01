@@ -147,7 +147,7 @@ function FundraiserPage() {
             </div>
 
             <div className="owner-info">
-              <p>Created by: <Link to={`/profile/${ownerUsername}`} className="owner-name">{ownerUsername}</Link></p>
+              <p>Created by: <Link to={`/profile/${ownerId}`} className="owner-name">{ownerUsername}</Link></p>
               <p>Created: <span>{formatDate(currentFundraiser.date_created)}</span></p>
               <p>Role: <span>{currentFundraiser.owner?.role ? currentFundraiser.owner.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Trainer'}</span></p>
               <p>Location: <span>{currentFundraiser.owner?.location || 'Location not specified'}</span></p>

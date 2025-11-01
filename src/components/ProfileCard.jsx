@@ -54,9 +54,16 @@ function ProfileCard({ profile, onUpdate }) {
     location: profile.location || '',
     showAvatarPicker: false
   });
+  const [error, setError] = useState(null);
 
   const handleSave = async () => {
     try {
+        // Location validation
+        if (!editData.location.trim()) {
+          setError("Location cannot be empty");
+          return;
+        }
+
         // Ensure we're sending just the avatar ID
         const avatarId = editData.avatar?.includes('/') 
           ? editData.avatar.split('/').pop().replace('.svg', '')
@@ -67,11 +74,11 @@ function ProfileCard({ profile, onUpdate }) {
           processedId: avatarId
         });
 
-        // Only send the fields that the backend expects, using empty string instead of null
+        // Only send the fields that the backend expects
         const updateData = {
             bio: editData.bio || '',
             avatar: avatarId || '',
-            location: editData.location || ''
+            location: editData.location.trim() // Ensure no whitespace
         };
         console.log('Saving profile data:', updateData);
         const updatedProfile = await onUpdate(updateData);
@@ -177,17 +184,22 @@ function ProfileCard({ profile, onUpdate }) {
           <h3 className="username">{profile.username}</h3>
           <h4 className="role">{formatRole(profile.user?.role)}</h4>
           {isEditing ? (
-            <div>
-            <input
-              type="text"
-              value={editData.location}
-              onChange={(e) => setEditData(prev => ({
-                ...prev,
-                location: e.target.value
-              }))}
-              placeholder="Enter your location"
-              className="location-input"
-            />
+            <div className="edit-field">
+              <input
+                type="text"
+                value={editData.location}
+                onChange={(e) => {
+                  setError(null); // Clear error when user types
+                  setEditData(prev => ({
+                    ...prev,
+                    location: e.target.value
+                  }));
+                }}
+                placeholder="Enter your location"
+                className={`location-input ${error ? 'error' : ''}`}
+                required
+              />
+              {error && <div className="error-message">{error}</div>}
             </div>
           ) : (
             
