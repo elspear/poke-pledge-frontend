@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage.jsx";
 import FundraiserPage from "./pages/FundraiserPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
-import CompleteSignupForm from "./components/CompleteSignupForm.jsx";
+import CompleteSignupPage from "./pages/CompleteSignupPage.jsx";
 import CreateFundraiserPage from "./pages/CreateFundraiserPage.jsx";
 import EditFundraiserPage from "./pages/EditFundraiserPage.jsx";
 import PledgeForm from "./components/PledgeForm.jsx";
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
           { path: "/login/", element: <LoginPage /> },
           { path: "/signup/", element: <SignupPage /> },
           { path: "/about/", element: <AboutPage /> },
-          { path: "/complete-signup/", element: <CompleteSignupForm /> },
+          { path: "/complete-signup/", element: <CompleteSignupPage /> },
           { path: "/fundraiser/:id/", element: <FundraiserPage /> },
           { path: "/create-fundraiser/", element: (
               <RequireAuth>

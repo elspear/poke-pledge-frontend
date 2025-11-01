@@ -18,63 +18,19 @@ const getProfile = async (identifier, token) => {
             if (!token) {
                 throw new Error("Authentication required to view your own profile");
             }
-            const response = await fetch(`${base}/users/profiles/me/`, { headers });
-            if (!response.ok) {
-                throw new Error("Failed to fetch profile");
-            }
-            return await response.json();
+            throw new Error("Profile identifier required");
         }
 
-        // If identifier is a number, we need to look up the username first
-        if (!isNaN(identifier)) {
-            const usersResponse = await fetch(`${base}/users/`, { headers });
-            if (!usersResponse.ok) {
-                throw new Error("Failed to fetch users");
-            }
+        // Always fetch from the profiles endpoint using the identifier
+        const response = await fetch(`${base}/users/profiles/${identifier}/`, { 
+            headers 
+        });
 
-            const users = await usersResponse.json();
-            const user = users.find(u => u.id === parseInt(identifier));
-
-            if (!user) {
-                throw new Error("User not found");
-            }
-
-            // Return user data directly
-            return {
-                user: user,
-                username: user.username,
-                // Add any other fields that might be needed
-                bio: '',  // These fields will only be available when logged in
-                location: '',
-                avatar: null
-            };
+        if (!response.ok) {
+            throw new Error("Failed to fetch profile");
         }
 
-        // If it's a username, try to get the user's ID first
-        console.log('Looking up user by username:', identifier);
-        const usersResponse = await fetch(`${base}/users/`, { headers });
-        if (!usersResponse.ok) {
-            throw new Error("Failed to fetch users");
-        }
-
-        const users = await usersResponse.json();
-        const user = users.find(u => u.username.toLowerCase() === identifier.toLowerCase());
-
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        // Return user data directly since that's publicly accessible
-        console.log('Found user:', user);
-        return {
-            user: user,
-            username: user.username,
-            // Add any other fields that might be needed
-            // These will match the shape expected by ProfileCard
-            bio: '',  // These fields will only be available when logged in
-            location: '',
-            avatar: null
-        };
+        return await response.json();
 
     } catch (error) {
         console.error('Error fetching profile:', error);

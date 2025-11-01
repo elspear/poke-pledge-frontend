@@ -6,7 +6,7 @@ async function patchProfile(profileId, patchData) {
 
   const token = window.localStorage.getItem("token");
   const base = import.meta.env.VITE_API_URL;
-  const url = `${base}/profiles/${profileId}/`;
+  const url = `${base}/users/profiles/${profileId}/`;
 
   const response = await fetch(url, {
     method: "PATCH",
