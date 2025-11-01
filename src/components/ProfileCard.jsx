@@ -1,23 +1,43 @@
 import './ProfileCard.css';
 import { useState } from 'react';
-import { useAuth } from '../hooks/use-auth';
 import AvatarPicker from './AvatarPicker';
 import { getAvatarById, getAvatarByRole } from '../utils/AvatarUtils';
+import { useAuth } from '../hooks/use-auth';
 
-const formatRole = (role) => {
+function formatRole(role) {
   if (!role) return '';
   // Split by underscore, capitalize each word, then join with space
   return role
     .split('_')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
-};
+}
 
 function ProfileCard({ profile, onUpdate }) {
   const { auth } = useAuth();
-  const isOwnProfile = auth.user && auth.user.id === profile.user?.id;
+  const isOwnProfile = auth?.token && auth?.user?.id && profile?.user?.id && auth.user.id === profile.user.id;
   
-  console.log('Full profile data in ProfileCard:', profile);
+  console.log('Raw auth data:', auth);
+  console.log('Auth state:', {
+    hasAuth: !!auth,
+    hasUser: !!auth?.user,
+    userId: auth?.user?.id,
+    isAuthenticated: !!auth?.user?.id,
+    token: auth?.token // Check if we actually have a token
+  });
+  console.log('Profile data:', {
+    hasProfile: !!profile,
+    hasUser: !!profile?.user,
+    userId: profile?.user?.id,
+    fullProfile: profile
+  });
+  console.log('isOwnProfile calculation:', {
+    hasAuthUserId: !!auth?.user?.id,
+    hasProfileUserId: !!profile?.user?.id,
+    authUserId: auth?.user?.id,
+    profileUserId: profile?.user?.id,
+    isOwnProfile
+  });
   console.log('Profile structure:', {
     hasAvatar: 'avatar' in profile,
     avatarValue: profile.avatar,
@@ -46,11 +66,11 @@ function ProfileCard({ profile, onUpdate }) {
           processedId: avatarId
         });
 
-        // Only send the fields that the backend expects
+        // Only send the fields that the backend expects, using empty string instead of null
         const updateData = {
-            bio: editData.bio,
-            avatar: avatarId,
-            location: editData.location
+            bio: editData.bio || '',
+            avatar: avatarId || '',
+            location: editData.location || ''
         };
         console.log('Saving profile data:', updateData);
         const updatedProfile = await onUpdate(updateData);
@@ -68,7 +88,13 @@ function ProfileCard({ profile, onUpdate }) {
         setIsEditing(false);
     } catch (error) {
         console.error('Failed to update profile:', error);
-        alert('Failed to update profile. Please try again.');
+        let errorMessage = error.message || 'Failed to update profile. Please try again.';
+        if (error.data) {
+            errorMessage = Object.entries(error.data)
+                .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+                .join('\n');
+        }
+        alert(errorMessage);
     }
   }
 
@@ -77,7 +103,7 @@ function ProfileCard({ profile, onUpdate }) {
   return (
     <div className="profile-card">
       <div className="profile-header">
-        {isOwnProfile && !isEditing && (
+        {auth?.token && auth?.user?.id && profile?.user?.id && auth.user.id === profile.user.id && !isEditing && (
           <button 
             onClick={() => setIsEditing(true)}
             className="edit-button"

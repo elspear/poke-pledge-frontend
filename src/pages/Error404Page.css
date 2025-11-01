@@ -9,7 +9,7 @@
 
 .error-content {
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
     background-color: var(--brand);
     padding: var(--spacing-xl);
     border: var(--border-thick);

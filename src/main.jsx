@@ -44,6 +44,7 @@ const router = createBrowserRouter([
           { path: "/fundraiser/:id/pledge", element: <PledgeForm />},
 
           // Profile routes
+          // My profile - requires auth
           { 
               path: "/profile/", 
               element: (
@@ -52,13 +53,10 @@ const router = createBrowserRouter([
                   </RequireAuth>
               )
           },
+          // Public profile view - no auth required
           { 
               path: "/profile/:id/", 
-              element: (
-                  <RequireAuth>
-                      <ProfilePage />
-                  </RequireAuth>
-              )
+              element: <ProfilePage />
           },
           {
               path: "*",

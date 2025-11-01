@@ -1,0 +1,51 @@
+.profile-auth-prompt {
+    text-align: center;
+    padding: 2rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 400px;
+}
+
+.profile-auth-prompt h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.profile-auth-prompt p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.profile-auth-prompt .auth-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.profile-auth-prompt button {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.profile-auth-prompt .login-button {
+    background-color: #2563eb;
+    color: white;
+}
+
+.profile-auth-prompt .login-button:hover {
+    background-color: #1d4ed8;
+}
+
+.profile-auth-prompt .signup-button {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.profile-auth-prompt .signup-button:hover {
+    background-color: #d1d5db;
+}

@@ -12,30 +12,35 @@ function useProfile(identifier) {
     useEffect(() => {
         async function fetchProfile() {
             try {
-                if (!auth?.token) {
-                    throw new Error("Not authenticated");
+                // Don't require auth token for public profile views
+                const token = auth?.token;
+                console.log('Profile fetch:', { identifier, token });
+
+                // For /profile/ route (no identifier), require auth
+                if (!identifier && !token) {
+                    throw new Error("Authentication required to view your profile");
                 }
 
-                console.log('Auth token in hook:', auth.token); // Debug log
+                const id = identifier || auth?.user?.id;
+                if (!id) {
+                    throw new Error("Profile identifier required");
+                }
 
-                // Use current user's ID if no identifier provided
-                const id = identifier || auth.user.id;
-                const data = await getProfile(id, auth.token);
+                const data = await getProfile(id, token);
                 setProfile(data);
             } catch (err) {
+                console.error('Profile fetch error:', err);
                 setError(err.message);
             } finally {
                 setIsLoading(false);
             }
         }
 
-        if (auth?.token) {
-            fetchProfile();
-        }
+        fetchProfile();
     }, [identifier, auth]);
 
     // Add function to update profile
-    const updateProfileData = async (profileData) => {
+    const updateProfileData = async (profileData, userId) => {
         try {
             setIsLoading(true);
             setError(null);
@@ -44,7 +49,8 @@ function useProfile(identifier) {
                 throw new Error("Not authenticated");
             }
 
-            const id = identifier || auth.user.id;
+            // Use the explicitly passed userId, fall back to identifier or auth.user.id
+            const id = userId || identifier || auth.user.id;
             const updatedProfile = await updateProfile(id, profileData);
             setProfile(updatedProfile);
             return updatedProfile;
