@@ -101,6 +101,19 @@
   font-weight: normal;
 }
 
+.location-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.location-container img {
+  height: 30px;
+  width: auto;
+}
+
 .user-info .location {
   font-size: 14px;
   color: #666;

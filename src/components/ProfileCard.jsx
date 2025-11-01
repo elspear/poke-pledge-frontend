@@ -3,6 +3,7 @@ import { useState } from 'react';
 import AvatarPicker from './AvatarPicker';
 import { getAvatarById, getAvatarByRole } from '../utils/AvatarUtils';
 import { useAuth } from '../hooks/use-auth';
+import location from '../assets/location.svg';
 
 function formatRole(role) {
   if (!role) return '';
@@ -189,7 +190,11 @@ function ProfileCard({ profile, onUpdate }) {
             />
             </div>
           ) : (
-            <p className="location">{profile.location || 'Location not set'}</p>
+            
+            <div className='location-container'>
+              <img className="location-image" src={location}/>
+              <p className="location-text">{profile.location || 'Location not set'}</p>
+            </div>
           )}
         </div>
         {isEditing ? (
