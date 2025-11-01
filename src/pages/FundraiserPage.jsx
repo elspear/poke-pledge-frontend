@@ -107,6 +107,8 @@ function FundraiserPage() {
       const updatedPledges = [...(prev.pledges || []), {
         amount: newPledge.amount,
         supporter_username: auth.user.username,
+        anonymous: newPledge.anonymous,
+        comment: newPledge.comment,
       }];
       
       const newProgress = (prev.progress || 0) + newPledge.amount;
@@ -249,10 +251,23 @@ function FundraiserPage() {
             </div>
             <div className={`pledges-container ${isPledgesExpanded ? 'expanded' : ''}`}>
               <div className="pledges-list">
-                {(currentFundraiser?.pledges || []).map((pledgeData, key) => (
+                                {(currentFundraiser?.pledges || []).map((pledgeData, key) => (
                   <div key={key} className="pledge-item">
-                    <span className="pledge-amount">${pledgeData.amount}</span>
-                    <span className="pledge-supporter">{pledgeData.supporter_username}</span>
+                    <div className="pledge-main-info">
+                      <span className="pledge-supporter">
+                        {pledgeData.anonymous ? "Anonymous" : pledgeData.supporter_username}
+                      </span>
+                      {" donated "}
+                      <span className="pledge-amount">${pledgeData.amount}</span>
+                    </div>
+                    {pledgeData.comment && (
+                      <>
+                        <span className="pledge-separator">|</span>
+                        <div className="pledge-comment">
+                          "{pledgeData.comment}"
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>

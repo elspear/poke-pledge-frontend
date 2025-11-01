@@ -308,10 +308,39 @@
 
 .pledge-item {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 10px 15px;
   border: 2px solid #000;
   background: transparent;
+  margin-bottom: 8px;
+}
+
+.pledge-main-info {
+  flex: 0 0 auto;
+}
+
+.pledge-supporter {
+  font-weight: bold;
+  color: #000;
+}
+
+.pledge-amount {
+  font-weight: bold;
+  color: #000;
+}
+
+.pledge-separator {
+  color: transparent;
+  font-weight: 300;
+  margin: 0 8px;
+}
+
+.pledge-comment {
+  color: #666;
+  font-style: italic;
+  text-align: right;
+  margin-left: auto;
 }
 
 .owner-note {
