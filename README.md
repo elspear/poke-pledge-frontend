@@ -4,7 +4,8 @@
 **PokePledge** is a crowdfunding app with a whimsical, Pokémon twist. 
 Trainers can create fundraisers on behalf of their Pokémon — like Snorlax asking for a beanbag chair or Eevee hoping for a special crystal to ✨ evolve ✨ — and the community can pledge support to bring those wishes to life.  
 
-### To view - [PokePledge](https://pokepledge.netlify.app/) 
+### Live Site
+🌟 Check out the live application here: [PokePledge](https://pokepledge.netlify.app/)
 
 
 ### Intended Audience/User Stories
