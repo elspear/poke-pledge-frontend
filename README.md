@@ -1,16 +1,89 @@
-# React + Vite
+# PokePledge - Crowdfunding Front End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Concept/Name
+**PokePledge** is a crowdfunding app with a whimsical, Pokémon twist. 
+Trainers can create fundraisers on behalf of their Pokémon — like Snorlax asking for a beanbag chair or Eevee hoping for a special crystal to ✨ evolve ✨ — and the community can pledge support to bring those wishes to life.  
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### [Backend](https://github.com/elspear/crowdfunding_backend)
+### Intended Audience/User Stories
+The intended audience includes:
+- **Pokémon trainers** who want to create fundraisers on behalf of their Pokémon. 
+- **Pokémon Centers** who want to create fundraisers to benefit the community.
+- **Safari Parks** who want to create fundraisers to raise money for Pokémon welfare. 
+- **Supporters** who enjoy pledging to bring those Pokémon dreams to reality.  
 
-## React Compiler
+### Front End Pages/Functionality
+- **Home Page**
+  - View fundraisers
+  - View stats
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Fundraiser Detail Page**
+  - Displays fundraiser description, goal, progress, and pledges.  
+  - “Pledge” form for logged-in users.  
+  - Preview of recent non-anonymous pledges (username, amount, comment)
 
-## Expanding the ESLint configuration
+- **User Account Pages**
+  - Signup, log in, log out. 
+  - Update account details or delete account.
+  - Create, view, and edit own profile.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Create/Edit Fundraiser Page**
+  - Form to create new fundraisers.
+  - Ability to edit or delete fundraisers you own. 
+
+## Additional Features
+
+### User Profiles
+- Using Django's advanced signals feature to automatically create profiles when users sign up
+- No setup required: users can start using the platform immediately
+- Customizable profiles with bio and the option to change their avatar
+- Zero-error approach: every user is guaranteed to have a profile, preventing broken links or missing data
+- Upon profile creation, users are assigned an avatar based on role. This can be changed.
+
+### Site Stats
+- Live dashboard showing the impact of the PokePledge community
+- Implemented using Django signals to ensure real-time accuracy
+- Stats update whenever:
+  - New users join the community
+  - Pledges are made to help Pokémon
+  - Fundraisers successfully reach their goals
+- Track key metrics like total Pokémon helped, total amount pledged, and community size
+
+## Homepage
+### Logged out
+![](src/assets/screenshots/HomePage1.png)
+
+### Logged in
+![](src/assets/screenshots/HomePage2.png)
+
+## Log In
+![](src/assets/screenshots/Login1.png)
+
+## Sign up 
+### Step one
+![](src/assets//screenshots/Signup1.png)
+
+### Step two
+![](src/assets/screenshots/Signup2.png)
+
+## Fundraiser Page
+### Own fundraiser
+![](src/assets/screenshots/FundraiserPageOwner.png)
+
+### Non-owned fundraiser
+![](src/assets/screenshots/FundraiserPage.png)
+
+## Profile
+### Profile view
+![](src/assets/screenshots/Profile.png)
+
+### Edit profile w/ avatar picker
+![](src/assets/screenshots/ProfileEdit.png)
+
+### Mobile responsive w/ hamburger menu
+![](src/assets/screenshots/Mobile1.png)
+
+![](src/assets/screenshots/Mobile2.png)
+
+![](src/assets/screenshots/Mobile3.png)

@@ -1,15 +1,15 @@
 .avatar-picker {
     position: absolute;
-    top: 50%;
-    left: calc(100% + 1rem);
-    transform: translateY(-50%);
+    top: 0; 
+    left: calc(100% + 2rem); 
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
-    width: 400px;
-    max-height: 80vh;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 100;
+    width: 500px;
+    max-height: 400px; /* Reduced height */
+    border: var(--border-thick);
+    box-shadow: var(--shadow);
+    z-index: 1000;
     animation: popIn 0.3s ease;
     overflow-y: auto;
 }
@@ -17,42 +17,42 @@
 @keyframes popIn {
     from {
         opacity: 0;
-        transform: translateY(-50%) translateX(-10px);
+        transform: translateX(-20px);
     }
     to {
         opacity: 1;
-        transform: translateY(-50%) translateX(0);
+        transform: translateX(0);
     }
 }
 
 .avatar-picker h4 {
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.75rem 0;
     color: #333;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 .avatar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
     gap: 1rem;
-    margin-top: 0.5rem;
-    max-width: 400px;
+    margin-top: 0.75rem;
+    max-width: 100%;
 }
 
 .avatar-option {
     background: none;
     border: 2px solid transparent;
     border-radius: 50%;
-    padding: 0.2rem;
+    padding: 0.3rem;
     cursor: pointer;
     transition: all 0.2s ease;
     aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; /* Smaller avatar options */
+    width: 70px; /* Larger avatar options */
 }
 
 .avatar-option:hover {
@@ -105,17 +105,36 @@
     animation: pulse 1.5s infinite;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1200px) {
     .avatar-picker {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 90%;
+        max-width: 500px;
+        margin-top: 0;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .avatar-picker {
         max-width: 350px;
     }
     
     .avatar-option {
-        width: 40px;
+        width: 50px;
     }
+    
+    .avatar-grid {
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    }
+}
+
+/* Ensure the avatar picker container has space for the dropdown */
+.avatar-container {
+    position: relative;
+    margin-bottom: 1rem;
 }
