@@ -36,14 +36,49 @@
   background: transparent;
   border-bottom: 2px solid #000;
   height: 80px;
+  position: relative;
+}
+
+.fundraiser-header h1 {
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .fundraiser-title {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
-  text-align: center;
   text-transform: uppercase;
+  display: inline;
+  margin-right: 15px;
+}
+
+.fundraiser-header a {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  background: #ede7ec;
+  color: #300670;
+  border: 3px solid #000;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Space Mono', monospace;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.edit-button:hover {
+  background: #fff;
+  color: #ff006e;
+  box-shadow: none;
 }
 
 .image-container {

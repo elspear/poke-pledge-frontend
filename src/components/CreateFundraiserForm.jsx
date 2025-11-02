@@ -71,8 +71,8 @@ function FundraiserForm({
     // Description validation
     if (!fundraiserData.description.trim()) {
       newErrors.description = "Description is required";
-    } else if (fundraiserData.description.length > 500) {
-      newErrors.description = "Description must be less than 500 characters";
+    } else if (fundraiserData.description.length > 2000) {
+      newErrors.description = "Description must be less than 2000 characters";
     }
     // Goal validation
     if (!fundraiserData.goal) {

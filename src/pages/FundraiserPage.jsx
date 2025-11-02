@@ -132,12 +132,14 @@ function FundraiserPage() {
           {/* Left Card */}
           <div className="left-card">
             <header className="fundraiser-header">
-              <h1 className="fundraiser-title">{currentFundraiser.title}</h1>
-              {isOwner && (
-                <Link to={`/fundraiser/${fundraiser.id}/edit`}>
-                  <button className="edit-button">EDIT</button>
-                </Link>
-              )}
+              <h1>
+                <span className="fundraiser-title">{currentFundraiser.title}</span>
+                {isOwner && (
+                  <Link to={`/fundraiser/${fundraiser.id}/edit`}>
+                    <button className="edit-button">EDIT</button>
+                  </Link>
+                )}
+              </h1>
             </header>
 
             <div className="image-container">
