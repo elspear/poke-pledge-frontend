@@ -32,31 +32,31 @@ function NavBar() {
         <div className="nav-right">
           <ul className="nav-bar-links">
               <li className="pill">
-                <Link to="/about">About</Link>
+                <Link to="/about">ABOUT</Link>
               </li>
               <li className="pill">
-                <Link to="/create-fundraiser">Create a Fundraiser</Link>
+                <Link to="/create-fundraiser">CREATE A FUNDRAISER</Link>
               </li>
 
             {/*Authentication links - combined login and signup, both don't show when logged in*/}
             {auth.token ? (
               <>
                 <li className="pill">
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/profile">PROFILE</Link>
                 </li>
                 <li className="pill">
                   <button type="button" className="logout-button" onClick={handleLogout}>
-                    Log Out
+                    LOG OUT
                   </button>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/login">LOGIN</Link>
                 </li>
                 <li>
-                  <Link to="/signup/">Sign Up</Link>
+                  <Link to="/signup/">SIGN UP</Link>
                 </li>
               </>
             )}

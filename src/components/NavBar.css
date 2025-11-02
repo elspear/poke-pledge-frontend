@@ -82,8 +82,9 @@
 .nav-bar-links a,
 .logout-button {
     background-color: var(--brand);
-    border: var(--border-thin);
+    border: 2px solid #000;
     border-radius: 999px;
+    box-shadow: 4px 4px 0 #000;
 }
 
 .nav-bar-links a:hover,
@@ -92,6 +93,7 @@
     background-color: rgb(2, 0, 36);
     text-decoration: none;
     color: #fff;
+    box-shadow: 2px 2px 0 #000;
 }
 
 /* Logout button specific */

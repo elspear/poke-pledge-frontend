@@ -8,10 +8,11 @@
   margin: 0 auto;
   display: flex;
   gap: 20px;
+  align-items: flex-start;
 }
 
 .left-card {
-  flex: 1;
+  flex: 1 1 50%;
   background: white;
   border: 2px solid #000;
   box-shadow: 4px 4px 0 #000;
@@ -22,7 +23,7 @@
 }
 
 .right-card {
-  flex: 1;
+  flex: 1 1 50%;
   background: var(--brand);
   border: 2px solid #000;
   box-shadow: 4px 4px 0 #000;
@@ -302,24 +303,25 @@
 
 /* Pledges section */
 .pledges-container {
+  display: none;
+  height: 0;
   padding: 0;
+  margin: 0;
   border-top: 1px solid black;
   overflow: hidden;
-  transition: all 0.3s ease-out;
-  max-height: 0;
 }
 
 .pledges-container.expanded {
+  display: block;
+  height: auto;
   padding: 20px;
-  max-height: 1000px;
 }
 
 .pledges-list {
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  opacity: 0;
 }
 
 .pledges-container.expanded .pledges-list {

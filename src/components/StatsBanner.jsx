@@ -16,7 +16,7 @@ function StatsBanner() {
     total_amount_pledged: 0
   });
 
-  // Load initial stats and set up polling
+  // Load stats only on initial mount
   useEffect(() => {
     let cancelled = false;
 
@@ -28,15 +28,11 @@ function StatsBanner() {
         if (!cancelled) setError(err);
       }
     };
-    // Initial load
+    
     load();
-
-    // Set up polling every 30 seconds
-    const interval = setInterval(load, 30000);
 
     return () => {
       cancelled = true;
-      clearInterval(interval);
     };
   }, []);
 
