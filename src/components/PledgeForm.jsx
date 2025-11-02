@@ -9,6 +9,7 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 	const [anonymous, setAnonymous] = useState(false);
 	const [success, setSuccess] = useState("");
 	const [error, setError] = useState("");
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	// Ensure comment is always a string
 	const getComment = () => {
@@ -20,8 +21,10 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 			e.preventDefault();
 			setSuccess("");
 			setError("");
+			setIsSubmitting(true);
 			if (!amount) {
 				setError("Amount is required");
+				setIsSubmitting(false);
 				return;
 			}
 			if (!fundraiserId) {
@@ -103,8 +106,8 @@ function PledgeForm({ fundraiserId, onSuccess, onClose }) {
 					</label>
 				</div>
 
-				<button type="submit" className="form-btn">
-					SUBMIT PLEDGE
+				<button type="submit" className="form-btn" disabled={isSubmitting}>
+					{isSubmitting ? "SUBMITTING..." : "SUBMIT PLEDGE"}
 				</button>
 
 				{success && <p className="form-success-message">{success}</p>}
