@@ -10,11 +10,38 @@
   background-color: var(--brand);
   border-top: var(--border-thick);
   box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 1050; /* Lower than navbar but still high */
   opacity: 0;
   transform: translateY(20px);
   animation: slideUp 0.5s ease forwards;
   overflow: hidden;
+}
+
+.stats-banner__close-btn {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: var(--secondary);
+  border: var(--border-thin);
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1051; /* One higher than stats banner */
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  transition: all 0.2s ease;
+}
+
+.stats-banner__close-btn:hover {
+  background: var(--accent);
+  color: var(--secondary);
+  transform: scale(1.1);
 }
 
 .stats-banner::after {
@@ -107,6 +134,7 @@ body {
     flex-wrap: wrap;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-md);
+    padding-right: 40px; /* Make space for close button */
   }
 
   .stats-banner .stat {
@@ -114,8 +142,24 @@ body {
     font-size: var(--font-size-small);
   }
 
+  .stats-banner__close-btn {
+    display: flex; /* Show only on mobile */
+  }
+
   body {
     padding-bottom: 120px; /* More padding for wrapped content */
+  }
+
+  /* Add transition for closing animation */
+  .stats-banner {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+/* Ensure close button is hidden on larger screens */
+@media (min-width: 769px) {
+  .stats-banner__close-btn {
+    display: none;
   }
 }
 

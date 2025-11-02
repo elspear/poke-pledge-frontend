@@ -1,5 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
+import { useState } from "react";
 import PokePledge from "../assets/PokePledge6.svg";
 import StatsBanner from "./StatsBanner";
 
@@ -7,7 +8,7 @@ import "./NavBar.css";
 
 function NavBar() {
   const {auth, setAuth} = useAuth();
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
@@ -17,6 +18,15 @@ function NavBar() {
     window.localStorage.removeItem("token");
     setAuth({ token: null });
     navigate("/", { replace: true });
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
 
@@ -29,20 +39,30 @@ function NavBar() {
             <img src={PokePledge} alt="Logo" />
           </Link>
         </div>
-        <div className="nav-right">
+        <button 
+          className={`hamburger ${isMenuOpen ? 'open' : ''}`} 
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div className={`nav-right ${isMenuOpen ? 'open' : ''}`}>
           <ul className="nav-bar-links">
               <li className="pill">
-                <Link to="/about">ABOUT</Link>
+                <Link to="/about" onClick={closeMenu}>ABOUT</Link>
               </li>
               <li className="pill">
-                <Link to="/create-fundraiser">CREATE A FUNDRAISER</Link>
+                <Link to="/create-fundraiser" onClick={closeMenu}>CREATE A FUNDRAISER</Link>
               </li>
 
             {/*Authentication links - combined login and signup, both don't show when logged in*/}
             {auth.token ? (
               <>
                 <li className="pill">
-                  <Link to="/profile">PROFILE</Link>
+                  <Link to="/profile" onClick={closeMenu}>PROFILE</Link>
                 </li>
                 <li className="pill">
                   <button type="button" className="logout-button" onClick={handleLogout}>
@@ -53,10 +73,10 @@ function NavBar() {
             ) : (
               <>
                 <li>
-                  <Link to="/login">LOGIN</Link>
+                  <Link to="/login" onClick={closeMenu}>LOGIN</Link>
                 </li>
                 <li>
-                  <Link to="/signup/">SIGN UP</Link>
+                  <Link to="/signup/" onClick={closeMenu}>SIGN UP</Link>
                 </li>
               </>
             )}

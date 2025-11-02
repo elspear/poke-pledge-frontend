@@ -12,6 +12,36 @@
   min-height: 600px;
 }
 
+@media (max-width: 576px) {
+  .fundraiser-card {
+    min-height: auto;
+  }
+
+  .fundraiser-top-section {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+    padding: var(--spacing-md);
+  }
+
+  .fundraiser-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .fundraiser-description {
+    margin: 10px 20px 20px 20px;
+  }
+
+  .fundraiser-owner {
+    margin: 20px 20px 0 20px;
+  }
+
+  .fundraiser-title-section h3 {
+    font-size: 1.2rem;
+  }
+}
+
 .fundraiser-card:hover {
   transform: translateX(-4px) translateY(-4px);
   box-shadow: 12px 12px 0 #000;

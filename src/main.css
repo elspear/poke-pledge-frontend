@@ -33,6 +33,23 @@
   /* Layout */
   --container-width: 400px;
   --header-height: 120px;
+
+  /* Breakpoints */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+}
+
+/* Media Query Utilities */
+@media (max-width: 576px) {
+  :root {
+    --container-width: 100%;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --font-size-large: 18px;
+    --font-size-xl: 20px;
+  }
 }
 
 /* Reset & Base Styles */

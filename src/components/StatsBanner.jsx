@@ -8,6 +8,7 @@ const fmt = (n) => (typeof n === "number" ? n.toLocaleString() : n);
 function StatsBanner() {
   const [stats, setStats] = useState(null);
   const [error, setError] = useState(null);
+  const [isVisible, setIsVisible] = useState(true);
   const [animatedStats, setAnimatedStats] = useState({
     total_pokemon_helped: 0,
     total_users: 0,
@@ -79,8 +80,17 @@ function StatsBanner() {
     </div>
   );
 
+  if (!isVisible) return null;
+
   return (
     <div className="stats-banner" role="region" aria-label="Site statistics">
+      <button 
+        className="stats-banner__close-btn" 
+        onClick={() => setIsVisible(false)}
+        aria-label="Close stats banner"
+      >
+        ×
+      </button>
       <div className="stats-banner__inner">
         <div className="stat">Pokémon helped: <strong>{fmt(animatedStats.total_pokemon_helped)}</strong></div>
         <div className="stat">PokePledge users: <strong>{fmt(animatedStats.total_users)}</strong></div>

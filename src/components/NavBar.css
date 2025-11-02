@@ -3,6 +3,8 @@
 .nav-bar {
     width: 100%;
     background-color: transparent;
+    position: relative;
+    z-index: 1100; /* Higher than stats banner */
 }
 
 .nav-container {
@@ -13,6 +15,101 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.hamburger.open span:first-child {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:last-child {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-container {
+        padding: 10px;
+    }
+
+    .nav-right {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background-color: var(--secondary);
+        border-bottom: var(--border-thick);
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow);
+        z-index: 1000;
+    }
+
+    .nav-right.open {
+        display: block;
+    }
+
+    .nav-bar-links {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .nav-bar-links li {
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+    .nav-bar-links a,
+    .logout-button {
+        width: 100%;
+        padding: var(--spacing-sm);
+        font-size: 16px;
+        justify-content: center;
+        display: block;
+        background-color: var(--brand);
+        border: var(--border-thin);
+        border-radius: 999px;
+        box-shadow: 4px 4px 0 #000;
+    }
+
+    .nav-bar-links a:hover,
+    .logout-button:hover {
+        transform: none;
+    }
+
+    /* Hide regular nav when hamburger is visible */
+    .nav-bar .nav-right:not(.open) {
+        display: none;
+    }
 }
 
 /* Logo section */
