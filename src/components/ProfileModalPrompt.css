@@ -4,107 +4,113 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease;
 }
 
 .profile-modal-prompt-content {
-    width: 100%;
-    max-width: 450px;
-    border: 3px solid var(--primary);
-    padding: 40px 20px;
-    background-color: var(--secondary);
     background: var(--brand);
-    box-shadow: var(--shadow);
-    position: relative;
-    margin: 20px;
-    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: px;
+    border: 3px solid black;
+    max-width: 600px;
+    width: 90%;
+    animation: slideUp 0.3s ease;
 }
 
-.profile-modal-prompt-content::before {
-    content: '';
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    right: -6px;
-    bottom: -6px;
-    border: 1px solid var(--primary);
-    z-index: -1;
-    border-radius: 12px;
-}
-
-.profile-modal-prompt-header {
-    margin-bottom: 30px;
+.profile-modal-prompt-content h2 {
+    color: black;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
     text-align: center;
 }
 
-.profile-modal-prompt-header h2 {
-    color: var(--primary);
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0;
-}
-
 .profile-modal-prompt-message {
-    margin: 0 15px 30px;
-    color: var(--primary);
-}
-
-.profile-modal-prompt-message p {
-    margin-bottom: 15px;
+    margin-bottom: 2rem;
+    line-height: 1.5;
 }
 
 .profile-modal-prompt-message ul {
     list-style-type: none;
-    padding-left: 0;
-    margin: 0;
+    padding: 0;
+    margin: 1rem 0;
 }
 
 .profile-modal-prompt-message li {
-    margin-bottom: 8px;
-    padding-left: 20px;
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
     position: relative;
 }
 
 .profile-modal-prompt-message li:before {
     content: "•";
+    color: black;
     position: absolute;
-    left: 0;
-    color: var(--primary);
+    left: 0.5rem;
 }
 
 .profile-modal-prompt-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 0 15px;
+    gap: 1rem;
 }
 
 .profile-modal-prompt-buttons button {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
-    border: 2px solid var(--primary);
-    transition: all 0.3s;
-    background-color: var(--secondary);
+    font-weight: bold;
+    transition: all 0.2s ease;
 }
 
 .profile-modal-prompt-buttons .primary-button {
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: #4304a2;
+    border: 2px solid black;
+    color: white;
+    font-size: 14px;
+}
+
+.profile-modal-prompt-buttons .primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-modal-prompt-buttons .secondary-button {
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: var(--brand);
+    border: 2px solid black !important;
+    color: black;
 }
 
-.profile-modal-prompt-buttons button:hover {
-    box-shadow: 4px 4px 0px var(--primary);
-    transform: translate(-2px, -2px);
+.profile-modal-prompt-buttons .secondary-button:hover {
+    background-color: var(--brand);
+    color: black;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-modal-prompt-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
 }

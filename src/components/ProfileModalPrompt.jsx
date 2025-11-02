@@ -7,7 +7,6 @@ function ProfilePromptModal({ onClose }) {
     const { auth } = useAuth();
 
     const handleCompleteProfile = () => {
-        // Navigate to their profile page with edit mode active
         navigate(`/profile/${auth.user.id}?edit=true`);
         onClose();
     };
@@ -20,15 +19,10 @@ function ProfilePromptModal({ onClose }) {
     return (
         <div className="profile-modal-prompt-overlay">
             <div className="profile-modal-prompt-content">
-                <div className="profile-modal-prompt-header">
-                    <h2>Complete Your Profile?</h2>
-                </div>
+                <h2>Complete Your Profile?</h2>
                 
                 <div className="profile-modal-prompt-message">
-                    <p>
-                        Would you like to personalize your profile now? <br />
-                        You can:
-                    </p>
+                    <p>Would you like to personalize your profile now?</p>
                     <ul>
                         <li>Choose an avatar</li>
                         <li>Add a bio about yourself or organisation</li>
