@@ -7,14 +7,15 @@ function SignupForm() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+  const [formState, setFormState] = useState({
+    fields: {
+      email: "",
+      password: "",
+    },
+    errors: {
+      email: "",
+      password: "",
+    }
   });
 
   const validateForm = () => {
@@ -25,32 +26,35 @@ function SignupForm() {
     };
 
     //Email validation
-    if (!credentials.email) {
+    if (!formState.fields.email) {
       newErrors.email = "Email address is required";
       isValid = false;
     }
 
     // Password validation
-    if (!credentials.password) {
+    if (!formState.fields.password) {
       newErrors.password = "Password is required";
       isValid = false;
     }
 
-    setErrors(newErrors);
+    setFormState(prev => ({
+      ...prev,
+      errors: newErrors
+    }));
     return isValid;
   };
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setCredentials((prevCredentials) => ({
-      ...prevCredentials,
-      [id]: value,
-    }));
-
-    // clear error when user starts typing
-    setErrors((prev) => ({
-      ...prev,
-      [id]: "",
+    setFormState(prev => ({
+      fields: {
+        ...prev.fields,
+        [id]: value,
+      },
+      errors: {
+        ...prev.errors,
+        [id]: "", // Clear error when user types
+      }
     }));
   };
 
@@ -60,7 +64,7 @@ function SignupForm() {
     if (validateForm()) {
       setIsLoading(true);
       // Store credentials in sessionStorage
-      sessionStorage.setItem("signupData", JSON.stringify(credentials));
+      sessionStorage.setItem("signupData", JSON.stringify(formState.fields));
       // Navigate to signup completion page
       navigate("/complete-signup");
     }
@@ -73,33 +77,33 @@ function SignupForm() {
       </div>
       
       <form onSubmit={handleSubmit}>
-        <div className={`form-group ${errors.email ? "error" : ""}`}>
+        <div className={`form-group ${formState.errors.email ? "error" : ""}`}>
           <label htmlFor="email">EMAIL</label>
           <input
             type="text"
             id="email"
             placeholder="Enter a valid email address"
             onChange={handleChange}
-            value={credentials.email}
+            value={formState.fields.email}
             disabled={isLoading} 
           />
-          {errors.email && (
-            <span className="form-error-message">{errors.email}</span>
+          {formState.errors.email && (
+            <span className="form-error-message">{formState.errors.email}</span>
           )}
         </div>
 
-        <div className={`form-group ${errors.password ? "error" : ""}`}>
+        <div className={`form-group ${formState.errors.password ? "error" : ""}`}>
           <label htmlFor="password">PASSWORD</label>
           <input
             type="password"
             id="password"
             placeholder="••••••••"
             onChange={handleChange}
-            value={credentials.password}
+            value={formState.fields.password}
             disabled={isLoading}
           />
-          {errors.password && (
-            <span className="form-error-message">{errors.password}</span>
+          {formState.errors.password && (
+            <span className="form-error-message">{formState.errors.password}</span>
           )}
         </div>
 
