@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./SharedForm.css";
 
 function SignupForm() {
@@ -108,7 +109,7 @@ function SignupForm() {
         <div className="form-divider">OR</div>
 
         <div className="form-footer">
-          Already have an account? <a href="/login">Log In</a>
+          Already have an account? <Link to="/login">Log In</Link>
         </div>
       </form>
     </div>
