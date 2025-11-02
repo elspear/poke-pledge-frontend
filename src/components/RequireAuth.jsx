@@ -1,9 +1,14 @@
 import { useAuth } from "../hooks/use-auth";
 import { Navigate } from "react-router-dom";
 
-const RequireAuth = ({ children }) => {
-    const { isLoggedIn } = useAuth();
-    return isLoggedIn ? children : <Navigate to="/auth-required/" />;
-};
+function RequireAuth({ children }) {
+  const { isLoggedIn } = useAuth();
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/auth-required/" replace />;
+  }
+
+  return children;
+}
 
 export default RequireAuth;
