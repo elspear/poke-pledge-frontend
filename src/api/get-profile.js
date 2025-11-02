@@ -1,41 +1,34 @@
-const getProfile = async (identifier, token) => {
+async function getProfile(identifier, token) {
+    if (!identifier) {
+        throw new Error("Profile identifier required");
+    }
+
     const base = import.meta.env.VITE_API_URL;
-
-    // Set up headers based on whether we have a token
-    const headers = {
-        "Content-Type": "application/json",
-    };
     
-    if (token) {
-        headers.Authorization = token.startsWith('Token') ? token : `Token ${token}`;
-    }
+    // Choose endpoint based on authentication status
+    const url = token 
+        ? `${base}/users/profiles/${identifier}/`
+        : `${base}/users/profiles/public/${identifier}/`;
 
-    console.log('Profile fetch request:', { identifier, hasToken: !!token });
+    const headers = token ? {
+        'Authorization': token.startsWith('Token') ? token : `Token ${token}`
+    } : {};
 
-    try {
-        // If no identifier is provided, use current user's profile
-        if (!identifier) {
-            if (!token) {
-                throw new Error("Authentication required to view your own profile");
-            }
-            throw new Error("Profile identifier required");
-        }
+    const response = await fetch(url, { 
+        method: "GET",
+        headers 
+    });
 
-        // Always fetch from the profiles endpoint using the identifier
-        const response = await fetch(`${base}/users/profiles/${identifier}/`, { 
-            headers 
+    if (!response.ok) {
+        const fallbackError = `Error fetching profile ${identifier}`;
+        const data = await response.json().catch(() => {
+            throw new Error(fallbackError);
         });
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch profile");
-        }
-
-        return await response.json();
-
-    } catch (error) {
-        console.error('Error fetching profile:', error);
-        throw error;
+        const errorMessage = data?.detail ?? fallbackError;
+        throw new Error(errorMessage);
     }
-};
+
+    return await response.json();
+}
 
 export default getProfile;

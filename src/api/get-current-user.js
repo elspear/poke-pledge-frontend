@@ -53,8 +53,8 @@ async function getCurrentUserByUsername(username) {
 
     if (foundUser) {
       // Attempt to fetch the profile using your urls.py pattern: /users/profiles/<user_id>/
-      try {
-        const profileUrl = `${base}/users/profiles/${foundUser.id}/`;
+        try {
+        const profileUrl = `${base}/users/profiles/public/${foundUser.id}/`;
         const profile = await doGet(profileUrl);
         if (profile) {
           // Attach profile under `profile` key for frontend use
@@ -63,9 +63,7 @@ async function getCurrentUserByUsername(username) {
       } catch {
         // If profile fetch fails, keep the user object as-is
         // console.debug('Profile fetch failed');
-      }
-
-      return foundUser;
+      }      return foundUser;
     }
   } catch {
     // ignore and fall back
