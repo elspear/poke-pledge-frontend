@@ -32,6 +32,7 @@ function FundraiserForm({
   // above code, now defaults fields to empty strings for when a user edits their fundraiser
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const isFormDisabled = isLoading || externalLoading;
 
   // For edit mode, calculate total pledged
   const totalPledged = Array.isArray(initialValues.pledges)
@@ -81,8 +82,17 @@ function FundraiserForm({
       const goalAmount = parseFloat(fundraiserData.goal);
       if (isNaN(goalAmount) || goalAmount <= 0) {
         newErrors.goal = "Please enter a valid positive number";
+      } else if (goalAmount > 1000000) {
+        newErrors.goal = "Goal cannot exceed ₽1,000,000";
       } else if (mode === "edit" && goalAmount < totalPledged) {
         newErrors.goal = `Goal cannot be less than total pledged (${totalPledged})`;
+      }
+    }
+    // End date validation
+    if (fundraiserData.end_date) {
+      const endDate = new Date(fundraiserData.end_date);
+      if (endDate < new Date()) {
+        newErrors.end_date = "End date cannot be in the past";
       }
     }
    
@@ -285,9 +295,9 @@ function FundraiserForm({
           <button 
             type="submit" 
             className="form-btn"
-            disabled={isLoading || externalLoading}
+            disabled={isFormDisabled}
           >
-            {isLoading || externalLoading
+            {isFormDisabled
               ? mode === "edit"
                 ? "SAVING..."
                 : "CREATING..."
