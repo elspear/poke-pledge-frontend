@@ -1,5 +1,5 @@
-// API call to post a pledge
-export default async function postPledge({ amount, comment = "", anonymous, fundraiser }) {
+
+async function postPledge({ amount, comment = "", anonymous, fundraiser }) {
   const url = `${import.meta.env.VITE_API_URL}/pledges/`;
   const token = window.localStorage.getItem("token");
   const response = await fetch(url, {
@@ -22,3 +22,5 @@ export default async function postPledge({ amount, comment = "", anonymous, fund
   }
   return await response.json();
 }
+
+export default postPledge;
