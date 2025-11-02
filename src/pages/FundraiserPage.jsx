@@ -90,6 +90,7 @@ function FundraiserPage() {
 
   // Use localFundraiser if available, otherwise use fundraiser
   const currentFundraiser = localFundraiser || fundraiser;
+  console.log('Current fundraiser data:', currentFundraiser);
 
   // Safely extract owner information with fallbacks
   const ownerIdRaw = currentFundraiser?.owner ?? currentFundraiser?.owner_id ?? null;
@@ -152,7 +153,6 @@ function FundraiserPage() {
               <p>Created by: <Link to={`/profile/${ownerId}`} className="owner-name">{ownerUsername}</Link></p>
               <p>Created: <span>{formatDate(currentFundraiser.date_created)}</span></p>
               <p>Role: <span>{currentFundraiser.owner?.role ? currentFundraiser.owner.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Trainer'}</span></p>
-              <p>Location: <span>{currentFundraiser.owner?.location || 'Location not specified'}</span></p>
             </div>
 
             <div className="description-container">
@@ -177,6 +177,10 @@ function FundraiserPage() {
               <div className="metadata-item">
                 <span className="metadata-label">Pokemon:</span>
                 <span className="metadata-value">{currentFundraiser.pokemon}</span>
+              </div>
+              <div className="metadata-item">
+                <span className="metadata-label">Location:</span>
+                <span className="metadata-value">{currentFundraiser.location || 'Location not specified'}</span>
               </div>
               {currentFundraiser.items_needed && (
                 <div className="metadata-item">

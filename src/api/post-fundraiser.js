@@ -8,6 +8,7 @@ async function postFundraiser(fundraiserData) {
     const apiData = {
         ...rest,
         goal: parseFloat(fundraiserData.goal),
+        location: fundraiserData.location || "", // Always include location
     };
 
     // Only include items_needed if the caller provided a non-empty value

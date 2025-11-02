@@ -13,7 +13,9 @@ async function getFundraiser(fundraiserId) {
     throw new Error(errorMessage);
   }
 
-  return await response.json();
+  const data = await response.json();
+  console.log('Fundraiser data from API:', data);
+  return data;
 }
 
 export default getFundraiser;

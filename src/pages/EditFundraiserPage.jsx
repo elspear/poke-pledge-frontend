@@ -19,6 +19,7 @@ function EditFundraiserPage() {
             setError(null);
             try {
                 const data = await getFundraiser(id);
+                console.log('Initial fundraiser data:', data);
                 setFundraiser(data);
             } catch (err) {
                 setError(err.message || "Failed to load fundraiser");
@@ -32,7 +33,10 @@ function EditFundraiserPage() {
     const handleUpdate = async (updatedData) => {
         setSaving(true);
         try {
-            await updateFundraiser(id, updatedData);
+            console.log('About to send update data:', updatedData);
+            console.log('Location value:', updatedData.location);
+            const response = await updateFundraiser(id, updatedData);
+            console.log('Update response:', response);
             navigate(`/fundraiser/${id}`);
         } catch (err) {
             setError(err.message || "Failed to update fundraiser");

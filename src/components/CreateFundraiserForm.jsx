@@ -27,6 +27,7 @@ function FundraiserForm({
     itemsNeeded: initialValues.itemsNeeded || "",
     image: initialValues.image || "",
     end_date: initialValues.end_date || "",
+    location: initialValues.location || "",
   });
 
   // above code, now defaults fields to empty strings for when a user edits their fundraiser
@@ -96,6 +97,13 @@ function FundraiserForm({
       }
     }
    
+    // Location validation
+    if (!fundraiserData.location.trim()) {
+      newErrors.location = "Location is required";
+    } else if (fundraiserData.location.length > 100) {
+      newErrors.location = "Location must be less than 100 characters";
+    }
+    
     // Image URL validation
     if (!fundraiserData.image.trim()) {
       newErrors.image = "Image URL is required";
@@ -113,9 +121,12 @@ function FundraiserForm({
       setIsLoading(true);
       setErrors({});
       try {
+        // Convert camelCase to snake_case for API and ensure location is included
         const apiData = {
           ...fundraiserData,
           goal: parseFloat(fundraiserData.goal),
+          items_needed: fundraiserData.itemsNeeded,
+          location: fundraiserData.location, // explicitly include location
         };
 
         // If end_date is empty string or falsy, remove it so the API doesn't try to parse it
@@ -224,6 +235,21 @@ function FundraiserForm({
             disabled={mode === "edit" || isLoading || externalLoading}
           />
           {errors.pokemon && <span className="error-message">{errors.pokemon}</span>}
+        </div>
+
+        {/* Location */}
+        <div className="form-group">
+          <label htmlFor="location">LOCATION</label>
+          <input
+            type="text"
+            id="location"
+            value={fundraiserData.location}
+            onChange={handleChange}
+            placeholder="Where are you located?"
+            className={errors.location ? "error" : ""}
+            disabled={isLoading || externalLoading}
+          />
+          {errors.location && <span className="error-message">{errors.location}</span>}
         </div>
 
         {/* Goal */}
