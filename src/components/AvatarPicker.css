@@ -5,11 +5,13 @@
     transform: translateY(-50%);
     background: white;
     border-radius: 8px;
-    padding: 1rem;
-    width: 200px;
+    padding: 1.5rem;
+    width: 400px;
+    max-height: 80vh;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 100;
     animation: popIn 0.3s ease;
+    overflow-y: auto;
 }
 
 @keyframes popIn {
@@ -24,16 +26,17 @@
 }
 
 .avatar-picker h4 {
-    margin: 0;
+    margin: 0 0 1rem 0;
     color: #333;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .avatar-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns instead of 3 */
-    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     margin-top: 0.5rem;
 }
 
