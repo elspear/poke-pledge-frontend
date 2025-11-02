@@ -7,6 +7,11 @@ function FundraiserCard(props) {
   const [imageLoaded, setImageLoaded] = useState(true); // Initialize as true to show image by default
   const navigate = useNavigate();
   const fundraiserLink = `fundraiser/${fundraiserData.id}`;
+  
+  // Extract owner info using the same logic as FundraiserPage
+  const ownerIdRaw = fundraiserData?.owner ?? fundraiserData?.owner_id ?? null;
+  const ownerId = typeof ownerIdRaw === "number" ? ownerIdRaw : (ownerIdRaw && typeof ownerIdRaw.id === "number" ? ownerIdRaw.id : null);
+  const ownerUsername = fundraiserData?.owner_username || fundraiserData?.owner?.username || fundraiserData?.owner?.user?.username || fundraiserData?.owner_name || null;
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
@@ -50,6 +55,21 @@ function FundraiserCard(props) {
             }}
           />
         </div>
+      </div>
+
+      <div className="fundraiser-owner">
+        <p>
+          <span className="owner-label">Owner: </span>
+          <Link
+            to={`/profile/${ownerId}`}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent card click when clicking the link
+            }}
+            className="owner-name"
+          >
+            {ownerUsername}
+          </Link>
+        </p>
       </div>
 
       <div className="fundraiser-description">

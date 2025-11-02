@@ -45,9 +45,6 @@ function NavBar() {
                   <Link to="/profile">Profile</Link>
                 </li>
                 <li className="pill">
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-                <li className="pill">
                   <button type="button" className="logout-button" onClick={handleLogout}>
                     Log Out
                   </button>

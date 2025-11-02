@@ -12,11 +12,11 @@ function useProfile(identifier) {
     useEffect(() => {
         async function fetchProfile() {
             try {
-                // Don't require auth token for public profile views
+                
                 const token = auth?.token;
                 console.log('Profile fetch:', { identifier, token });
 
-                // For /profile/ route (no identifier), require auth
+                
                 if (!identifier && !token) {
                     throw new Error("Authentication required to view your profile");
                 }
@@ -39,7 +39,7 @@ function useProfile(identifier) {
         fetchProfile();
     }, [identifier, auth]);
 
-    // Add function to update profile
+    
     const updateProfileData = async (profileData, userId) => {
         try {
             setIsLoading(true);
@@ -49,7 +49,7 @@ function useProfile(identifier) {
                 throw new Error("Not authenticated");
             }
 
-            // Use the explicitly passed userId, fall back to identifier or auth.user.id
+            
             const id = userId || identifier || auth.user.id;
             const updatedProfile = await updateProfile(id, profileData);
             setProfile(updatedProfile);
