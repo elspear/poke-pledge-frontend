@@ -1,8 +1,6 @@
 async function postSignup(userData) {
     const url = `${import.meta.env.VITE_API_URL}/users/`;
     
-    console.log('Sending signup request to:', url);
-    console.log('With data:', userData);
     
     const response = await fetch(url, {
         method: "POST",
@@ -12,10 +10,10 @@ async function postSignup(userData) {
         body: JSON.stringify(userData),
     });
     
-    console.log('Signup response status:', response.status);
+   
     
     const responseText = await response.text();
-    console.log('Signup response text:', responseText);
+    
 
     let data;
     try {
